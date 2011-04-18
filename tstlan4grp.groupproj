@@ -1,0 +1,48 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{27B260C0-86AD-4DBC-B98C-A67324C950AB}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="tstlan4.cbproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="..\..\..\..\ITN\prjs\cbuilder2006\itnwin\itnwin.cbproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="tstlan4">
+			<MSBuild Projects="tstlan4.cbproj"/>
+		</Target>
+		<Target Name="tstlan4:Clean">
+			<MSBuild Targets="Clean" Projects="tstlan4.cbproj"/>
+		</Target>
+		<Target Name="tstlan4:Make">
+			<MSBuild Targets="Make" Projects="tstlan4.cbproj"/>
+		</Target>
+		<Target Name="itnwin">
+			<MSBuild Projects="..\..\..\..\ITN\prjs\cbuilder2006\itnwin\itnwin.cbproj"/>
+		</Target>
+		<Target Name="itnwin:Clean">
+			<MSBuild Targets="Clean" Projects="..\..\..\..\ITN\prjs\cbuilder2006\itnwin\itnwin.cbproj"/>
+		</Target>
+		<Target Name="itnwin:Make">
+			<MSBuild Targets="Make" Projects="..\..\..\..\ITN\prjs\cbuilder2006\itnwin\itnwin.cbproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="tstlan4;itnwin"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="tstlan4:Clean;itnwin:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="tstlan4:Make;itnwin:Make"/>
+		</Target>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+	</Project>
