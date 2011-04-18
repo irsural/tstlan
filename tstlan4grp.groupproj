@@ -6,9 +6,6 @@
 			<Projects Include="tstlan4.cbproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="..\..\..\..\ITN\prjs\cbuilder2006\itnwin\itnwin.cbproj">
-				<Dependencies/>
-			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -26,23 +23,14 @@
 		<Target Name="tstlan4:Make">
 			<MSBuild Targets="Make" Projects="tstlan4.cbproj"/>
 		</Target>
-		<Target Name="itnwin">
-			<MSBuild Projects="..\..\..\..\ITN\prjs\cbuilder2006\itnwin\itnwin.cbproj"/>
-		</Target>
-		<Target Name="itnwin:Clean">
-			<MSBuild Targets="Clean" Projects="..\..\..\..\ITN\prjs\cbuilder2006\itnwin\itnwin.cbproj"/>
-		</Target>
-		<Target Name="itnwin:Make">
-			<MSBuild Targets="Make" Projects="..\..\..\..\ITN\prjs\cbuilder2006\itnwin\itnwin.cbproj"/>
-		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="tstlan4;itnwin"/>
+			<CallTarget Targets="tstlan4"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="tstlan4:Clean;itnwin:Clean"/>
+			<CallTarget Targets="tstlan4:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="tstlan4:Make;itnwin:Make"/>
+			<CallTarget Targets="tstlan4:Make"/>
 		</Target>
 		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 	</Project>
