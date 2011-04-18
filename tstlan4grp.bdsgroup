@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <PersonalityInfo>
+    <Option>
+      <Option Name="Personality">Default.Personality</Option>
+      <Option Name="ProjectType"></Option>
+      <Option Name="Version">1.0</Option>
+      <Option Name="GUID">{72164BCE-93F3-4CA1-BF22-A710B421F3A4}</Option>
+    </Option>
+  </PersonalityInfo>
+  <Default.Personality>
+    
+    <Projects>
+      <Projects Name="tstlan4.exe">tstlan4.bdsproj</Projects>
+      <Projects Name="itnwin.exe">..\..\..\..\ITN\prjs\cbuilder2006\itnwin\itnwin.bdsproj</Projects>
+      <Projects Name="Targets">tstlan4.exe itnwin.exe</Projects>
+    </Projects>
+    <Dependencies/>
+  </Default.Personality>
+</BorlandProject>
