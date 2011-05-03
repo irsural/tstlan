@@ -18,6 +18,8 @@ tstlan4::cfg_t::cfg_t(TForm* ap_form):
       irs::tstlan4_t::global_log_connect
     )
   ),
+  mp_mxnet_client_hardflow(irs::hardflow::make_udp_flow_client(
+    irst("127.0.0.1"), 5005)),
   mp_mxnet_server_hardflow(irs::hardflow::make_udp_flow_server(5005)),
   mp_options_form(new TOptionsForm(ap_form))
 {
@@ -40,6 +42,10 @@ void tstlan4::cfg_t::options_show()
 tstlan4::cfg_t::string_type tstlan4::cfg_t::ini_name() const
 {
   return m_ini_name;
+}
+irs::hardflow_t& tstlan4::cfg_t::mxnet_client_hardflow()
+{
+  return *mp_mxnet_client_hardflow;
 }
 irs::hardflow_t& tstlan4::cfg_t::mxnet_server_hardflow()
 {

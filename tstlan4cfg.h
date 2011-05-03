@@ -28,11 +28,13 @@ public:
   counter_t update_time() const;
   void options_show();
   string_type ini_name() const;
+  irs::hardflow_t& mxnet_client_hardflow();
   irs::hardflow_t& mxnet_server_hardflow();
 private:
   string_type m_ini_name;
   counter_t m_update_time;
   irs::handle_t<irs::tstlan4_base_t> mp_tstlan4lib;
+  irs::handle_t<irs::hardflow_t> mp_mxnet_client_hardflow;
   irs::handle_t<irs::hardflow_t> mp_mxnet_server_hardflow;
   TOptionsForm* mp_options_form;
 };
