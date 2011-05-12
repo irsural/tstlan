@@ -13,7 +13,6 @@
 
 #include <irsfinal.h>
 
-//#define OLD_MXNET_CLIENT
 
 namespace tstlan4 {
 
@@ -51,16 +50,12 @@ public:
 private:
   cfg_t* mp_cfg;
   irs::tstlan4_base_t* mp_tstlan4lib;
-  #ifdef OLD_MXNET_CLIENT
-  irs::mxnetc_data_t m_mxnet_client;
-  #else //OLD_MXNET_CLIENT
   irs::mxnet_client_t m_mxnet_client;
-  #endif //OLD_MXNET_CLIENT
   mxnet_vars_data_t m_mxnet_client_data;
   mxnet_vars_data_t m_mxnet_server_data;
   irs::mxnet_t m_mxnet_server;
   irs::event_t m_options_event;
-  irs::local_data_t m_dbg_data;
+  bool m_is_mxnet_server_first_connected;
 };
 
 } //namespace tstlan4

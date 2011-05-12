@@ -23,19 +23,12 @@ object OptionsForm: TOptionsForm
     ActivePage = DeviceListSheet
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 288
-    ExplicitTop = 72
-    ExplicitHeight = 241
     object GeneralSheet: TTabSheet
       Caption = #1054#1073#1097#1080#1077
-      ExplicitWidth = 605
-      ExplicitHeight = 459
     end
     object DeviceListSheet: TTabSheet
       Caption = #1057#1087#1080#1089#1086#1082' '#1091#1089#1090#1088#1086#1081#1089#1090#1074
       ImageIndex = 1
-      ExplicitWidth = 605
-      ExplicitHeight = 459
       object ValueListEditor1: TValueListEditor
         Left = 16
         Top = 16
@@ -55,6 +48,7 @@ object OptionsForm: TOptionsForm
     Height = 41
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 458
     object OkButton: TButton
       Left = 8
       Top = 8

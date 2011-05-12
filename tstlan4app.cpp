@@ -19,28 +19,15 @@
 tstlan4::app_t::app_t(cfg_t* ap_cfg):
   mp_cfg(ap_cfg),
   mp_tstlan4lib(mp_cfg->tstlan4lib()),
-  #ifdef OLD_MXNET_CLIENT
-  m_mxnet_client(MXIFA_MXNETC, irs::make_cnt_s(2),
-    mp_cfg->update_time()),
-  #else //OLD_MXNET_CLIENT
   m_mxnet_client(mp_cfg->mxnet_client_hardflow(), mp_cfg->update_time()),
-  #endif //OLD_MXNET_CLIENT
   m_mxnet_client_data(&m_mxnet_client),
   m_mxnet_server_data(),
   m_mxnet_server(mp_cfg->mxnet_server_hardflow(),
     m_mxnet_server_data.size()/sizeof(irs_i32)),
   m_options_event(),
-  m_dbg_data(16)
+  m_is_mxnet_server_first_connected(true)
 {
   m_mxnet_server_data.connect(&m_mxnet_server);
-  m_mxnet_server_data.year = 2011;
-  m_mxnet_server_data.month = 4;
-  #ifdef OLD_MXNET_CLIENT
-  m_mxnet_client.ip(irs::make_mxip(127, 0, 0, 1));
-  //m_mxnet_client.ip(irs::make_mxip(192, 168, 1, 148));
-  //m_mxnet_client.ip(irs::make_mxip(192, 168, 0, 190));
-  m_mxnet_client.port(5005);
-  #endif //
   mp_tstlan4lib->connect(&m_mxnet_client);
   mp_tstlan4lib->options_event_connect(&m_options_event);
 }
@@ -51,7 +38,15 @@ void tstlan4::app_t::tick()
     m_mxnet_server.tick();
   }
 
-  m_mxnet_server_data.counter++;
+  if (m_mxnet_server.connected()) {
+    if (m_is_mxnet_server_first_connected) {
+      m_is_mxnet_server_first_connected = false;
+      m_mxnet_server_data.year = 2011;
+      m_mxnet_server_data.month = 4;
+    } else {
+      m_mxnet_server_data.counter++;
+    }
+  }
 
   if (m_mxnet_client.connected()) {
     m_mxnet_client_data.month++;
