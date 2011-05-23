@@ -30,6 +30,9 @@ tstlan4::app_t::app_t(cfg_t* ap_cfg):
   m_mxnet_server_data.connect(&m_mxnet_server);
   mp_tstlan4lib->connect(&m_mxnet_client);
   mp_tstlan4lib->options_event_connect(&m_options_event);
+
+  virtual void add_edit(const builder_string_type& a_param_name,
+    const builder_string_type& a_param_value);
 }
 void tstlan4::app_t::tick()
 {

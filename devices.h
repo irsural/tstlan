@@ -31,6 +31,7 @@ class mxnet_assembly_t: public mxdata_assembly_t
 {
 public:
   mxnet_assembly_t(tstlan4_base_t* ap_tstlan4, const string_type& a_name);
+  virtual ~mxnet_assembly_t();
   virtual irs::mxdata_t* mxdata();
   virtual void tick();
   virtual void show_options();
