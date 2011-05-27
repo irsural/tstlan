@@ -21,10 +21,11 @@ public:
     const string_type& a_new_name);
   virtual bool is_clear_needed(const string_type& a_name);
   virtual void reset_clear_needed(const string_type& a_name);
+  virtual void erase(const string_type& a_name);
 private:
   ini_file_t m_ini_file;
   vector<string_type> m_name_list;
-  vector<bool> m_deleted_list;
+  vector<bool> m_erased_list;
   vector<bool> m_clear_needed_list;
 
   bool find_name(const string_type& a_name, size_t* ap_device_idx);
@@ -32,21 +33,21 @@ private:
 mxdata_assembly_names_t::mxdata_assembly_names_t():
   m_ini_file(),
   m_name_list(),
-  m_deleted_list()
+  m_erased_list()
 {
   for (int device_idx = 0; true; device_idx++) {
     m_ini_file.clear_control();
     m_ini_file.set_section(irst("device.") + String(device_idx));
     string_t name = "";
     m_ini_file.add(irst("name"), &name);
-    bool is_deleted = false;
-    m_ini_file.add(irst("is_deleted"), &is_deleted);
+    bool is_erased = false;
+    m_ini_file.add(irst("is_erased"), &is_erased);
     bool is_exist = false;
     m_ini_file.add(irst("is_exist"), &is_exist);
     m_ini_file.load();
     if (is_exist) {
       m_name_list.push_back(name);
-      m_deleted_list.push_back(is_deleted);
+      m_erased_list.push_back(is_erased);
       m_clear_needed_list.push_back(false);
     } else {
       break;
@@ -75,29 +76,29 @@ mxdata_assembly_names_t::string_type mxdata_assembly_names_t::
   } else {
     size_t device_idx = 0;
     vector<bool>::iterator device_it =
-      find(m_deleted_list.begin(), m_deleted_list.end(), true);
-    if (device_it != m_deleted_list.end()) {
-      device_idx = m_deleted_list.begin() - device_it;
+      find(m_erased_list.begin(), m_erased_list.end(), true);
+    if (device_it != m_erased_list.end()) {
+      device_idx = m_erased_list.begin() - device_it;
     } else {
-      device_idx = m_deleted_list.size();
+      device_idx = m_erased_list.size();
     }
     m_ini_file.clear_control();
     m_ini_file.set_section(irst("device.") + String(device_idx));
     string_t name = a_name;
     m_ini_file.add(irst("name"), &name);
-    bool is_deleted = true;
-    m_ini_file.add(irst("is_deleted"), &is_deleted);
+    bool is_erased = false;
+    m_ini_file.add(irst("is_erased"), &is_erased);
     bool is_exist = true;
     m_ini_file.add(irst("is_exist"), &is_exist);
     m_ini_file.save();
-    if (device_it != m_deleted_list.end()) {
+    if (device_it != m_erased_list.end()) {
       m_name_list.at(device_idx) = name;
-      m_deleted_list.at(device_idx) = is_deleted;
+      m_erased_list.at(device_idx) = is_erased;
       m_clear_needed_list.at(device_idx) = true;
     } else {
       m_name_list.push_back(name);
-      m_deleted_list.push_back(is_deleted);
-      m_clear_needed_list.push_back(true);
+      m_erased_list.push_back(is_erased);
+      m_clear_needed_list.push_back(false);
     }
 
     number = device_idx;
@@ -132,6 +133,17 @@ void mxdata_assembly_names_t::reset_clear_needed(const string_type& a_name)
   size_t device_idx = 0;
   if (find_name(a_name, &device_idx)) {
     m_clear_needed_list.at(device_idx) = false;
+  }
+}
+void mxdata_assembly_names_t::erase(const string_type& a_name)
+{
+  size_t device_idx = 0;
+  if (find_name(a_name, &device_idx)) {
+    m_ini_file.clear_control();
+    m_ini_file.set_section(irst("device.") + String(device_idx));
+    bool is_erased = true;
+    m_ini_file.add(irst("is_erased"), &is_erased);
+    m_ini_file.save();
   }
 }
 

@@ -37,6 +37,7 @@ public:
     const string_type& a_new_name) = 0;
   virtual bool is_clear_needed(const string_type& a_name) = 0;
   virtual void reset_clear_needed(const string_type& a_name) = 0;
+  virtual void erase(const string_type& a_name) = 0;
 };
 
 } // namespace irs
