@@ -6,8 +6,8 @@
 
 #include <irsfinal.h>
 //---------------------------------------------------------------------------
-USEFORM("options.cpp", OptionsForm);
 USEFORM("main.cpp", MainForm);
+USEFORM("options.cpp", OptionsForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -26,14 +26,14 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
   }
   catch (...)
   {
-     try
-     {
-       throw Exception("");
-     }
-     catch (Exception &exception)
-     {
-       Application->ShowException(&exception);
-     }
+    try
+    {
+      throw Exception("");
+    }
+    catch (Exception &exception)
+    {
+      Application->ShowException(&exception);
+    }
   }
   return 0;
 }

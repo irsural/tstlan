@@ -155,6 +155,53 @@ irs::mxdata_assembly_names_base_t* irs::mxdata_assembly_names()
   return &i_mxdata_assembly_names;
 }
 
+namespace irs {
+
+class mxnet_assembly_creator_t: public mxdata_assembly_creator_t
+{
+public:
+  virtual handle_t<mxdata_assembly_t> make(tstlan4_base_t* ap_tstlan4,
+    const string_type& a_name);
+private:
+};
+
+} // namespace irs
+
+namespace irs {
+
+class mxnet_assembly_t: public mxdata_assembly_t
+{
+public:
+  mxnet_assembly_t(tstlan4_base_t* ap_tstlan4, const string_type& a_name);
+  virtual ~mxnet_assembly_t();
+  virtual irs::mxdata_t* mxdata();
+  virtual void tick();
+  virtual void show_options();
+  virtual void tstlan4(tstlan4_base_t* ap_tstlan4);
+  virtual void name(const string_type& a_name);
+private:
+  struct param_box_tune_t {
+    param_box_base_t* mp_param_box;
+
+    param_box_tune_t(param_box_base_t* ap_param_box);
+  };
+
+  string_type m_name;
+  handle_t<param_box_base_t> mp_param_box;
+  param_box_tune_t m_param_box_tune;
+  tstlan4_base_t* mp_tstlan4;
+  handle_t<hardflow_t> mp_mxnet_client_hardflow;
+  handle_t<mxdata_t> mp_mxnet_client;
+};
+
+} // namespace irs
+
+irs::handle_t<irs::mxdata_assembly_t> irs::mxnet_assembly_creator_t::make(
+  tstlan4_base_t* ap_tstlan4, const string_type& a_name)
+{
+  return handle_t<mxdata_assembly_t>(new mxnet_assembly_t(ap_tstlan4, a_name));
+}
+
 irs::mxnet_assembly_t::mxnet_assembly_t(tstlan4_base_t* ap_tstlan4,
   const string_type& a_name
 ):
@@ -216,5 +263,64 @@ void irs::mxnet_assembly_t::name(const string_type& a_name)
 {
   mxdata_assembly_names()->rename(m_name, a_name);
   m_name = a_name;
+}
+
+namespace irs {
+
+class mxdata_assembly_types_implementation_t: public mxdata_assembly_types_t
+{
+public:
+  mxdata_assembly_types_implementation_t();
+  virtual void enum_types(vector<string_type>* ap_types) const;
+  virtual handle_t<mxdata_assembly_t> make_assembly(
+    const string_type& a_assembly_type, tstlan4_base_t* ap_tstlan4,
+    const string_type& a_name);
+private:
+  typedef map<string_type, handle_t<mxdata_assembly_creator_t> > ac_list_type;
+  typedef ac_list_type::iterator ac_list_it_type;
+  typedef ac_list_type::const_iterator ac_list_const_it_type;
+
+  ac_list_type m_ac_list;
+};
+
+} //namespace irs
+
+irs::mxdata_assembly_types_t* irs::mxdata_assembly_types()
+{
+  static mxdata_assembly_types_implementation_t
+    mxdata_assembly_types_implementation;
+  return &mxdata_assembly_types_implementation;
+}
+
+irs::mxdata_assembly_types_implementation_t::
+  mxdata_assembly_types_implementation_t(
+):
+  m_ac_list()
+{
+  m_ac_list[irst("mxnet")] = handle_t<mxdata_assembly_creator_t>(
+    new mxnet_assembly_creator_t);
+}
+void irs::mxdata_assembly_types_implementation_t::
+  enum_types(vector<string_type>* ap_types) const
+{
+  ap_types->clear();
+  for (ac_list_const_it_type it = m_ac_list.begin();
+    it != m_ac_list.end(); it++)
+  {
+    ap_types->push_back(it->first);
+  }
+}
+irs::handle_t<irs::mxdata_assembly_t>
+  irs::mxdata_assembly_types_implementation_t::make_assembly
+(
+  const string_type& a_assembly_type, tstlan4_base_t* ap_tstlan4,
+  const string_type& a_name)
+{
+  handle_t<mxdata_assembly_t> result_assembly(IRS_NULL);
+  ac_list_it_type it = m_ac_list.find(a_assembly_type);
+  if (it != m_ac_list.end()) {
+    result_assembly = it->second->make(ap_tstlan4, a_name);
+  }
+  return result_assembly;
 }
 

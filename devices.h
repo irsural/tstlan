@@ -26,6 +26,17 @@ public:
   virtual void name(const string_type& a_name) = 0;
 };
 
+class mxdata_assembly_creator_t
+{
+public:
+  typedef mxdata_assembly_t::string_type string_type;
+
+  virtual ~mxdata_assembly_creator_t() {}
+  virtual handle_t<mxdata_assembly_t> make(tstlan4_base_t* ap_tstlan4,
+    const string_type& a_name) = 0;
+private:
+};
+
 class mxdata_assembly_names_base_t
 {
 public:
@@ -40,38 +51,22 @@ public:
   virtual void erase(const string_type& a_name) = 0;
 };
 
-} // namespace irs
+class mxdata_assembly_types_t
+{
+public:
+  typedef mxdata_assembly_t::string_type string_type;
 
-
-namespace irs {
+  virtual void enum_types(vector<string_type>* ap_types) const = 0;
+  virtual handle_t<mxdata_assembly_t> make_assembly(
+    const string_type& a_assembly_type, tstlan4_base_t* ap_tstlan4,
+    const string_type& a_name) = 0;
+};
 
 mxdata_assembly_names_base_t* mxdata_assembly_names();
 
-class mxnet_assembly_t: public mxdata_assembly_t
-{
-public:
-  mxnet_assembly_t(tstlan4_base_t* ap_tstlan4, const string_type& a_name);
-  virtual ~mxnet_assembly_t();
-  virtual irs::mxdata_t* mxdata();
-  virtual void tick();
-  virtual void show_options();
-  virtual void tstlan4(tstlan4_base_t* ap_tstlan4);
-  virtual void name(const string_type& a_name);
-private:
-  struct param_box_tune_t {
-    param_box_base_t* mp_param_box;
-
-    param_box_tune_t(param_box_base_t* ap_param_box);
-  };
-
-  string_type m_name;
-  handle_t<param_box_base_t> mp_param_box;
-  param_box_tune_t m_param_box_tune;
-  tstlan4_base_t* mp_tstlan4;
-  handle_t<hardflow_t> mp_mxnet_client_hardflow;
-  handle_t<mxdata_t> mp_mxnet_client;
-};
+mxdata_assembly_types_t* mxdata_assembly_types();
 
 } // namespace irs
 
 #endif //devicesH
+
