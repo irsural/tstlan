@@ -10,6 +10,7 @@
 #include <irsint.h>
 
 #include "tstlan4cfg.h"
+#include "devices.h"
 
 #include <irsfinal.h>
 
@@ -50,12 +51,13 @@ public:
 private:
   cfg_t* mp_cfg;
   irs::tstlan4_base_t* mp_tstlan4lib;
-  irs::mxnet_client_t m_mxnet_client;
+  //irs::mxnet_client_t m_mxnet_client;
   mxnet_vars_data_t m_mxnet_client_data;
   mxnet_vars_data_t m_mxnet_server_data;
   irs::mxnet_t m_mxnet_server;
   irs::event_t m_options_event;
   bool m_is_mxnet_server_first_connected;
+  irs::handle_t<irs::mxdata_assembly_t> mp_mxdata_assembly;
 };
 
 } //namespace tstlan4

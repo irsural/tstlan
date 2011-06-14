@@ -146,7 +146,8 @@ void __fastcall TOptionsForm::DeleteButtonClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TOptionsForm::RenameButtonClick(TObject *Sender)
 {
-  ;
+  TGridRect GridRect = DeviceListValueListEditor->Selection;
+  DeviceListValueListEditor->Keys[GridRect.Top] = NameEdit->Text;
 }
 //---------------------------------------------------------------------------
 void __fastcall TOptionsForm::DeviceListValueListEditorSelectCell(

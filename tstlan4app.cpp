@@ -19,22 +19,26 @@
 tstlan4::app_t::app_t(cfg_t* ap_cfg):
   mp_cfg(ap_cfg),
   mp_tstlan4lib(mp_cfg->tstlan4lib()),
-  m_mxnet_client(mp_cfg->mxnet_client_hardflow(), mp_cfg->update_time()),
-  m_mxnet_client_data(&m_mxnet_client),
+  //m_mxnet_client(mp_cfg->mxnet_client_hardflow(), mp_cfg->update_time()),
+  m_mxnet_client_data(IRS_NULL/*&m_mxnet_client*/),
   m_mxnet_server_data(),
   m_mxnet_server(mp_cfg->mxnet_server_hardflow(),
     m_mxnet_server_data.size()/sizeof(irs_i32)),
   m_options_event(),
-  m_is_mxnet_server_first_connected(true)
+  m_is_mxnet_server_first_connected(true),
+  mp_mxdata_assembly(irs::mxdata_assembly_types()->
+    make_assembly(irst("mxnet"), mp_tstlan4lib, irst("Ó309Ì")))
 {
   m_mxnet_server_data.connect(&m_mxnet_server);
-  mp_tstlan4lib->connect(&m_mxnet_client);
+  m_mxnet_client_data.connect(mp_mxdata_assembly->mxdata());
+  //mp_tstlan4lib->connect(&m_mxnet_client);
   mp_tstlan4lib->options_event_connect(&m_options_event);
 }
 void tstlan4::app_t::tick()
 {
   for (int i = 0; i < 5; i++) {
-    m_mxnet_client.tick();
+    //m_mxnet_client.tick();
+    mp_mxdata_assembly->tick();
     m_mxnet_server.tick();
   }
 
@@ -48,7 +52,7 @@ void tstlan4::app_t::tick()
     }
   }
 
-  if (m_mxnet_client.connected()) {
+  if (mp_mxdata_assembly->mxdata()->connected()) {
     m_mxnet_client_data.month++;
     mp_tstlan4lib->tick();
   }

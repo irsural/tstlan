@@ -38,7 +38,7 @@ mxdata_assembly_names_t::mxdata_assembly_names_t():
   for (int device_idx = 0; true; device_idx++) {
     m_ini_file.clear_control();
     m_ini_file.set_section(irst("device.") + String(device_idx));
-    string_t name = "";
+    string_t name = irst("");
     m_ini_file.add(irst("name"), &name);
     bool is_erased = false;
     m_ini_file.add(irst("is_erased"), &is_erased);
@@ -69,7 +69,7 @@ bool mxdata_assembly_names_t::find_name(const string_type& a_name,
 mxdata_assembly_names_t::string_type mxdata_assembly_names_t::
   num_from_name(const string_type& a_name)
 {
-  string_type number = "";
+  string_type number = irst("");
   size_t device_idx = 0;
   if (find_name(a_name, &device_idx)) {
     number = device_idx;
@@ -217,6 +217,7 @@ irs::mxnet_assembly_t::mxnet_assembly_t(tstlan4_base_t* ap_tstlan4,
     make_cnt_ms(param_box_read_number<int>(*mp_param_box,
     irst("Время обновления, мс")))))
 {
+  mp_tstlan4->connect(mp_mxnet_client.get());
   mp_tstlan4->conf_section(irst("device_vars.") +
     mxdata_assembly_names()->num_from_name(m_name));
   if (mxdata_assembly_names()->is_clear_needed(m_name)) {

@@ -37,6 +37,8 @@ __published:	// IDE-managed Components
   TButton *ApplyButton;
   TEdit *NameEdit;
   TLabel *NameLabel;
+  TButton *GeneralOptionsButton;
+  TButton *DeviceOptionsButton;
   void __fastcall OkButtonClick(TObject *Sender);
   void __fastcall ApplyButtonClick(TObject *Sender);
   void __fastcall CancelButtonClick(TObject *Sender);
