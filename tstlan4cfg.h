@@ -26,10 +26,10 @@ public:
   cfg_t(TForm* ap_form);
   irs::tstlan4_base_t* tstlan4lib();
   counter_t update_time() const;
-  void options_show();
   string_type ini_name() const;
   irs::hardflow_t& mxnet_client_hardflow();
   irs::hardflow_t& mxnet_server_hardflow();
+  options_form_t* options_form();
 private:
   string_type m_ini_name;
   counter_t m_update_time;

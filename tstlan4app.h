@@ -51,6 +51,7 @@ public:
 private:
   cfg_t* mp_cfg;
   irs::tstlan4_base_t* mp_tstlan4lib;
+  options_form_t* mp_options_form;
   //irs::mxnet_client_t m_mxnet_client;
   mxnet_vars_data_t m_mxnet_client_data;
   mxnet_vars_data_t m_mxnet_server_data;

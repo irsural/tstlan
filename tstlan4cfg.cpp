@@ -37,10 +37,6 @@ counter_t tstlan4::cfg_t::update_time() const
 {
   return m_update_time;
 }
-void tstlan4::cfg_t::options_show()
-{
-  mp_options_form->ShowModal();
-}
 tstlan4::cfg_t::string_type tstlan4::cfg_t::ini_name() const
 {
   return m_ini_name;
@@ -52,5 +48,9 @@ irs::hardflow_t& tstlan4::cfg_t::mxnet_client_hardflow()
 irs::hardflow_t& tstlan4::cfg_t::mxnet_server_hardflow()
 {
   return *mp_mxnet_server_hardflow;
+}
+options_form_t* tstlan4::cfg_t::options_form()
+{
+  return mp_options_form->data();
 }
 

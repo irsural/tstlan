@@ -23,7 +23,7 @@ object OptionsForm: TOptionsForm
     Top = 0
     Width = 620
     Height = 450
-    ActivePage = DeviceListSheet
+    ActivePage = GeneralSheet
     Align = alClient
     TabOrder = 0
     object GeneralSheet: TTabSheet
@@ -36,9 +36,11 @@ object OptionsForm: TOptionsForm
         Top = 24
         Width = 582
         Height = 25
+        ParentCustomHint = False
         Anchors = [akLeft, akTop, akRight]
         Caption = #1054#1073#1097#1080#1077' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
         TabOrder = 0
+        OnClick = GeneralOptionsButtonClick
       end
       object DeviceOptionsButton: TButton
         Left = 16
@@ -48,6 +50,7 @@ object OptionsForm: TOptionsForm
         Anchors = [akLeft, akTop, akRight]
         Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1091#1089#1090#1088#1086#1081#1089#1090#1074#1072
         TabOrder = 1
+        OnClick = DeviceOptionsButtonClick
       end
     end
     object DeviceListSheet: TTabSheet
