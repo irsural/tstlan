@@ -18,7 +18,9 @@
 
 namespace tstlan4 {
 
-bool find_device(const irs::string_t& a_name, irs::string_t* ap_type);
+bool find_device(options_form_t* ap_options_form,
+  const irs::string_t& a_name, irs::string_t* ap_type);
+
 irs::handle_t<irs::mxdata_assembly_t> make_assembly(
   irs::tstlan4_base_t* ap_tstlan4lib,
   options_form_t* ap_options_form
@@ -26,9 +28,20 @@ irs::handle_t<irs::mxdata_assembly_t> make_assembly(
 
 } //namespace tstlan4
 
-bool find_device(const irs::string_t& a_name, irs::string_t* ap_type)
+bool tstlan4::find_device(options_form_t* ap_options_form,
+  const irs::string_t& a_name, irs::string_t* ap_type)
 {
-  //for (size
+  bool is_finded = false;
+  for (size_t device_idx = 0; device_idx < ap_options_form->device_count();
+    device_idx++)
+  {
+    if (ap_options_form->device_names(device_idx) == a_name) {
+      *ap_type = ap_options_form->device_types(device_idx);
+      is_finded = true;
+      break;
+    }
+  }
+  return is_finded;
 }
 
 irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
@@ -38,8 +51,13 @@ irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
   if (ap_options_form->device_count() != 0) {
     irs::string_t current_device = ap_options_form->general_options()->
       get_param(irst("Текущее устройство"));
-    return irs::mxdata_assembly_types()->
-      make_assembly(irst("mxnet"), ap_tstlan4lib, current_device);
+    irs::string_t current_type = irst("");
+    if (find_device(ap_options_form, current_device, &current_type)) {
+      return irs::mxdata_assembly_types()->
+        make_assembly(current_type, ap_tstlan4lib, current_device);
+    } else {
+      return IRS_NULL;
+    }
   } else {
     return IRS_NULL;
   }
@@ -56,8 +74,7 @@ tstlan4::app_t::app_t(cfg_t* ap_cfg):
     m_mxnet_server_data.size()/sizeof(irs_i32)),
   m_options_event(),
   m_is_mxnet_server_first_connected(true),
-  mp_mxdata_assembly(irs::mxdata_assembly_types()->
-    make_assembly(irst("mxnet"), mp_tstlan4lib, irst("У309М")))
+  mp_mxdata_assembly(make_assembly(mp_tstlan4lib, mp_options_form))
 {
   m_mxnet_server_data.connect(&m_mxnet_server);
   m_mxnet_client_data.connect(mp_mxdata_assembly->mxdata());
