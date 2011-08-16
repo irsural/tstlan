@@ -53,18 +53,18 @@ options_form_implementation_t::options_form_implementation_t(
 irs::string_t options_form_implementation_t::device_names(size_t a_index)
 {
   TL4_ERROR_IF((0 > a_index) || (a_index >= device_count()),
-    irs::ec_standard, "Вне диапазоны");
+    irs::ec_standard, "Вне диапазона");
   if ((0 > a_index) || (a_index >= device_count())) {
-    return irst("Вне диапазоны");
+    return irst("Вне диапазона");
   }
   return mp_device_list->Keys[a_index + mp_device_list->FixedCols].c_str();
 }
 irs::string_t options_form_implementation_t::device_types(size_t a_index)
 {
   TL4_ERROR_IF((0 > a_index) || (a_index >= device_count()),
-    irs::ec_standard, "Вне диапазоны");
+    irs::ec_standard, "Вне диапазона");
   if ((0 > a_index) || (a_index >= device_count())) {
-    return irst("Вне диапазоны");
+    return irst("Вне диапазона");
   }
   return mp_device_list->Values[device_names(a_index).c_str()].c_str();
 }

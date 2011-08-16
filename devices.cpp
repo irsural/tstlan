@@ -247,11 +247,21 @@ irs::mxdata_t* irs::mxnet_assembly_t::mxdata()
 }
 void irs::mxnet_assembly_t::tick()
 {
+  mp_mxnet_client->tick();
 }
 void irs::mxnet_assembly_t::show_options()
 {
   if (mp_param_box->show()) {
     mp_param_box->save();
+    mp_mxnet_client_hardflow->set_param(irst("remote_adress"),
+      mp_param_box->get_param(irst("IP")));
+    mp_mxnet_client_hardflow->set_param(irst("remote_port"),
+      mp_param_box->get_param(irst("Порт")));
+    mxnet_client_t* p_mxnet_client =
+      static_cast<mxnet_client_t*>(mp_mxnet_client.get());
+    p_mxnet_client->command_interface()->disconnect_time(make_cnt_ms(
+      param_box_read_number<int>(*mp_param_box,
+      irst("Время обновления, мс"))));
   } else {
     mp_param_box->load();
   }
