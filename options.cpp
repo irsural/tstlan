@@ -25,9 +25,11 @@ public:
   virtual size_t device_count();
   virtual irs::param_box_base_t* general_options();
   virtual bool is_device_options_button_click();
+  virtual bool is_inner_options_button_click();
   virtual bool is_options_apply();
   virtual void show();
   void device_options_button_click_exec();
+  void inner_options_button_click_exec();
   void options_apply_exec();
 private:
   //enum { m_values_shift = 1 };
@@ -36,6 +38,7 @@ private:
   TValueListEditor *mp_device_list;
   irs::param_box_base_t* mp_general_options;
   irs::event_t m_device_options_button_click_event;
+  irs::event_t m_inner_options_button_click_event;
   irs::event_t m_options_apply_event;
 };
 options_form_implementation_t::options_form_implementation_t(
@@ -47,6 +50,7 @@ options_form_implementation_t::options_form_implementation_t(
   mp_device_list(ap_device_list),
   mp_general_options(ap_general_options),
   m_device_options_button_click_event(),
+  m_inner_options_button_click_event(),
   m_options_apply_event()
 {
 }
@@ -80,6 +84,10 @@ bool options_form_implementation_t::is_device_options_button_click()
 {
   return m_device_options_button_click_event.check();
 }
+bool options_form_implementation_t::is_inner_options_button_click()
+{
+  return m_inner_options_button_click_event.check();
+}
 bool options_form_implementation_t::is_options_apply()
 {
   return m_options_apply_event.check();
@@ -91,6 +99,10 @@ void options_form_implementation_t::show()
 void options_form_implementation_t::device_options_button_click_exec()
 {
   m_device_options_button_click_event.exec();
+}
+void options_form_implementation_t::inner_options_button_click_exec()
+{
+  m_inner_options_button_click_event.exec();
 }
 void options_form_implementation_t::options_apply_exec()
 {
@@ -109,8 +121,6 @@ __fastcall TOptionsForm::TOptionsForm(TComponent* Owner):
     this, DeviceListValueListEditor, mp_general_options.get()
   ))
 {
-  irs::mxdata_assembly_types()->enum_types(&m_assembly_type_list);
-
   NameEdit->Hint =
     irst("Ctrl+N - переход в поле ввода имени\n")
     irst("Ctrl+L - переход в список устройств\n")
@@ -118,6 +128,11 @@ __fastcall TOptionsForm::TOptionsForm(TComponent* Owner):
     irst("Ctrl+Delete - удалить выделенные устройства\n")
     irst("Ctrl+R - переименовать устройство");
   NameEdit->ShowHint = true;
+}
+//---------------------------------------------------------------------------
+void TOptionsForm::enum_assembly_types()
+{
+  irs::mxdata_assembly_types()->enum_types(&m_assembly_type_list);
 }
 //---------------------------------------------------------------------------
 TOptionsForm::options_tune_t::options_tune_t(
@@ -135,9 +150,14 @@ TOptionsForm::options_tune_t::options_tune_t(
   DeviceList->KeyOptions = TKeyOptions() << keyUnique;
 
   irs::string_t device_name_def = irst("");
-  int row_count = DeviceList->RowCount;
+  const int row_count = DeviceList->RowCount;
   if (row_count > 1) {
     device_name_def = DeviceList->Keys[1].c_str();
+  }
+
+  ap_OptionsForm->enum_assembly_types();
+  for (int row_idx = 1; row_idx < row_count; row_idx++) {
+    ap_OptionsForm->add_device_list(row_idx);
   }
 
   irs::param_box_base_t* p_general_options =
@@ -182,13 +202,13 @@ void __fastcall TOptionsForm::CancelButtonClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TOptionsForm::FormShow(TObject *Sender)
 {
-  m_ini_file.load();
+  //m_ini_file.load();
 }
 //---------------------------------------------------------------------------
 void TOptionsForm::add_device_list(int a_row)
 {
   String Key = DeviceListValueListEditor->Keys[a_row];
-  size_t list_size = m_assembly_type_list.size();
+  const size_t list_size = m_assembly_type_list.size();
   for (size_t list_idx = 0; list_idx < list_size; list_idx++) {
     DeviceListValueListEditor->ItemProps[Key]->PickList->
       Add(m_assembly_type_list.at(list_idx).c_str());
@@ -305,6 +325,13 @@ void __fastcall TOptionsForm::DeviceOptionsButtonClick(TObject *Sender)
   options_form_implementation_t* p_options_form_implementation =
     static_cast<options_form_implementation_t*>(mp_options_form.get());
   p_options_form_implementation->device_options_button_click_exec();
+}
+//---------------------------------------------------------------------------
+void __fastcall TOptionsForm::InnerButtonClick(TObject *Sender)
+{
+  options_form_implementation_t* p_options_form_implementation =
+    static_cast<options_form_implementation_t*>(mp_options_form.get());
+  p_options_form_implementation->inner_options_button_click_exec();
 }
 //---------------------------------------------------------------------------
 

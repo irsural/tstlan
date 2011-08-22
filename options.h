@@ -31,6 +31,7 @@ public:
   virtual size_t device_count() = 0;
   virtual irs::param_box_base_t* general_options() = 0;
   virtual bool is_device_options_button_click() = 0;
+  virtual bool is_inner_options_button_click() = 0;
   virtual bool is_options_apply() = 0;
   virtual void show() = 0;
 };
@@ -53,6 +54,7 @@ __published:	// IDE-managed Components
   TLabel *NameLabel;
   TButton *GeneralOptionsButton;
   TButton *DeviceOptionsButton;
+  TButton *InnerButton;
   void __fastcall OkButtonClick(TObject *Sender);
   void __fastcall ApplyButtonClick(TObject *Sender);
   void __fastcall CancelButtonClick(TObject *Sender);
@@ -65,6 +67,7 @@ __published:	// IDE-managed Components
   void __fastcall FormKeyUp(TObject *Sender, WORD &Key, TShiftState Shift);
   void __fastcall GeneralOptionsButtonClick(TObject *Sender);
   void __fastcall DeviceOptionsButtonClick(TObject *Sender);
+  void __fastcall InnerButtonClick(TObject *Sender);
 private:	// User declarations
   struct options_tune_t {
     TOptionsForm* mp_OptionsForm;
@@ -72,15 +75,17 @@ private:	// User declarations
   };
   friend class options_tune_t;
 
-  //irs::generator_events_t m_device_list_changed_event;
   irs::ini_file_t m_ini_file;
   vector<irs::string_t> m_assembly_type_list;
   irs::handle_t<irs::param_box_base_t> mp_general_options;
   options_tune_t m_options_tune;
   irs::handle_t<options_form_t> mp_options_form;
 
+  //static options_tune(TOptionsForm* ap_OptionsForm
+
   void add_device_list(int a_row);
   bool check_device_list(int a_row);
+  void enum_assembly_types();
 public:		// User declarations
   __fastcall TOptionsForm(TComponent* Owner);
   options_form_t* data();

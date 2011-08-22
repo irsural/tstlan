@@ -5,6 +5,7 @@
 #include <irsparam.h>
 #include <irstime.h>
 #include <mxnetc.h>
+#include <irsmbus.h>
 
 #include "devices.h"
 
@@ -165,10 +166,6 @@ public:
 private:
 };
 
-} // namespace irs
-
-namespace irs {
-
 class mxnet_assembly_t: public mxdata_assembly_t
 {
 public:
@@ -252,25 +249,160 @@ void irs::mxnet_assembly_t::tick()
 void irs::mxnet_assembly_t::show_options()
 {
   if (mp_param_box->show()) {
-    mp_param_box->save();
     mp_mxnet_client_hardflow->set_param(irst("remote_adress"),
       mp_param_box->get_param(irst("IP")));
     mp_mxnet_client_hardflow->set_param(irst("remote_port"),
       mp_param_box->get_param(irst("Порт")));
     mxnet_client_t* p_mxnet_client =
       static_cast<mxnet_client_t*>(mp_mxnet_client.get());
-    p_mxnet_client->command_interface()->disconnect_time(make_cnt_ms(
+    p_mxnet_client->update_time(make_cnt_ms(
       param_box_read_number<int>(*mp_param_box,
       irst("Время обновления, мс"))));
-  } else {
-    mp_param_box->load();
-  }
+  } 
 }
 void irs::mxnet_assembly_t::tstlan4(tstlan4_base_t* ap_tstlan4)
 {
   mp_tstlan4 = ap_tstlan4;
 }
 void irs::mxnet_assembly_t::name(const string_type& a_name)
+{
+  mxdata_assembly_names()->rename(m_name, a_name);
+  m_name = a_name;
+}
+
+namespace irs {
+
+class modbus_assembly_creator_t: public mxdata_assembly_creator_t
+{
+public:
+  virtual handle_t<mxdata_assembly_t> make(tstlan4_base_t* ap_tstlan4,
+    const string_type& a_name);
+private:
+};
+
+class modbus_assembly_t: public mxdata_assembly_t
+{
+public:
+  modbus_assembly_t(tstlan4_base_t* ap_tstlan4, const string_type& a_name);
+  virtual ~modbus_assembly_t();
+  virtual irs::mxdata_t* mxdata();
+  virtual void tick();
+  virtual void show_options();
+  virtual void tstlan4(tstlan4_base_t* ap_tstlan4);
+  virtual void name(const string_type& a_name);
+private:
+  struct param_box_tune_t {
+    param_box_base_t* mp_param_box;
+
+    param_box_tune_t(param_box_base_t* ap_param_box);
+  };
+
+  string_type m_name;
+  handle_t<param_box_base_t> mp_param_box;
+  param_box_tune_t m_param_box_tune;
+  tstlan4_base_t* mp_tstlan4;
+  handle_t<hardflow_t> mp_modbus_client_hardflow;
+  handle_t<mxdata_t> mp_modbus_client;
+
+  static handle_t<mxdata_t> make_client(handle_t<hardflow_t> ap_hardflow,
+    handle_t<param_box_base_t> ap_param_box);
+};
+
+} // namespace irs
+
+irs::handle_t<irs::mxdata_assembly_t> irs::modbus_assembly_creator_t::make(
+  tstlan4_base_t* ap_tstlan4, const string_type& a_name)
+{
+  return handle_t<mxdata_assembly_t>(new modbus_assembly_t(ap_tstlan4, a_name));
+}
+
+irs::handle_t<irs::mxdata_t> irs::modbus_assembly_t::make_client(
+  handle_t<hardflow_t> ap_hardflow,
+  handle_t<param_box_base_t> ap_param_box)
+{
+  return new irs::modbus_client_t(
+    ap_hardflow.get(),
+    modbus_client_t::mode_refresh_auto,
+    param_box_read_number<size_t>(*ap_param_box,
+      irst("Биты, только чтение (Discret inputs), байт")),
+    param_box_read_number<size_t>(*ap_param_box,
+      irst("Биты, чтение/запись (Coils), байт")),
+    param_box_read_number<size_t>(*ap_param_box,
+      irst("Регистры, чтение/запись (Holding Registers), кол-во")),
+    param_box_read_number<size_t>(*ap_param_box,
+      irst("Регистры, только чтение (Input Registers), кол-во")),
+    make_cnt_ms(param_box_read_number<int>(*ap_param_box,
+      irst("Время обновления, мс")))
+  );
+}
+irs::modbus_assembly_t::modbus_assembly_t(tstlan4_base_t* ap_tstlan4,
+  const string_type& a_name
+):
+  m_name(a_name),
+  mp_param_box(new param_box_t(irst("Настройки MODBUS ") + m_name,
+    irst("device.") + mxdata_assembly_names()->num_from_name(m_name))),
+  m_param_box_tune(mp_param_box.get()),
+  mp_tstlan4(ap_tstlan4),
+  mp_modbus_client_hardflow(irs::hardflow::make_udp_flow_client(
+    mp_param_box->get_param(irst("IP")),
+    mp_param_box->get_param(irst("Порт")))),
+  mp_modbus_client(make_client(mp_modbus_client_hardflow, mp_param_box))
+{
+  mp_tstlan4->connect(mp_modbus_client.get());
+  mp_tstlan4->conf_section(irst("device_vars.") +
+    mxdata_assembly_names()->num_from_name(m_name));
+  if (mxdata_assembly_names()->is_clear_needed(m_name)) {
+    mxdata_assembly_names()->reset_clear_needed(m_name);
+    mp_tstlan4->clear_conf();
+  } else {
+    mp_tstlan4->load_conf();
+  }
+}
+irs::modbus_assembly_t::~modbus_assembly_t()
+{
+  mp_param_box->save();
+}
+irs::modbus_assembly_t::param_box_tune_t::param_box_tune_t(
+  param_box_base_t* ap_param_box
+):
+  mp_param_box(ap_param_box)
+{
+  mp_param_box->add_edit(irst("IP"), irst("127.0.0.1"));
+  mp_param_box->add_edit(irst("Порт"), irst("5005"));
+  mp_param_box->add_edit(irst("Время обновления, мс"), irst("200"));
+  mp_param_box->add_edit(irst("Биты, только чтение (Discret inputs), байт"),
+    irst("0"));
+  mp_param_box->add_edit(irst("Биты, чтение/запись (Coils), байт"),
+    irst("0"));
+  mp_param_box->add_edit(irst("Регистры, чтение/запись ")
+    irst("(Holding Registers), кол-во"), irst("10"));
+  mp_param_box->add_edit(irst("Регистры, только чтение ")
+    irst("(Input Registers), кол-во"), irst("0"));
+  mp_param_box->load();
+}
+irs::mxdata_t* irs::modbus_assembly_t::mxdata()
+{
+  return mp_modbus_client.get();
+}
+void irs::modbus_assembly_t::tick()
+{
+  mp_modbus_client->tick();
+}
+void irs::modbus_assembly_t::show_options()
+{
+  if (mp_param_box->show()) {
+    mp_modbus_client_hardflow->set_param(irst("remote_adress"),
+      mp_param_box->get_param(irst("IP")));
+    mp_modbus_client_hardflow->set_param(irst("remote_port"),
+      mp_param_box->get_param(irst("Порт")));
+    mp_modbus_client = make_client(mp_modbus_client_hardflow, mp_param_box);
+  }
+}
+void irs::modbus_assembly_t::tstlan4(tstlan4_base_t* ap_tstlan4)
+{
+  mp_tstlan4 = ap_tstlan4;
+}
+void irs::modbus_assembly_t::name(const string_type& a_name)
 {
   mxdata_assembly_names()->rename(m_name, a_name);
   m_name = a_name;
@@ -310,6 +442,8 @@ irs::mxdata_assembly_types_implementation_t::
 {
   m_ac_list[irst("mxnet")] = handle_t<mxdata_assembly_creator_t>(
     new mxnet_assembly_creator_t);
+  m_ac_list[irst("modbus")] = handle_t<mxdata_assembly_creator_t>(
+    new modbus_assembly_creator_t);
 }
 void irs::mxdata_assembly_types_implementation_t::
   enum_types(vector<string_type>* ap_types) const

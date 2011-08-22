@@ -48,13 +48,23 @@ object OptionsForm: TOptionsForm
       end
       object DeviceOptionsButton: TButton
         Left = 16
-        Top = 64
+        Top = 104
         Width = 582
         Height = 25
         Anchors = [akLeft, akTop, akRight]
         Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1091#1089#1090#1088#1086#1081#1089#1090#1074#1072
         TabOrder = 1
         OnClick = DeviceOptionsButtonClick
+      end
+      object InnerButton: TButton
+        Left = 16
+        Top = 65
+        Width = 582
+        Height = 25
+        Anchors = [akLeft, akTop, akRight]
+        Caption = #1042#1085#1091#1090#1088#1077#1085#1085#1080#1077' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
+        TabOrder = 2
+        OnClick = InnerButtonClick
       end
     end
     object DeviceListSheet: TTabSheet

@@ -67,8 +67,7 @@ tstlan4::app_t::app_t(cfg_t* ap_cfg):
   mp_cfg(ap_cfg),
   mp_tstlan4lib(mp_cfg->tstlan4lib()),
   mp_options_form(mp_cfg->options_form()),
-  //m_mxnet_client(mp_cfg->mxnet_client_hardflow(), mp_cfg->update_time()),
-  m_mxnet_client_data(IRS_NULL/*&m_mxnet_client*/),
+  m_mxnet_client_data(IRS_NULL),
   m_mxnet_server_data(),
   m_mxnet_server(mp_cfg->mxnet_server_hardflow(),
     m_mxnet_server_data.size()/sizeof(irs_i32)),
@@ -78,13 +77,13 @@ tstlan4::app_t::app_t(cfg_t* ap_cfg):
 {
   m_mxnet_server_data.connect(&m_mxnet_server);
   m_mxnet_client_data.connect(mp_mxdata_assembly->mxdata());
-  //mp_tstlan4lib->connect(&m_mxnet_client);
   mp_tstlan4lib->options_event_connect(&m_options_event);
 }
 void tstlan4::app_t::tick()
 {
+  static bool is_device_change = false;
+
   for (int i = 0; i < 5; i++) {
-    //m_mxnet_client.tick();
     mp_mxdata_assembly->tick();
     m_mxnet_server.tick();
   }
@@ -106,6 +105,16 @@ void tstlan4::app_t::tick()
 
   if (m_options_event.check()) {
     mp_options_form->show();
+  }
+
+  if (mp_options_form->is_options_apply()) {
+    mp_mxdata_assembly = make_assembly(mp_tstlan4lib, mp_options_form);
+    m_mxnet_client_data.connect(mp_mxdata_assembly->mxdata());
+    is_device_change = true;
+  }
+
+  if (mp_options_form->is_inner_options_button_click()) {
+    mp_tstlan4lib->inner_options_event()->exec();
   }
 
   if (mp_options_form->is_device_options_button_click()) {
