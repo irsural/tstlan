@@ -155,9 +155,9 @@ TOptionsForm::options_tune_t::options_tune_t(
     device_name_def = DeviceList->Keys[1].c_str();
   }
 
-  ap_OptionsForm->enum_assembly_types();
+  mp_OptionsForm->enum_assembly_types();
   for (int row_idx = 1; row_idx < row_count; row_idx++) {
-    ap_OptionsForm->add_device_list(row_idx);
+    mp_OptionsForm->add_device_list(row_idx);
   }
 
   irs::param_box_base_t* p_general_options =
@@ -170,6 +170,10 @@ TOptionsForm::options_tune_t::options_tune_t(
   }
   //p_general_options->add_edit(irst("Порт"), irst("5005"));
   p_general_options->load();
+}
+//---------------------------------------------------------------------------
+void options_tune(TOptionsForm* ap_OptionsForm)
+{
 }
 //---------------------------------------------------------------------------
 options_form_t* TOptionsForm::data()

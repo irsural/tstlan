@@ -81,7 +81,7 @@ private:	// User declarations
   options_tune_t m_options_tune;
   irs::handle_t<options_form_t> mp_options_form;
 
-  //static options_tune(TOptionsForm* ap_OptionsForm
+  static void options_tune(TOptionsForm* ap_OptionsForm);
 
   void add_device_list(int a_row);
   bool check_device_list(int a_row);
