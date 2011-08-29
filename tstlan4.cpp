@@ -4,10 +4,12 @@
 
 #include <irserror.h>
 
+#include "locktick.h"
+
 #include <irsfinal.h>
 //---------------------------------------------------------------------------
-USEFORM("main.cpp", MainForm);
 USEFORM("options.cpp", OptionsForm);
+USEFORM("main.cpp", MainForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -22,7 +24,9 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
   }
   catch (Exception &exception)
   {
+    tstlan4::tick_lock()->enable();
     Application->ShowException(&exception);
+    tstlan4::tick_lock()->disable();
   }
   catch (...)
   {
@@ -32,7 +36,9 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     }
     catch (Exception &exception)
     {
+      tstlan4::tick_lock()->enable();
       Application->ShowException(&exception);
+      tstlan4::tick_lock()->disable();
     }
   }
   return 0;

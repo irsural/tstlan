@@ -88,7 +88,7 @@ void tstlan4::app_t::tick()
       mp_mxdata_assembly->tick();
     }
     if (mp_mxdata_assembly->mxdata()->connected()) {
-      m_mxnet_client_data.month++;
+      //m_mxnet_client_data.month++;
     }
     if (mp_options_form->is_options_apply()) {
       mp_mxdata_assembly = make_assembly(mp_tstlan4lib, mp_options_form);
@@ -96,6 +96,7 @@ void tstlan4::app_t::tick()
     }
     if (mp_options_form->is_device_options_button_click()) {
       mp_mxdata_assembly->show_options();
+      int i = 0; i++;
     }
   }
 

@@ -3,6 +3,7 @@
 #pragma hdrstop
 
 #include "main.h"
+#include "locktick.h"
 
 #include <irsfinal.h>
 //---------------------------------------------------------------------------
@@ -48,7 +49,9 @@ __fastcall TMainForm::~TMainForm()
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::TickTimerTimer(TObject *Sender)
 {
-  m_app.tick();
+  if (!tstlan4::tick_lock()->check()) {
+    m_app.tick();
+  }
 }
 //---------------------------------------------------------------------------
 

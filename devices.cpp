@@ -204,7 +204,7 @@ irs::mxnet_assembly_t::mxnet_assembly_t(tstlan4_base_t* ap_tstlan4,
   const string_type& a_name
 ):
   m_name(a_name),
-  mp_param_box(new param_box_t(irst("Настройки mxnet ") + m_name,
+  mp_param_box(new param_box_t(irst("Настройки mxnet - ") + m_name,
     irst("device.") + mxdata_assembly_names()->num_from_name(m_name))),
   m_param_box_tune(mp_param_box.get()),
   mp_tstlan4(ap_tstlan4),
@@ -320,6 +320,7 @@ private:
     handle_t<param_box_base_t> ap_param_box);
   static handle_t<hardflow_t> make_hardflow(protocol_t a_protocol,
     handle_t<param_box_base_t> ap_param_box);
+  static string_type protocol_name(protocol_t a_protocol);
 };
 
 } // namespace irs
@@ -376,11 +377,26 @@ irs::handle_t<irs::hardflow_t> irs::modbus_assembly_t::make_hardflow(
   }
   return hardflow_ret;
 }
+irs::modbus_assembly_t::string_type irs::modbus_assembly_t::protocol_name(
+  protocol_t a_protocol)
+{
+  modbus_assembly_t::string_type protocol_name_ret = irst("***");
+  switch (a_protocol) {
+    case udp_protocol: {
+      protocol_name_ret = irst("UDP");
+    } break;
+    case tcp_protocol: {
+      protocol_name_ret = irst("TCP");
+    } break;
+  }
+  return protocol_name_ret;
+}
 irs::modbus_assembly_t::modbus_assembly_t(tstlan4_base_t* ap_tstlan4,
   const string_type& a_name, protocol_t a_protocol
 ):
   m_name(a_name),
-  mp_param_box(new param_box_t(irst("Настройки MODBUS ") + m_name,
+  mp_param_box(new param_box_t(irst("Настройки MODBUS ") +
+    protocol_name(a_protocol) + irst(" - ") + m_name,
     irst("device.") + mxdata_assembly_names()->num_from_name(m_name))),
   m_param_box_tune(mp_param_box.get()),
   mp_tstlan4(ap_tstlan4),
@@ -435,6 +451,7 @@ void irs::modbus_assembly_t::show_options()
     mp_modbus_client_hardflow->set_param(irst("remote_port"),
       mp_param_box->get_param(irst("Порт")));
     mp_modbus_client = make_client(mp_modbus_client_hardflow, mp_param_box);
+    mp_tstlan4->connect(mp_modbus_client.get());
   }
 }
 void irs::modbus_assembly_t::tstlan4(tstlan4_base_t* ap_tstlan4)
