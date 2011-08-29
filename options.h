@@ -56,9 +56,7 @@ __published:	// IDE-managed Components
   TButton *DeviceOptionsButton;
   TButton *InnerButton;
   void __fastcall OkButtonClick(TObject *Sender);
-  void __fastcall ApplyButtonClick(TObject *Sender);
   void __fastcall CancelButtonClick(TObject *Sender);
-  void __fastcall FormShow(TObject *Sender);
   void __fastcall AddButtonClick(TObject *Sender);
   void __fastcall DeleteButtonClick(TObject *Sender);
   void __fastcall RenameButtonClick(TObject *Sender);
@@ -70,7 +68,6 @@ __published:	// IDE-managed Components
   void __fastcall InnerButtonClick(TObject *Sender);
 private:	// User declarations
   struct options_tune_t {
-    TOptionsForm* mp_OptionsForm;
     options_tune_t(TOptionsForm* ap_OptionsForm);
   };
   friend class options_tune_t;
@@ -81,11 +78,11 @@ private:	// User declarations
   options_tune_t m_options_tune;
   irs::handle_t<options_form_t> mp_options_form;
 
-  static void options_tune(TOptionsForm* ap_OptionsForm);
-
   void add_device_list(int a_row);
   bool check_device_list(int a_row);
   void enum_assembly_types();
+  void options_load();
+  void cur_device_update();
 public:		// User declarations
   __fastcall TOptionsForm(TComponent* Owner);
   options_form_t* data();

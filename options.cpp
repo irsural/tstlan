@@ -137,43 +137,55 @@ void TOptionsForm::enum_assembly_types()
 //---------------------------------------------------------------------------
 TOptionsForm::options_tune_t::options_tune_t(
   TOptionsForm* ap_OptionsForm
-):
-  mp_OptionsForm(ap_OptionsForm)
-{
-  TValueListEditor* DeviceList = mp_OptionsForm->DeviceListValueListEditor;
+) {
+  TValueListEditor* DeviceList = ap_OptionsForm->DeviceListValueListEditor;
 
-  mp_OptionsForm->m_ini_file.set_section(irst("device_list"));
-  mp_OptionsForm->m_ini_file.add(irst("make_"), DeviceList,
+  ap_OptionsForm->m_ini_file.set_section(irst("device_list"));
+  ap_OptionsForm->m_ini_file.add(irst("make_"), DeviceList,
     irs::ini_file_t::vle_load_full);
-  mp_OptionsForm->m_ini_file.load();
 
   DeviceList->KeyOptions = TKeyOptions() << keyUnique;
 
-  irs::string_t device_name_def = irst("");
-  const int row_count = DeviceList->RowCount;
-  if (row_count > 1) {
-    device_name_def = DeviceList->Keys[1].c_str();
-  }
+  ap_OptionsForm->options_load();
 
-  mp_OptionsForm->enum_assembly_types();
-  for (int row_idx = 1; row_idx < row_count; row_idx++) {
-    mp_OptionsForm->add_device_list(row_idx);
-  }
-
-  irs::param_box_base_t* p_general_options =
-    mp_OptionsForm->mp_general_options.get();
-  p_general_options->add_edit(irst("Текущее устройство"), device_name_def);
-  for (int row_idx = 1; row_idx < row_count; row_idx++) {
-    irs::string_t device_name = DeviceList->Keys[row_idx].c_str();
-    p_general_options->add_combo_by_item(irst("Текущее устройство"),
-      device_name);
-  }
+  ap_OptionsForm->cur_device_update();
+  irs::handle_t<irs::param_box_base_t> p_general_options =
+    ap_OptionsForm->mp_general_options;
   //p_general_options->add_edit(irst("Порт"), irst("5005"));
   p_general_options->load();
 }
 //---------------------------------------------------------------------------
-void options_tune(TOptionsForm* ap_OptionsForm)
+void TOptionsForm::options_load()
 {
+  m_ini_file.load();
+  enum_assembly_types();
+  const int row_count = DeviceListValueListEditor->RowCount;
+  for (int row_idx = 1; row_idx < row_count; row_idx++) {
+    add_device_list(row_idx);
+  }
+}
+//---------------------------------------------------------------------------
+void TOptionsForm::cur_device_update()
+{
+  irs::string_t device_name_def = irst("");
+  const int row_count = DeviceListValueListEditor->RowCount;
+  if (row_count > 1) {
+    device_name_def = DeviceListValueListEditor->Keys[1].c_str();
+  }
+
+  mp_general_options->add_edit(irst("Текущее устройство"), device_name_def);
+  mp_general_options->load();
+  irs::string_t cur_device = mp_general_options->
+    get_param(irst("Текущее устройство"));
+  mp_general_options->delete_edit(irst("Текущее устройство"));
+  mp_general_options->add_edit(irst("Текущее устройство"), device_name_def);
+  for (int row_idx = 1; row_idx < row_count; row_idx++) {
+    irs::string_t device_name =
+      DeviceListValueListEditor->Keys[row_idx].c_str();
+    mp_general_options->add_combo_by_item(irst("Текущее устройство"),
+      device_name);
+  }
+  mp_general_options->set_param(irst("Текущее устройство"), cur_device);
 }
 //---------------------------------------------------------------------------
 options_form_t* TOptionsForm::data()
@@ -183,17 +195,8 @@ options_form_t* TOptionsForm::data()
 //---------------------------------------------------------------------------
 void __fastcall TOptionsForm::OkButtonClick(TObject *Sender)
 {
+  cur_device_update();
   m_ini_file.save();
-  //m_device_list_changed_event.exec();
-  options_form_implementation_t* p_options_form_implementation =
-    static_cast<options_form_implementation_t*>(mp_options_form.get());
-  p_options_form_implementation->options_apply_exec();
-}
-//---------------------------------------------------------------------------
-void __fastcall TOptionsForm::ApplyButtonClick(TObject *Sender)
-{
-  m_ini_file.save();
-  //m_device_list_changed_event.exec();
   options_form_implementation_t* p_options_form_implementation =
     static_cast<options_form_implementation_t*>(mp_options_form.get());
   p_options_form_implementation->options_apply_exec();
@@ -201,12 +204,7 @@ void __fastcall TOptionsForm::ApplyButtonClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TOptionsForm::CancelButtonClick(TObject *Sender)
 {
-  m_ini_file.load();
-}
-//---------------------------------------------------------------------------
-void __fastcall TOptionsForm::FormShow(TObject *Sender)
-{
-  //m_ini_file.load();
+  options_load();
 }
 //---------------------------------------------------------------------------
 void TOptionsForm::add_device_list(int a_row)

@@ -15,7 +15,6 @@ object OptionsForm: TOptionsForm
   OldCreateOrder = False
   Position = poOwnerFormCenter
   OnKeyUp = FormKeyUp
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object OptionsPageControl: TPageControl
@@ -28,10 +27,6 @@ object OptionsForm: TOptionsForm
     TabOrder = 0
     object GeneralSheet: TTabSheet
       Caption = #1054#1073#1097#1080#1077
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         612
         422)
@@ -70,10 +65,6 @@ object OptionsForm: TOptionsForm
     object DeviceListSheet: TTabSheet
       Caption = #1057#1087#1080#1089#1086#1082' '#1091#1089#1090#1088#1086#1081#1089#1090#1074
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         612
         422)
@@ -176,7 +167,7 @@ object OptionsForm: TOptionsForm
       Anchors = [akTop, akRight]
       Caption = #1055#1088#1080#1084#1077#1085#1080#1090#1100
       TabOrder = 1
-      OnClick = ApplyButtonClick
+      OnClick = OkButtonClick
     end
   end
 end
