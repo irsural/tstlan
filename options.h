@@ -21,6 +21,7 @@
 #include "devices.h"
 
 #include <irsfinal.h>
+#include <Dialogs.hpp>
 //---------------------------------------------------------------------------
 class options_form_t
 {
@@ -32,7 +33,9 @@ public:
   virtual irs::param_box_base_t* general_options() = 0;
   virtual bool is_device_options_button_click() = 0;
   virtual bool is_inner_options_button_click() = 0;
+  virtual bool is_import_button_click() = 0;
   virtual bool is_options_apply() = 0;
+  virtual irs::string_t imported_ini_name() = 0;
   virtual void show() = 0;
 };
 //---------------------------------------------------------------------------
@@ -55,6 +58,8 @@ __published:	// IDE-managed Components
   TButton *GeneralOptionsButton;
   TButton *DeviceOptionsButton;
   TButton *InnerButton;
+  TButton *ImportButton;
+  TOpenDialog *ImportOpenDialog;
   void __fastcall OkButtonClick(TObject *Sender);
   void __fastcall CancelButtonClick(TObject *Sender);
   void __fastcall AddButtonClick(TObject *Sender);
@@ -66,6 +71,7 @@ __published:	// IDE-managed Components
   void __fastcall GeneralOptionsButtonClick(TObject *Sender);
   void __fastcall DeviceOptionsButtonClick(TObject *Sender);
   void __fastcall InnerButtonClick(TObject *Sender);
+  void __fastcall ImportButtonClick(TObject *Sender);
 private:	// User declarations
   struct options_tune_t {
     options_tune_t(TOptionsForm* ap_OptionsForm);

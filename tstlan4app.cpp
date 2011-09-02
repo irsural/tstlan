@@ -96,7 +96,16 @@ void tstlan4::app_t::tick()
     }
     if (mp_options_form->is_device_options_button_click()) {
       mp_mxdata_assembly->show_options();
-      int i = 0; i++;
+    }
+    if (mp_options_form->is_import_button_click()) {
+      irs::string_t section = mp_tstlan4lib->conf_section();
+      irs::string_t ini_name = mp_tstlan4lib->ini_name();
+      mp_tstlan4lib->conf_section(irst("tstlan4_Vars"));
+      mp_tstlan4lib->ini_name(mp_options_form->imported_ini_name());
+      mp_tstlan4lib->load_conf();
+      mp_tstlan4lib->conf_section(section);
+      mp_tstlan4lib->ini_name(ini_name);
+      mp_tstlan4lib->save_conf();
     }
   }
 

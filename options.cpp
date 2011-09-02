@@ -26,11 +26,15 @@ public:
   virtual irs::param_box_base_t* general_options();
   virtual bool is_device_options_button_click();
   virtual bool is_inner_options_button_click();
+  virtual bool is_import_button_click();
   virtual bool is_options_apply();
+  virtual irs::string_t imported_ini_name();
   virtual void show();
   void device_options_button_click_exec();
   void inner_options_button_click_exec();
+  void import_button_click_exec();
   void options_apply_exec();
+  void imported_ini_name(const irs::string_t& a_name);
 private:
   //enum { m_values_shift = 1 };
 
@@ -39,7 +43,9 @@ private:
   irs::param_box_base_t* mp_general_options;
   irs::event_t m_device_options_button_click_event;
   irs::event_t m_inner_options_button_click_event;
+  irs::event_t m_import_button_click_event;
   irs::event_t m_options_apply_event;
+  irs::string_t m_imported_ini_name;
 };
 options_form_implementation_t::options_form_implementation_t(
   TOptionsForm* ap_OptionsForm,
@@ -51,6 +57,7 @@ options_form_implementation_t::options_form_implementation_t(
   mp_general_options(ap_general_options),
   m_device_options_button_click_event(),
   m_inner_options_button_click_event(),
+  m_import_button_click_event(),
   m_options_apply_event()
 {
 }
@@ -88,9 +95,17 @@ bool options_form_implementation_t::is_inner_options_button_click()
 {
   return m_inner_options_button_click_event.check();
 }
+bool options_form_implementation_t::is_import_button_click()
+{
+  return m_import_button_click_event.check();
+}
 bool options_form_implementation_t::is_options_apply()
 {
   return m_options_apply_event.check();
+}
+irs::string_t options_form_implementation_t::imported_ini_name()
+{
+  return m_imported_ini_name;
 }
 void options_form_implementation_t::show()
 {
@@ -104,9 +119,18 @@ void options_form_implementation_t::inner_options_button_click_exec()
 {
   m_inner_options_button_click_event.exec();
 }
+void options_form_implementation_t::import_button_click_exec()
+{
+  m_import_button_click_event.exec();
+}
 void options_form_implementation_t::options_apply_exec()
 {
   m_options_apply_event.exec();
+}
+void options_form_implementation_t::imported_ini_name(
+  const irs::string_t& a_name)
+{
+  m_imported_ini_name = a_name;
 }
 //---------------------------------------------------------------------------
 __fastcall TOptionsForm::TOptionsForm(TComponent* Owner):
@@ -334,6 +358,18 @@ void __fastcall TOptionsForm::InnerButtonClick(TObject *Sender)
   options_form_implementation_t* p_options_form_implementation =
     static_cast<options_form_implementation_t*>(mp_options_form.get());
   p_options_form_implementation->inner_options_button_click_exec();
+}
+//---------------------------------------------------------------------------
+void __fastcall TOptionsForm::ImportButtonClick(TObject *Sender)
+{
+  //m_imported_ini_name; ImportOpenDialog
+  if (ImportOpenDialog->Execute()) {
+    options_form_implementation_t* p_options_form_implementation =
+      static_cast<options_form_implementation_t*>(mp_options_form.get());
+    p_options_form_implementation->imported_ini_name(
+      ImportOpenDialog->FileName.c_str());
+    p_options_form_implementation->import_button_click_exec();
+  }
 }
 //---------------------------------------------------------------------------
 

@@ -27,6 +27,8 @@ object OptionsForm: TOptionsForm
     TabOrder = 0
     object GeneralSheet: TTabSheet
       Caption = #1054#1073#1097#1080#1077
+      ExplicitLeft = 8
+      ExplicitTop = 22
       DesignSize = (
         612
         422)
@@ -60,6 +62,16 @@ object OptionsForm: TOptionsForm
         Caption = #1042#1085#1091#1090#1088#1077#1085#1085#1080#1077' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
         TabOrder = 2
         OnClick = InnerButtonClick
+      end
+      object ImportButton: TButton
+        Left = 16
+        Top = 144
+        Width = 582
+        Height = 25
+        Anchors = [akLeft, akTop, akRight]
+        Caption = #1048#1084#1087#1086#1088#1090
+        TabOrder = 3
+        OnClick = ImportButtonClick
       end
     end
     object DeviceListSheet: TTabSheet
@@ -169,5 +181,9 @@ object OptionsForm: TOptionsForm
       TabOrder = 1
       OnClick = OkButtonClick
     end
+  end
+  object ImportOpenDialog: TOpenDialog
+    Left = 40
+    Top = 384
   end
 end
