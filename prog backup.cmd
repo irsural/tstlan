@@ -1,3 +1,5 @@
+echo off
+
 set progname=tstlan4
 
 if "%~1"=="" (set lib=..\old) else (set lib=%~1)
