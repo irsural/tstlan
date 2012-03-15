@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------
-#include <irspch.h>
+#include <vcl.h>
 #pragma hdrstop
 
 #include <irserror.h>
