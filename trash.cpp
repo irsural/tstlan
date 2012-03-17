@@ -7,6 +7,184 @@
 
 #include <irsfinal.h>
 
+#ifdef NOP
+class vle_reference
+{
+private:
+  TValueListEditor* mp_value_list_editor;
+  int m_position;
+
+  vle_reference();
+public:
+  vle_reference(TValueListEditor* ap_value_list_editor, int a_position):
+    mp_value_list_editor(ap_value_list_editor),
+    m_position(a_position)
+  {
+  }
+  operator irs::string_t()
+  {
+    return mp_value_list_editor->Keys[m_position].c_str();
+  }
+  void operator=(const irs::string_t& a_value)
+  {
+    mp_value_list_editor->Keys[m_position] = a_value.c_str();
+  }
+};
+inline bool operator<(vle_reference a_left, vle_reference a_right)
+{
+  irs::string_t left = a_left;
+  irs::string_t right = a_right;
+  return left < right;
+}
+inline bool operator<(vle_reference a_left, const irs::string_t& a_right)
+{
+  irs::string_t left = a_left;
+  irs::string_t right = a_right;
+  return left < right;
+}
+inline bool operator<(const irs::string_t& a_left, vle_reference a_right)
+{
+  irs::string_t left = a_left;
+  irs::string_t right = a_right;
+  return left < right;
+}
+namespace std {
+void swap(vle_reference a_left, vle_reference a_right)
+{
+  irs::string_t left_str = a_left;
+  irs::string_t right_str = a_right;
+  a_left = right_str;
+  a_right = left_str;
+}
+}
+
+class vle_iterator:
+  public iterator<random_access_iterator_tag, irs::string_t,
+  ptrdiff_t, irs::string_t, vle_reference>
+{
+private:
+  TValueListEditor* mp_value_list_editor;
+  int m_position;
+
+  vle_iterator();
+public:
+  vle_iterator(TValueListEditor* ap_value_list_editor, int a_position):
+    mp_value_list_editor(ap_value_list_editor),
+    m_position(a_position)
+  {
+  }
+  reference operator*()
+  {
+    return reference(mp_value_list_editor, m_position);
+  }
+  vle_iterator& operator++()
+  {
+    m_position++;
+    return *this;
+  }
+  vle_iterator operator++(int)
+  {
+    vle_iterator copy_this = *this;
+    (*this)++;
+    return copy_this;
+  }
+  vle_iterator& operator--()
+  {
+    m_position--;
+    return *this;
+  }
+  vle_iterator operator--(int)
+  {
+    vle_iterator copy_this = *this;
+    (*this)--;
+    return copy_this;
+  }
+  vle_iterator& operator+=(difference_type a_shift)
+  {
+    m_position += a_shift;
+    return *this;
+  }
+  vle_iterator& operator-=(difference_type a_shift)
+  {
+    m_position -= a_shift;
+    return *this;
+  }
+  reference operator[](size_t a_shift)
+  {
+    vle_iterator copy_this = *this;
+    copy_this += a_shift;
+    return *copy_this;
+  }
+  static inline difference_type distance(vle_iterator a_it_left,
+    vle_iterator a_it_right)
+  {
+    return a_it_left.m_position - a_it_right.m_position;
+  }
+  static inline bool less(vle_iterator a_it_left, vle_iterator a_it_right)
+  {
+    return a_it_left.m_position < a_it_right.m_position;
+  }
+  static inline bool equal(vle_iterator a_it_left, vle_iterator a_it_right)
+  {
+    return a_it_left.m_position == a_it_right.m_position;
+  }
+};
+
+inline vle_iterator::difference_type
+  operator-(vle_iterator a_it_left, vle_iterator a_it_right)
+{
+  return vle_iterator::distance(a_it_left, a_it_right);
+}
+inline vle_iterator operator+(vle_iterator a_it,
+  vle_iterator::difference_type a_shift)
+{
+  return a_it += a_shift;
+}
+inline vle_iterator operator+(vle_iterator::difference_type a_shift,
+  vle_iterator a_it)
+{
+  return a_it + a_shift;
+}
+inline vle_iterator operator-(vle_iterator a_it,
+  vle_iterator::difference_type a_shift)
+{
+  return a_it -= a_shift;
+}
+inline bool operator==(vle_iterator a_it_left, vle_iterator a_it_right)
+{
+  return vle_iterator::equal(a_it_left, a_it_right);
+}
+inline bool operator!=(vle_iterator a_it_left, vle_iterator a_it_right)
+{
+  return !vle_iterator::equal(a_it_left, a_it_right);
+}
+inline bool operator<(vle_iterator a_it_left, vle_iterator a_it_right)
+{
+  return vle_iterator::less(a_it_left, a_it_right);
+}
+inline bool operator<=(vle_iterator a_it_left, vle_iterator a_it_right)
+{
+  return (a_it_left < a_it_right) && (a_it_left == a_it_right);
+}
+inline bool operator>(vle_iterator a_it_left, vle_iterator a_it_right)
+{
+  return !(a_it_left <= a_it_right);
+}
+inline bool operator>=(vle_iterator a_it_left, vle_iterator a_it_right)
+{
+  return !(a_it_left < a_it_right);
+}
+
+vle_iterator vle_begin(TValueListEditor* ap_value_list_editor)
+{
+  return vle_iterator(ap_value_list_editor, 1);
+}
+vle_iterator vle_end(TValueListEditor* ap_value_list_editor)
+{
+  return vle_iterator(ap_value_list_editor, ap_value_list_editor->RowCount);
+}
+#endif //NOP
+
   #ifdef NOP
   //irs::cstr_convert::exec(irs::mlog());
   //irs::compiler_test::template_template_inheritance::exec(irs::mlog());

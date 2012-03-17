@@ -30,6 +30,7 @@ public:
   virtual bool is_options_apply();
   virtual irs::string_t imported_ini_name();
   virtual void show();
+
   void device_options_button_click_exec();
   void inner_options_button_click_exec();
   void import_button_click_exec();
@@ -152,6 +153,7 @@ __fastcall TOptionsForm::TOptionsForm(TComponent* Owner):
     irst("Ctrl+Delete - удалить выделенные устройства\n")
     irst("Ctrl+R - переименовать устройство");
   NameEdit->ShowHint = true;
+  String value_bstr = /*DeviceList*/DeviceListValueListEditor->Values[1];
 }
 //---------------------------------------------------------------------------
 void TOptionsForm::enum_assembly_types()
@@ -179,9 +181,52 @@ TOptionsForm::options_tune_t::options_tune_t(
   p_general_options->load();
 }
 //---------------------------------------------------------------------------
+template <class char_type>
+char_type toloweru(char_type a_char)
+{
+  return use_facet< ctype<char_type> >(locale()).tolower(a_char);
+}
+struct less_nocase_t {
+  bool operator()(const irs::string_t& a_left,
+    const irs::string_t& a_right) const
+  {
+    irs::string_t left;
+    irs::string_t right;
+    transform(a_left.begin(), a_left.end(), back_inserter(left),
+      toloweru<irs::char_t>);
+    transform(a_right.begin(), a_right.end(), back_inserter(right),
+      toloweru<irs::char_t>);
+    return left < right;
+  }
+};
+void sort_value_list_editor(TValueListEditor* ap_value_list_editor)
+{
+
+  size_t row_count = ap_value_list_editor->RowCount;
+  typedef map<irs::string_t, irs::string_t, less_nocase_t> list_t;
+  list_t cont_list;
+  for (size_t row_index = 1; row_index < row_count; ++row_index) {
+    irs::string_t key = ap_value_list_editor->Keys[row_index].c_str();
+    irs::string_t value = ap_value_list_editor->Values[key.c_str()].c_str();
+    cont_list[key] = value;
+  }
+
+  ap_value_list_editor->Strings->Clear();
+
+  typedef list_t::iterator list_it_t;
+    for (list_it_t list_it = cont_list.begin(); list_it != cont_list.end();
+    ++list_it)
+  {
+    static const bool append = true;
+    String key = list_it->first.c_str();
+    String value = list_it->second.c_str();
+    ap_value_list_editor->InsertRow(key, value, append);
+  }
+}
 void TOptionsForm::options_load()
 {
   m_ini_file.load();
+  sort_value_list_editor(DeviceListValueListEditor);
   enum_assembly_types();
   const int row_count = DeviceListValueListEditor->RowCount;
   for (int row_idx = 1; row_idx < row_count; row_idx++) {
@@ -251,31 +296,38 @@ bool TOptionsForm::check_device_list(int a_row)
 //---------------------------------------------------------------------------
 void __fastcall TOptionsForm::AddButtonClick(TObject *Sender)
 {
-  if (!NameEdit->Text.IsEmpty()) {
+  String Name = NameEdit->Text;
+  if (!Name.IsEmpty()) {
     int row = 0;
-    if (!DeviceListValueListEditor->FindRow(NameEdit->Text, row)) {
+    if (!DeviceListValueListEditor->FindRow(Name, row)) {
       int row_sel = DeviceListValueListEditor->Row;
       int row_count = DeviceListValueListEditor->RowCount;
       if (row_count > 1) {
-        String key = DeviceListValueListEditor->Keys[1];
-        if (NameEdit->Text < key) {
-          DeviceListValueListEditor->Row = 1;
-          DeviceListValueListEditor->InsertRow(NameEdit->Text, "", false);
-        } else {
-          for (int row_idx = 1; row_idx < row_count; row_idx++) {
+        String key = DeviceListValueListEditor->Keys[row_count - 1];
+        less_nocase_t less_nocase;
+        if (less_nocase(Name.c_str(), key.c_str())) {
+          for (int row_idx = 1; row_idx < row_count; ++row_idx) {
             String key = DeviceListValueListEditor->Keys[row_idx];
-            if (NameEdit->Text > key) {
+            if (less_nocase(Name.c_str(), key.c_str())) {
               DeviceListValueListEditor->Row = row_idx;
-              DeviceListValueListEditor->InsertRow(NameEdit->Text, "", true);
+              DeviceListValueListEditor->InsertRow(Name, "", false);
               break;
             }
           }
+        } else {
+          DeviceListValueListEditor->Row = row_count - 1;
+          DeviceListValueListEditor->InsertRow(Name, "", true);
         }
       } else {
-        DeviceListValueListEditor->InsertRow(NameEdit->Text, "", true);
+        DeviceListValueListEditor->InsertRow(Name, "", true);
       }
       int row = 0;
-      if (DeviceListValueListEditor->FindRow(NameEdit->Text, row)) {
+      if (Sender == CopyButton) {
+        // !!!!!!!!!!! Реализовать копирование
+        ShowMessage(irst("Копирование не реализовано\n")
+         irst("Вместо него пока добавление"));
+      }
+      if (DeviceListValueListEditor->FindRow(Name, row)) {
         add_device_list(row);
         String key = DeviceListValueListEditor->Keys[row];
         if (m_assembly_type_list.size() > 0) {
@@ -286,13 +338,14 @@ void __fastcall TOptionsForm::AddButtonClick(TObject *Sender)
         TL4_ASSERT_MSG("Устройство не найдено");
       }
       DeviceListValueListEditor->Row = row_sel;
-      NameEdit->Text = "";
+      Name = "";
     } else {
       ShowMessage(irst("Устройство существует"));
     }
   } else {
     ShowMessage(irst("Пустое название устройства недопустимо"));
   }
+  NameEdit->Text = Name;
 }
 //---------------------------------------------------------------------------
 void __fastcall TOptionsForm::DeleteButtonClick(TObject *Sender)
@@ -307,6 +360,11 @@ void __fastcall TOptionsForm::RenameButtonClick(TObject *Sender)
 {
   TGridRect GridRect = DeviceListValueListEditor->Selection;
   DeviceListValueListEditor->Keys[GridRect.Top] = NameEdit->Text;
+}
+//---------------------------------------------------------------------------
+void __fastcall TOptionsForm::CopyButtonClick(TObject *Sender)
+{
+  AddButtonClick(Sender);
 }
 //---------------------------------------------------------------------------
 void __fastcall TOptionsForm::DeviceListValueListEditorSelectCell(

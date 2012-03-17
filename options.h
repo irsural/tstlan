@@ -60,6 +60,7 @@ __published:	// IDE-managed Components
   TButton *InnerButton;
   TButton *ImportButton;
   TOpenDialog *ImportOpenDialog;
+  TButton *CopyButton;
   void __fastcall OkButtonClick(TObject *Sender);
   void __fastcall CancelButtonClick(TObject *Sender);
   void __fastcall AddButtonClick(TObject *Sender);
@@ -72,6 +73,7 @@ __published:	// IDE-managed Components
   void __fastcall DeviceOptionsButtonClick(TObject *Sender);
   void __fastcall InnerButtonClick(TObject *Sender);
   void __fastcall ImportButtonClick(TObject *Sender);
+  void __fastcall CopyButtonClick(TObject *Sender);
 private:	// User declarations
   struct options_tune_t {
     options_tune_t(TOptionsForm* ap_OptionsForm);

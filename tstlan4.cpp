@@ -3,6 +3,7 @@
 #pragma hdrstop
 
 #include <irserror.h>
+#include <irslocale.h>
 
 #include "locktick.h"
 
@@ -14,13 +15,14 @@ USEFORM("main.cpp", MainForm);
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
   irs::exception_error_handler_t exception_error_handler;
+  irs::loc();
 
   try
   {
     Application->Initialize();
     Application->Title = "Тест сети 4";
     Application->CreateForm(__classid(TMainForm), &MainForm);
-    Application->Run();
+     Application->Run();
   }
   catch (Exception &exception)
   {
