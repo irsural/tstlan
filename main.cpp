@@ -43,7 +43,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner):
   m_ini_file.add("", this);
   m_ini_file.load();
 
-  irs::float_test::for_infinity::raw_float_test_out(&irs::mlog());
+  //irs::float_test::for_infinity::raw_float_test_out(&irs::mlog());
 }
 //---------------------------------------------------------------------------
 __fastcall TMainForm::~TMainForm()
