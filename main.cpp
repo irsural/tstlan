@@ -2,6 +2,8 @@
 #include <irspch.h>
 #pragma hdrstop
 
+#include <irstest.h>
+
 #include "main.h"
 #include "locktick.h"
 
@@ -40,6 +42,8 @@ __fastcall TMainForm::TMainForm(TComponent* Owner):
   m_ini_file.set_section("MainForm");
   m_ini_file.add("", this);
   m_ini_file.load();
+
+  irs::float_test::for_infinity::raw_float_test_out(&irs::mlog());
 }
 //---------------------------------------------------------------------------
 __fastcall TMainForm::~TMainForm()

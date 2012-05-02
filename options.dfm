@@ -22,17 +22,11 @@ object OptionsForm: TOptionsForm
     Top = 0
     Width = 654
     Height = 483
-    ActivePage = DeviceListSheet
+    ActivePage = GeneralSheet
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 620
-    ExplicitHeight = 450
     object GeneralSheet: TTabSheet
       Caption = #1054#1073#1097#1080#1077
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 612
-      ExplicitHeight = 422
       DesignSize = (
         646
         455)
@@ -46,7 +40,6 @@ object OptionsForm: TOptionsForm
         Caption = #1054#1073#1097#1080#1077' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
         TabOrder = 0
         OnClick = GeneralOptionsButtonClick
-        ExplicitWidth = 582
       end
       object DeviceOptionsButton: TButton
         Left = 16
@@ -57,7 +50,6 @@ object OptionsForm: TOptionsForm
         Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1091#1089#1090#1088#1086#1081#1089#1090#1074#1072
         TabOrder = 1
         OnClick = DeviceOptionsButtonClick
-        ExplicitWidth = 582
       end
       object InnerButton: TButton
         Left = 16
@@ -68,7 +60,6 @@ object OptionsForm: TOptionsForm
         Caption = #1042#1085#1091#1090#1088#1077#1085#1085#1080#1077' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
         TabOrder = 2
         OnClick = InnerButtonClick
-        ExplicitWidth = 582
       end
       object ImportButton: TButton
         Left = 16
@@ -79,16 +70,11 @@ object OptionsForm: TOptionsForm
         Caption = #1048#1084#1087#1086#1088#1090
         TabOrder = 3
         OnClick = ImportButtonClick
-        ExplicitWidth = 582
       end
     end
     object DeviceListSheet: TTabSheet
       Caption = #1057#1087#1080#1089#1086#1082' '#1091#1089#1090#1088#1086#1081#1089#1090#1074
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 612
-      ExplicitHeight = 422
       DesignSize = (
         646
         455)
@@ -110,7 +96,6 @@ object OptionsForm: TOptionsForm
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goColSizing, goRowMoving, goEditing, goAlwaysShowEditor, goThumbTracking]
         TabOrder = 4
         OnSelectCell = DeviceListValueListEditorSelectCell
-        ExplicitWidth = 618
         ColWidths = (
           288
           322)
@@ -149,7 +134,6 @@ object OptionsForm: TOptionsForm
         Height = 21
         Anchors = [akTop, akRight]
         TabOrder = 3
-        ExplicitLeft = 456
       end
       object CopyButton: TButton
         Left = 279
@@ -169,8 +153,6 @@ object OptionsForm: TOptionsForm
     Height = 41
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 450
-    ExplicitWidth = 620
     DesignSize = (
       654
       41)
@@ -185,7 +167,6 @@ object OptionsForm: TOptionsForm
       ModalResult = 1
       TabOrder = 0
       OnClick = OkButtonClick
-      ExplicitLeft = 365
     end
     object CancelButton: TButton
       Left = 561
@@ -198,7 +179,6 @@ object OptionsForm: TOptionsForm
       ModalResult = 2
       TabOrder = 2
       OnClick = CancelButtonClick
-      ExplicitLeft = 527
     end
     object ApplyButton: TButton
       Left = 480
@@ -209,7 +189,6 @@ object OptionsForm: TOptionsForm
       Caption = #1055#1088#1080#1084#1077#1085#1080#1090#1100
       TabOrder = 1
       OnClick = OkButtonClick
-      ExplicitLeft = 446
     end
   end
   object ImportOpenDialog: TOpenDialog
