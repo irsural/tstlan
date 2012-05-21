@@ -377,6 +377,28 @@ irs::handle_t<irs::hardflow_t> irs::modbus_assembly_t::make_hardflow(
   }
   return hardflow_ret;
 }
+#ifdef NOP
+{
+  irs::handle_t<irs::hardflow_t> p_hardflow =
+    irs::hardflow::make_udp_flow_client(
+      "192.168.0.201",
+      "5006")
+    );
+  size_t read_bits_byte_count = 0;
+  size_t rw_bits_byte_count = 1; // в байтах
+  size_t rw_regs_count = 10; // в регистах по 2 байта
+  size_t read_regs_count = 0;
+  irs::modbus_client_t modbus_client(
+    p_hardflow,
+    irs::modbus_client_t::mode_refresh_auto,
+    read_bits_byte_count,
+    rw_bits_byte_count,
+    rw_regs_count,
+    read_regs_count,
+    irs::make_cnt_ms(200)
+  );
+}
+#endif //NOP
 irs::modbus_assembly_t::string_type irs::modbus_assembly_t::protocol_name(
   protocol_t a_protocol)
 {
