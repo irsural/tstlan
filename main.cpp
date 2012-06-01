@@ -3,6 +3,8 @@
 #pragma hdrstop
 
 #include <irstest.h>
+#include <irsstring.h>
+#include <irsstrconv.h>
 
 #include "main.h"
 #include "locktick.h"
@@ -43,6 +45,11 @@ __fastcall TMainForm::TMainForm(TComponent* Owner):
   m_ini_file.add("", this);
   m_ini_file.load();
 
+  #ifdef NOP
+  irs::string_t num_str = 3.14;
+  irs::mlog() << "Преобразование в числов в irs::string_t: ";
+  irs::mlog() << irs::str_conv<irs::std_string_t>(num_str) << endl;
+  #endif //NOP
   //irs::float_test::for_infinity::raw_float_test_out(&irs::mlog());
 }
 //---------------------------------------------------------------------------

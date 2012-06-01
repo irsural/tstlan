@@ -2,8 +2,9 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include <irserror.h>
-#include <irslocale.h>
+//#include <irserror.h>
+//#include <irslocale.h>
+#include <irsinit.h>
 
 #include "locktick.h"
 
@@ -14,8 +15,9 @@ USEFORM("main.cpp", MainForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-  irs::exception_error_handler_t exception_error_handler;
-  irs::loc();
+  //irs::exception_error_handler_t exception_error_handler;
+  //irs::loc();
+  irs::init();
 
   try
   {
