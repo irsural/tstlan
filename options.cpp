@@ -37,7 +37,7 @@ public:
   void options_apply_exec();
   void imported_ini_name(const irs::string_t& a_name);
 private:
-  //enum { m_values_shift = 1 };
+  enum { m_device_list_fixed_cols = 1 };
 
   TOptionsForm* mp_OptionsForm;
   TValueListEditor *mp_device_list;
@@ -69,7 +69,21 @@ irs::string_t options_form_implementation_t::device_names(size_t a_index)
   if ((0 > a_index) || (a_index >= device_count())) {
     return irst("Вне диапазона");
   }
-  return mp_device_list->Keys[a_index + mp_device_list->FixedCols].c_str();
+
+  #ifdef NOP
+  irs::mlog() << endl;
+  irs::mlog() << "FixedCols = " << m_device_list_fixed_cols << endl;
+  for (size_t device_idx = 0; device_idx < device_count(); ++device_idx) {
+    AnsiString device_name_ansi =
+      mp_device_list->Keys[device_idx + m_device_list_fixed_cols];
+    irs::mlog() << device_idx << "; " << device_name_ansi.c_str() << "; ";
+    AnsiString value_name_ansi = mp_device_list->Values[device_name_ansi];
+    irs::mlog() << value_name_ansi.c_str() << endl;
+  }
+  irs::mlog() << endl;
+  #endif //NOP
+
+  return mp_device_list->Keys[a_index + m_device_list_fixed_cols].c_str();
 }
 irs::string_t options_form_implementation_t::device_types(size_t a_index)
 {
@@ -82,7 +96,7 @@ irs::string_t options_form_implementation_t::device_types(size_t a_index)
 }
 size_t options_form_implementation_t::device_count()
 {
-  return mp_device_list->RowCount - mp_device_list->FixedCols;
+  return mp_device_list->RowCount - m_device_list_fixed_cols;
 }
 irs::param_box_base_t* options_form_implementation_t::general_options()
 {
@@ -325,7 +339,7 @@ void __fastcall TOptionsForm::AddButtonClick(TObject *Sender)
       if (Sender == CopyButton) {
         // !!!!!!!!!!! Реализовать копирование
         ShowMessage(irst("Копирование не реализовано\n")
-         irst("Вместо него пока добавление"));
+          irst("Вместо него пока добавление"));
       }
       if (DeviceListValueListEditor->FindRow(Name, row)) {
         add_device_list(row);
@@ -359,6 +373,10 @@ void __fastcall TOptionsForm::DeleteButtonClick(TObject *Sender)
 void __fastcall TOptionsForm::RenameButtonClick(TObject *Sender)
 {
   TGridRect GridRect = DeviceListValueListEditor->Selection;
+  irs::string_t old_name =
+    DeviceListValueListEditor->Keys[GridRect.Top].c_str();
+  irs::string_t new_name = NameEdit->Text.c_str();
+  irs::mxdata_assembly_names()->rename(old_name, new_name);
   DeviceListValueListEditor->Keys[GridRect.Top] = NameEdit->Text;
 }
 //---------------------------------------------------------------------------

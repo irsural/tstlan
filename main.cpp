@@ -5,6 +5,7 @@
 #include <irstest.h>
 #include <irsstring.h>
 #include <irsstrconv.h>
+#include <cbsysutils.h>
 
 #include "main.h"
 #include "locktick.h"
@@ -44,6 +45,14 @@ __fastcall TMainForm::TMainForm(TComponent* Owner):
   m_ini_file.set_section("MainForm");
   m_ini_file.add("", this);
   m_ini_file.load();
+
+  irs::mlog() << irs::sdatetime << "Запуск программы" << endl;
+  irs::cbuilder::file_version_t file_version;
+  irs::cbuilder::get_file_version(Application->ExeName.c_str(), file_version);
+  irs::irs_string_t version_str = IRS_SIMPLE_FROM_TYPE_STR(
+    irs::cbuilder::file_version_to_str(file_version).c_str());
+  irs::mlog() << "Версия: " << version_str << endl;
+  irs::mlog() << endl;
 
   #ifdef NOP
   irs::string_t num_str = 3.14;

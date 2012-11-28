@@ -57,6 +57,7 @@ private:
   irs::mxnet_t m_mxnet_server;
   irs::event_t m_options_event;
   bool m_is_mxnet_server_first_connected;
+  test_t m_test;
   irs::handle_t<irs::mxdata_assembly_t> mp_mxdata_assembly;
 };
 

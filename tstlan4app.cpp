@@ -56,10 +56,19 @@ irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
       return irs::mxdata_assembly_types()->
         make_assembly(current_type, ap_tstlan4lib, current_device);
     } else {
-      return IRS_NULL;
+      irs::string_t first_type = ap_options_form->device_types(0);
+      irs::string_t first_device = ap_options_form->device_names(0);
+      ap_options_form->general_options()->
+        set_param(irst("Текущее устройство"), first_device);
+      return irs::mxdata_assembly_types()->
+        make_assembly(first_type, ap_tstlan4lib, first_device);
     }
   } else {
-    return IRS_NULL;
+    irs::string_t devices_absent_name = irst("<Устройства отсутствуют>");
+    ap_options_form->general_options()->
+      set_param(irst("Текущее устройство"), devices_absent_name);
+    return irs::mxdata_assembly_types()->
+      make_assembly(irst("mxnet"), ap_tstlan4lib, devices_absent_name);
   }
 }
 
@@ -73,6 +82,7 @@ tstlan4::app_t::app_t(cfg_t* ap_cfg):
     m_mxnet_server_data.size()/sizeof(irs_i32)),
   m_options_event(),
   m_is_mxnet_server_first_connected(true),
+  m_test(),
   mp_mxdata_assembly(make_assembly(mp_tstlan4lib, mp_options_form))
 {
   m_mxnet_server_data.connect(&m_mxnet_server);
@@ -83,6 +93,8 @@ tstlan4::app_t::app_t(cfg_t* ap_cfg):
 }
 void tstlan4::app_t::tick()
 {
+  m_test.tick();
+
   if (mp_mxdata_assembly.get()) {
     for (int i = 0; i < 5; i++) {
       mp_mxdata_assembly->tick();
