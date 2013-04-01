@@ -13,6 +13,12 @@
 
 namespace irs {
 
+class mxdata_assembly_params_t
+{
+public:
+  mxdata_assembly_params_t(string_t a_ini_name);
+};
+
 class mxdata_assembly_t
 {
 public:

@@ -7,12 +7,46 @@
 #include <mxnetc.h>
 #include <irsmbus.h>
 #include <irsnetdefs.h>
+#include <cbsysutils.h>
 
 #include "devices.h"
 
 #include <irsfinal.h>
 
 namespace irs {
+
+class mxdata_assembly_params_container_t
+{
+public:
+  mxdata_assembly_params_container_t();
+  void ini_name(const string_t& a_ini_name);
+  string_t ini_name() const;
+private:
+  string_t m_ini_name;
+};
+mxdata_assembly_params_container_t::mxdata_assembly_params_container_t():
+  m_ini_name(irs::cbuilder::default_ini_name())
+{
+}
+void mxdata_assembly_params_container_t::ini_name(const string_t& a_ini_name)
+{
+  m_ini_name = a_ini_name;
+}
+string_t mxdata_assembly_params_container_t::ini_name() const
+{
+  return m_ini_name;
+}
+
+mxdata_assembly_params_container_t* mxdata_assembly_params()
+{
+  static mxdata_assembly_params_container_t mxdata_assembly_params_container;
+  return &mxdata_assembly_params_container;
+}
+
+mxdata_assembly_params_t::mxdata_assembly_params_t(irs::string_t a_ini_name)
+{
+  mxdata_assembly_params()->ini_name(a_ini_name);
+}
 
 class mxdata_assembly_names_t: public mxdata_assembly_names_base_t
 {
@@ -37,6 +71,7 @@ mxdata_assembly_names_t::mxdata_assembly_names_t():
   m_name_list(),
   m_erased_list()
 {
+  m_ini_file.set_ini_name(mxdata_assembly_params()->ini_name().c_str());
   for (int device_idx = 0; true; device_idx++) {
     m_ini_file.clear_control();
     m_ini_file.set_section(irst("device.") + String(device_idx));
@@ -157,6 +192,42 @@ irs::mxdata_assembly_names_base_t* irs::mxdata_assembly_names()
   return &i_mxdata_assembly_names;
 }
 
+namespace {
+
+void f(irs::tstlan4_base_t* ap_tstlan4) {}
+
+irs::handle_t<irs::param_box_base_t> make_assembly_param_box(
+  const irs::string_t& a_assembly_type_name,
+  const irs::string_t& a_assembly_name)
+{
+  irs::handle_t<irs::param_box_base_t> param_box = new irs::param_box_t(
+    irst("Настройки ") + a_assembly_type_name +
+      irst(" - ") + a_assembly_name,
+    irst("device.") +
+      irs::mxdata_assembly_names()->num_from_name(a_assembly_name),
+    irst(""),
+    irs::mxdata_assembly_params()->ini_name()
+  );
+  return param_box;
+}
+
+void assembly_conf_init(irs::tstlan4_base_t* ap_tstlan4,
+  irs::handle_t<irs::mxdata_t> ap_mxdata,
+  const irs::string_t& a_assembly_name)
+{
+  ap_tstlan4->connect(ap_mxdata.get());
+  ap_tstlan4->conf_section(irst("device_vars.") +
+    irs::mxdata_assembly_names()->num_from_name(a_assembly_name));
+  if (irs::mxdata_assembly_names()->is_clear_needed(a_assembly_name)) {
+    irs::mxdata_assembly_names()->reset_clear_needed(a_assembly_name);
+    ap_tstlan4->clear_conf();
+  } else {
+    ap_tstlan4->load_conf();
+  }
+}
+
+} //namespace
+
 namespace irs {
 
 class mxnet_assembly_creator_t: public mxdata_assembly_creator_t
@@ -204,8 +275,7 @@ irs::mxnet_assembly_t::mxnet_assembly_t(tstlan4_base_t* ap_tstlan4,
   const string_type& a_name
 ):
   m_name(a_name),
-  mp_param_box(new param_box_t(irst("Настройки mxnet - ") + m_name,
-    irst("device.") + mxdata_assembly_names()->num_from_name(m_name))),
+  mp_param_box(make_assembly_param_box(irst("mxnet"), m_name)),
   m_param_box_tune(mp_param_box.get()),
   mp_tstlan4(ap_tstlan4),
   mp_mxnet_client_hardflow(irs::hardflow::make_udp_flow_client(
@@ -215,15 +285,7 @@ irs::mxnet_assembly_t::mxnet_assembly_t(tstlan4_base_t* ap_tstlan4,
     make_cnt_ms(param_box_read_number<int>(*mp_param_box,
     irst("Время обновления, мс")))))
 {
-  mp_tstlan4->connect(mp_mxnet_client.get());
-  mp_tstlan4->conf_section(irst("device_vars.") +
-    mxdata_assembly_names()->num_from_name(m_name));
-  if (mxdata_assembly_names()->is_clear_needed(m_name)) {
-    mxdata_assembly_names()->reset_clear_needed(m_name);
-    mp_tstlan4->clear_conf();
-  } else {
-    mp_tstlan4->load_conf();
-  }
+  assembly_conf_init(mp_tstlan4, mp_mxnet_client, m_name);
 }
 irs::mxnet_assembly_t::~mxnet_assembly_t()
 {
@@ -377,28 +439,6 @@ irs::handle_t<irs::hardflow_t> irs::modbus_assembly_t::make_hardflow(
   }
   return hardflow_ret;
 }
-#ifdef NOP
-{
-  irs::handle_t<irs::hardflow_t> p_hardflow =
-    irs::hardflow::make_udp_flow_client(
-      "192.168.0.201",
-      "5006")
-    );
-  size_t read_bits_byte_count = 0;
-  size_t rw_bits_byte_count = 1; // в байтах
-  size_t rw_regs_count = 10; // в регистах по 2 байта
-  size_t read_regs_count = 0;
-  irs::modbus_client_t modbus_client(
-    p_hardflow,
-    irs::modbus_client_t::mode_refresh_auto,
-    read_bits_byte_count,
-    rw_bits_byte_count,
-    rw_regs_count,
-    read_regs_count,
-    irs::make_cnt_ms(200)
-  );
-}
-#endif //NOP
 irs::modbus_assembly_t::string_type irs::modbus_assembly_t::protocol_name(
   protocol_t a_protocol)
 {
@@ -417,23 +457,14 @@ irs::modbus_assembly_t::modbus_assembly_t(tstlan4_base_t* ap_tstlan4,
   const string_type& a_name, protocol_t a_protocol
 ):
   m_name(a_name),
-  mp_param_box(new param_box_t(irst("Настройки MODBUS ") +
-    protocol_name(a_protocol) + irst(" - ") + m_name,
-    irst("device.") + mxdata_assembly_names()->num_from_name(m_name))),
+  mp_param_box(make_assembly_param_box(irst("MODBUS ") +
+    protocol_name(a_protocol), m_name)),
   m_param_box_tune(mp_param_box.get()),
   mp_tstlan4(ap_tstlan4),
   mp_modbus_client_hardflow(make_hardflow(a_protocol, mp_param_box)),
   mp_modbus_client(make_client(mp_modbus_client_hardflow, mp_param_box))
 {
-  mp_tstlan4->connect(mp_modbus_client.get());
-  mp_tstlan4->conf_section(irst("device_vars.") +
-    mxdata_assembly_names()->num_from_name(m_name));
-  if (mxdata_assembly_names()->is_clear_needed(m_name)) {
-    mxdata_assembly_names()->reset_clear_needed(m_name);
-    mp_tstlan4->clear_conf();
-  } else {
-    mp_tstlan4->load_conf();
-  }
+  assembly_conf_init(mp_tstlan4, mp_modbus_client, m_name);
 }
 irs::modbus_assembly_t::~modbus_assembly_t()
 {

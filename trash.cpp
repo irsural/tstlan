@@ -264,5 +264,28 @@ void irs::mxnet_client_t::queue_push(const irs_u8 *ap_buf, irs_uarc a_index,
   c_array_view_t<const irs_u8> buf_view(ap_buf, size);
   mem_copy(buf_view, 0u, data_u8, byte_shift_idx, size);
 }
+
+
+
+{
+  irs::handle_t<irs::hardflow_t> p_hardflow =
+    irs::hardflow::make_udp_flow_client(
+      "192.168.0.201",
+      "5006")
+    );
+  size_t read_bits_byte_count = 0;
+  size_t rw_bits_byte_count = 1; // в байтах
+  size_t rw_regs_count = 10; // в регистах по 2 байта
+  size_t read_regs_count = 0;
+  irs::modbus_client_t modbus_client(
+    p_hardflow,
+    irs::modbus_client_t::mode_refresh_auto,
+    read_bits_byte_count,
+    rw_bits_byte_count,
+    rw_regs_count,
+    read_regs_count,
+    irs::make_cnt_ms(200)
+  );
+}
 #endif //NOP
 

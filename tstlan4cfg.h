@@ -56,6 +56,7 @@ public:
   options_form_t* options_form();
 private:
   string_type m_ini_name;
+  irs::mxdata_assembly_params_t m_mxdata_assembly_params;
   counter_t m_update_time;
   irs::handle_t<irs::tstlan4_base_t> mp_tstlan4lib;
   irs::handle_t<irs::hardflow_t> mp_mxnet_client_hardflow;

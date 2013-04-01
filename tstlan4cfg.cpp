@@ -12,6 +12,7 @@
 
 tstlan4::cfg_t::cfg_t(TForm* ap_form):
   m_ini_name(irst("tstlan4.ini")),
+  m_mxdata_assembly_params(m_ini_name),
   m_update_time(irs::make_cnt_ms(100)),
   mp_tstlan4lib(IRS_NULL),
   #ifdef NOP
