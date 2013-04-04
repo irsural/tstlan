@@ -13,12 +13,6 @@
 
 namespace irs {
 
-class mxdata_assembly_params_t
-{
-public:
-  mxdata_assembly_params_t(string_t a_ini_name);
-};
-
 class mxdata_assembly_t
 {
 public:
@@ -30,6 +24,14 @@ public:
   virtual void show_options() = 0;
   virtual void tstlan4(tstlan4_base_t* ap_tstlan4) = 0;
   virtual void name(const string_type& a_name) = 0;
+};
+
+class mxdata_assembly_params_t
+{
+public:
+  typedef mxdata_assembly_t::string_type string_type;
+
+  mxdata_assembly_params_t(string_type a_ini_name);
 };
 
 class mxdata_assembly_creator_t

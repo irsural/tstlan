@@ -18,21 +18,25 @@ namespace irs {
 class mxdata_assembly_params_container_t
 {
 public:
+  typedef mxdata_assembly_t::string_type string_type;
+
   mxdata_assembly_params_container_t();
-  void ini_name(const string_t& a_ini_name);
-  string_t ini_name() const;
+  void ini_name(const string_type& a_ini_name);
+  string_type ini_name() const;
 private:
-  string_t m_ini_name;
+  string_type m_ini_name;
 };
 mxdata_assembly_params_container_t::mxdata_assembly_params_container_t():
   m_ini_name(irs::cbuilder::default_ini_name())
 {
 }
-void mxdata_assembly_params_container_t::ini_name(const string_t& a_ini_name)
+void mxdata_assembly_params_container_t::ini_name(
+  const string_type& a_ini_name)
 {
   m_ini_name = a_ini_name;
 }
-string_t mxdata_assembly_params_container_t::ini_name() const
+mxdata_assembly_params_container_t::string_type
+  mxdata_assembly_params_container_t::ini_name() const
 {
   return m_ini_name;
 }
@@ -43,7 +47,8 @@ mxdata_assembly_params_container_t* mxdata_assembly_params()
   return &mxdata_assembly_params_container;
 }
 
-mxdata_assembly_params_t::mxdata_assembly_params_t(irs::string_t a_ini_name)
+mxdata_assembly_params_t::mxdata_assembly_params_t(
+  mxdata_assembly_t::string_type a_ini_name)
 {
   mxdata_assembly_params()->ini_name(a_ini_name);
 }
@@ -216,6 +221,7 @@ void assembly_conf_init(irs::tstlan4_base_t* ap_tstlan4,
   const irs::string_t& a_assembly_name)
 {
   ap_tstlan4->connect(ap_mxdata.get());
+  ap_tstlan4->ini_name(irs::mxdata_assembly_params()->ini_name());
   ap_tstlan4->conf_section(irst("device_vars.") +
     irs::mxdata_assembly_names()->num_from_name(a_assembly_name));
   if (irs::mxdata_assembly_names()->is_clear_needed(a_assembly_name)) {
