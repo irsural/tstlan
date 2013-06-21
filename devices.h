@@ -19,11 +19,12 @@ public:
   typedef string_t string_type;
 
   virtual ~mxdata_assembly_t() {}
+  virtual bool enabled() const = 0;
+  virtual void enabled(bool a_enabled) = 0;
   virtual irs::mxdata_t* mxdata() = 0;
   virtual void tick() = 0;
   virtual void show_options() = 0;
   virtual void tstlan4(tstlan4_base_t* ap_tstlan4) = 0;
-  virtual void name(const string_type& a_name) = 0;
 };
 
 class mxdata_assembly_params_t
@@ -45,7 +46,7 @@ public:
 private:
 };
 
-class mxdata_assembly_names_base_t
+/*class mxdata_assembly_names_base_t
 {
 public:
   typedef mxdata_assembly_t::string_type string_type;
@@ -57,7 +58,7 @@ public:
   virtual bool is_clear_needed(const string_type& a_name) = 0;
   virtual void reset_clear_needed(const string_type& a_name) = 0;
   virtual void erase(const string_type& a_name) = 0;
-};
+};*/
 
 class mxdata_assembly_types_t
 {
@@ -70,7 +71,7 @@ public:
     const string_type& a_name) = 0;
 };
 
-mxdata_assembly_names_base_t* mxdata_assembly_names();
+//mxdata_assembly_names_base_t* mxdata_assembly_names();
 
 mxdata_assembly_types_t* mxdata_assembly_types();
 

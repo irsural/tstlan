@@ -52,7 +52,7 @@ mxdata_assembly_params_t::mxdata_assembly_params_t(
 {
   mxdata_assembly_params()->ini_name(a_ini_name);
 }
-
+/*
 class mxdata_assembly_names_t: public mxdata_assembly_names_base_t
 {
 public:
@@ -188,14 +188,14 @@ void mxdata_assembly_names_t::erase(const string_type& a_name)
     m_ini_file.save();
   }
 }
-
+*/
 } // namespace irs
 
-irs::mxdata_assembly_names_base_t* irs::mxdata_assembly_names()
+/*irs::mxdata_assembly_names_base_t* irs::mxdata_assembly_names()
 {
   static mxdata_assembly_names_t i_mxdata_assembly_names;
   return &i_mxdata_assembly_names;
-}
+}*/
 
 namespace {
 
@@ -208,30 +208,30 @@ irs::handle_t<irs::param_box_base_t> make_assembly_param_box(
   irs::handle_t<irs::param_box_base_t> param_box = new irs::param_box_t(
     irst("Настройки ") + a_assembly_type_name +
       irst(" - ") + a_assembly_name,
-    irst("device.") +
-      irs::mxdata_assembly_names()->num_from_name(a_assembly_name),
+    irst("device"),
     irst(""),
-    irs::mxdata_assembly_params()->ini_name()
+    a_assembly_name
   );
   return param_box;
 }
 
+#ifdef NOP
 void assembly_conf_init(irs::tstlan4_base_t* ap_tstlan4,
   irs::handle_t<irs::mxdata_t> ap_mxdata,
-  const irs::string_t& a_assembly_name)
+  const irs::string_t& a_file_name)
 {
   ap_tstlan4->connect(ap_mxdata.get());
-  ap_tstlan4->ini_name(irs::mxdata_assembly_params()->ini_name());
-  ap_tstlan4->conf_section(irst("device_vars.") +
+  ap_tstlan4->ini_name(a_file_name/*irs::mxdata_assembly_params()->ini_name()*/);
+  /*ap_tstlan4->conf_section(irst("device_vars.") +
     irs::mxdata_assembly_names()->num_from_name(a_assembly_name));
   if (irs::mxdata_assembly_names()->is_clear_needed(a_assembly_name)) {
     irs::mxdata_assembly_names()->reset_clear_needed(a_assembly_name);
     ap_tstlan4->clear_conf();
   } else {
     ap_tstlan4->load_conf();
-  }
+  }*/
 }
-
+#endif // NOP
 } //namespace
 
 namespace irs {
@@ -247,13 +247,15 @@ private:
 class mxnet_assembly_t: public mxdata_assembly_t
 {
 public:
-  mxnet_assembly_t(tstlan4_base_t* ap_tstlan4, const string_type& a_name);
+  mxnet_assembly_t(tstlan4_base_t* ap_tstlan4,
+    const string_type& a_conf_file_name);
   virtual ~mxnet_assembly_t();
+  virtual bool enabled() const;
+  virtual void enabled(bool a_enabled);
   virtual irs::mxdata_t* mxdata();
   virtual void tick();
   virtual void show_options();
   virtual void tstlan4(tstlan4_base_t* ap_tstlan4);
-  virtual void name(const string_type& a_name);
 private:
   struct param_box_tune_t {
     param_box_base_t* mp_param_box;
@@ -261,10 +263,11 @@ private:
     param_box_tune_t(param_box_base_t* ap_param_box);
   };
 
-  string_type m_name;
+  string_type m_conf_file_name;
   handle_t<param_box_base_t> mp_param_box;
   param_box_tune_t m_param_box_tune;
   tstlan4_base_t* mp_tstlan4;
+  bool m_enabled;
   handle_t<hardflow_t> mp_mxnet_client_hardflow;
   handle_t<mxdata_t> mp_mxnet_client;
 };
@@ -278,20 +281,17 @@ irs::handle_t<irs::mxdata_assembly_t> irs::mxnet_assembly_creator_t::make(
 }
 
 irs::mxnet_assembly_t::mxnet_assembly_t(tstlan4_base_t* ap_tstlan4,
-  const string_type& a_name
+  const string_type& a_conf_file_name
 ):
-  m_name(a_name),
-  mp_param_box(make_assembly_param_box(irst("mxnet"), m_name)),
+  m_conf_file_name(a_conf_file_name),
+  mp_param_box(make_assembly_param_box(irst("mxnet"), m_conf_file_name)),
   m_param_box_tune(mp_param_box.get()),
   mp_tstlan4(ap_tstlan4),
-  mp_mxnet_client_hardflow(irs::hardflow::make_udp_flow_client(
-    mp_param_box->get_param(irst("IP")),
-    mp_param_box->get_param(irst("Порт")))),
-  mp_mxnet_client(new irs::mxnet_client_t(*mp_mxnet_client_hardflow,
-    make_cnt_ms(param_box_read_number<int>(*mp_param_box,
-    irst("Время обновления, мс")))))
+  m_enabled(false),
+  mp_mxnet_client_hardflow(),
+  mp_mxnet_client()
 {
-  assembly_conf_init(mp_tstlan4, mp_mxnet_client, m_name);
+  mp_tstlan4->ini_name(m_conf_file_name);
 }
 irs::mxnet_assembly_t::~mxnet_assembly_t()
 {
@@ -307,17 +307,43 @@ irs::mxnet_assembly_t::param_box_tune_t::param_box_tune_t(
   mp_param_box->add_edit(irst("Время обновления, мс"), irst("200"));
   mp_param_box->load();
 }
+bool irs::mxnet_assembly_t::enabled() const
+{
+  return m_enabled;
+}
+void irs::mxnet_assembly_t::enabled(bool a_enabled)
+{
+  if (a_enabled == m_enabled) {
+    return;
+  }
+  if (a_enabled) {
+    mp_mxnet_client_hardflow = irs::hardflow::make_udp_flow_client(
+      mp_param_box->get_param(irst("IP")),
+      mp_param_box->get_param(irst("Порт")));
+    mp_mxnet_client.reset(new irs::mxnet_client_t(*mp_mxnet_client_hardflow,
+      make_cnt_ms(param_box_read_number<int>(*mp_param_box,
+      irst("Время обновления, мс")))));
+    mp_tstlan4->connect(mp_mxnet_client.get());
+  } else {
+    mp_tstlan4->connect(NULL);
+    mp_mxnet_client.reset();
+    mp_mxnet_client_hardflow.reset();
+  }
+  m_enabled = a_enabled;
+}
 irs::mxdata_t* irs::mxnet_assembly_t::mxdata()
 {
   return mp_mxnet_client.get();
 }
 void irs::mxnet_assembly_t::tick()
 {
-  mp_mxnet_client->tick();
+  if (!mp_mxnet_client.is_empty()) {
+    mp_mxnet_client->tick();
+  }
 }
 void irs::mxnet_assembly_t::show_options()
 {
-  if (mp_param_box->show()) {
+  if (mp_param_box->show() && m_enabled) {
     mp_mxnet_client_hardflow->set_param(irst("remote_adress"),
       mp_param_box->get_param(irst("IP")));
     mp_mxnet_client_hardflow->set_param(irst("remote_port"),
@@ -332,11 +358,6 @@ void irs::mxnet_assembly_t::show_options()
 void irs::mxnet_assembly_t::tstlan4(tstlan4_base_t* ap_tstlan4)
 {
   mp_tstlan4 = ap_tstlan4;
-}
-void irs::mxnet_assembly_t::name(const string_type& a_name)
-{
-  mxdata_assembly_names()->rename(m_name, a_name);
-  m_name = a_name;
 }
 
 namespace irs {
@@ -362,25 +383,28 @@ class modbus_assembly_t: public mxdata_assembly_t
 public:
   enum protocol_t { udp_protocol, tcp_protocol };
 
-  modbus_assembly_t(tstlan4_base_t* ap_tstlan4, const string_type& a_name,
+  modbus_assembly_t(tstlan4_base_t* ap_tstlan4,
+    const string_type& a_conf_file_name,
     protocol_t a_protocol);
   virtual ~modbus_assembly_t();
+  virtual bool enabled() const;
+  virtual void enabled(bool a_enabled);
   virtual irs::mxdata_t* mxdata();
   virtual void tick();
   virtual void show_options();
   virtual void tstlan4(tstlan4_base_t* ap_tstlan4);
-  virtual void name(const string_type& a_name);
 private:
   struct param_box_tune_t {
     param_box_base_t* mp_param_box;
 
     param_box_tune_t(param_box_base_t* ap_param_box);
   };
-
-  string_type m_name;
+  string_type m_conf_file_name;
+  protocol_t m_protocol;
   handle_t<param_box_base_t> mp_param_box;
   param_box_tune_t m_param_box_tune;
   tstlan4_base_t* mp_tstlan4;
+  bool m_enabled;
   handle_t<hardflow_t> mp_modbus_client_hardflow;
   handle_t<mxdata_t> mp_modbus_client;
 
@@ -460,17 +484,19 @@ irs::modbus_assembly_t::string_type irs::modbus_assembly_t::protocol_name(
   return protocol_name_ret;
 }
 irs::modbus_assembly_t::modbus_assembly_t(tstlan4_base_t* ap_tstlan4,
-  const string_type& a_name, protocol_t a_protocol
+  const string_type& a_conf_file_name, protocol_t a_protocol
 ):
-  m_name(a_name),
+  m_conf_file_name(a_conf_file_name),
+  m_protocol(a_protocol),
   mp_param_box(make_assembly_param_box(irst("MODBUS ") +
-    protocol_name(a_protocol), m_name)),
+    protocol_name(a_protocol), m_conf_file_name)),
   m_param_box_tune(mp_param_box.get()),
   mp_tstlan4(ap_tstlan4),
+  m_enabled(false),
   mp_modbus_client_hardflow(make_hardflow(a_protocol, mp_param_box)),
   mp_modbus_client(make_client(mp_modbus_client_hardflow, mp_param_box))
 {
-  assembly_conf_init(mp_tstlan4, mp_modbus_client, m_name);
+  mp_tstlan4->ini_name(m_conf_file_name);
 }
 irs::modbus_assembly_t::~modbus_assembly_t()
 {
@@ -494,13 +520,35 @@ irs::modbus_assembly_t::param_box_tune_t::param_box_tune_t(
     irst("(Input Registers), кол-во"), irst("0"));
   mp_param_box->load();
 }
+bool irs::modbus_assembly_t::enabled() const
+{
+  return m_enabled;
+}
+void irs::modbus_assembly_t::enabled(bool a_enabled)
+{
+  if (a_enabled == m_enabled) {
+    return;
+  }
+  if (a_enabled) {
+    mp_modbus_client_hardflow = make_hardflow(m_protocol, mp_param_box);
+    mp_modbus_client = make_client(mp_modbus_client_hardflow, mp_param_box);
+    mp_tstlan4->connect(mp_modbus_client.get());
+  } else {
+    mp_tstlan4->connect(NULL);
+    mp_modbus_client.reset();
+    mp_modbus_client_hardflow.reset();
+  }
+  m_enabled = a_enabled;
+}
 irs::mxdata_t* irs::modbus_assembly_t::mxdata()
 {
   return mp_modbus_client.get();
 }
 void irs::modbus_assembly_t::tick()
 {
-  mp_modbus_client->tick();
+  if (!mp_modbus_client.is_empty()) {
+    mp_modbus_client->tick();
+  }
 }
 void irs::modbus_assembly_t::show_options()
 {
@@ -516,11 +564,6 @@ void irs::modbus_assembly_t::show_options()
 void irs::modbus_assembly_t::tstlan4(tstlan4_base_t* ap_tstlan4)
 {
   mp_tstlan4 = ap_tstlan4;
-}
-void irs::modbus_assembly_t::name(const string_type& a_name)
-{
-  mxdata_assembly_names()->rename(m_name, a_name);
-  m_name = a_name;
 }
 
 namespace irs {

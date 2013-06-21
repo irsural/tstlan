@@ -33,7 +33,7 @@
 			<BCC_wpar>false</BCC_wpar>
 			<BCC_wbbf>true</BCC_wbbf>
 			<ILINK_LibraryPath>..\mxsrclib\;..\mxsrclib\arch\cbuilder\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
-			<LinkPackageStatics>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib</LinkPackageStatics>
+			<LinkPackageStatics>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;cxDataRS14.lib;cxLibraryRS14.lib;dxGDIPlusRS14.lib;dxCoreRS14.lib;dxThemeRS14.lib;cxEditorsRS14.lib;vclimg.lib;vcldb.lib;cxGridRS14.lib;dxLayoutControlRS14.lib;cxPageControlRS14.lib;dxComnRS14.lib;cxExportRS14.lib;xmlrtl.lib;dxServerModeRS14.lib;dxSkinsCoreRS14.lib;dxSkinscxPCPainterRS14.lib;dxSkinBlackRS14.lib;dxSkinBlueRS14.lib;dxSkinCaramelRS14.lib;dxSkinCoffeeRS14.lib;dxSkinDarkRoomRS14.lib;dxSkinDarkSideRS14.lib;dxSkinFoggyRS14.lib;dxSkinGlassOceansRS14.lib;dxSkiniMaginaryRS14.lib;dxSkinLilianRS14.lib;dxSkinLiquidSkyRS14.lib;dxSkinLondonLiquidSkyRS14.lib;dxSkinMcSkinRS14.lib;dxSkinMoneyTwinsRS14.lib;dxSkinOffice2007BlackRS14.lib;dxSkinOffice2007BlueRS14.lib;dxSkinOffice2007GreenRS14.lib;dxSkinOffice2007PinkRS14.lib;dxSkinOffice2007SilverRS14.lib;dxSkinOffice2010BlackRS14.lib;dxSkinOffice2010BlueRS14.lib;dxSkinOffice2010SilverRS14.lib;dxSkinPumpkinRS14.lib;dxSkinSevenRS14.lib;dxSkinSharpRS14.lib;dxSkinSilverRS14.lib;dxSkinSpringTimeRS14.lib;dxSkinStardustRS14.lib;dxSkinSummer2008RS14.lib;dxSkinValentineRS14.lib;dxSkinXmas2008BlueRS14.lib;dxSkinBlueprintRS14.lib;dxSkinDevExpressDarkStyleRS14.lib;dxSkinDevExpressStyleRS14.lib;dxSkinHighContrastRS14.lib;dxSkinSevenClassicRS14.lib;dxSkinSharpPlusRS14.lib;dxSkinTheAsphaltWorldRS14.lib;dxSkinVS2010RS14.lib;dxSkinWhiteprintRS14.lib;cxTreeListRS14.lib;cxTreeListdxBarPopupMenuRS14.lib;dxBarRS14.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib</LinkPackageStatics>
 			<IncludePath>..\mxsrclib\;..\mxsrclib\arch\cbuilder\;$(IncludePath)</IncludePath>
 			<BCC_wamb>true</BCC_wamb>
 			<BCC_waus>false</BCC_waus>
@@ -65,7 +65,7 @@
 			<OutputExt>exe</OutputExt>
 			<BCC_GenerateMultithreaded>true</BCC_GenerateMultithreaded>
 			<ILINK_ObjectSearchPath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;$(ILINK_ObjectSearchPath)</ILINK_ObjectSearchPath>
-			<AllPackageLibs>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib</AllPackageLibs>
+			<AllPackageLibs>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;cxDataRS14.lib;cxLibraryRS14.lib;dxGDIPlusRS14.lib;dxCoreRS14.lib;dxThemeRS14.lib;cxEditorsRS14.lib;vclimg.lib;vcldb.lib;cxGridRS14.lib;dxLayoutControlRS14.lib;cxPageControlRS14.lib;dxComnRS14.lib;cxExportRS14.lib;xmlrtl.lib;dxServerModeRS14.lib;dxSkinsCoreRS14.lib;dxSkinscxPCPainterRS14.lib;dxSkinBlackRS14.lib;dxSkinBlueRS14.lib;dxSkinCaramelRS14.lib;dxSkinCoffeeRS14.lib;dxSkinDarkRoomRS14.lib;dxSkinDarkSideRS14.lib;dxSkinFoggyRS14.lib;dxSkinGlassOceansRS14.lib;dxSkiniMaginaryRS14.lib;dxSkinLilianRS14.lib;dxSkinLiquidSkyRS14.lib;dxSkinLondonLiquidSkyRS14.lib;dxSkinMcSkinRS14.lib;dxSkinMoneyTwinsRS14.lib;dxSkinOffice2007BlackRS14.lib;dxSkinOffice2007BlueRS14.lib;dxSkinOffice2007GreenRS14.lib;dxSkinOffice2007PinkRS14.lib;dxSkinOffice2007SilverRS14.lib;dxSkinOffice2010BlackRS14.lib;dxSkinOffice2010BlueRS14.lib;dxSkinOffice2010SilverRS14.lib;dxSkinPumpkinRS14.lib;dxSkinSevenRS14.lib;dxSkinSharpRS14.lib;dxSkinSilverRS14.lib;dxSkinSpringTimeRS14.lib;dxSkinStardustRS14.lib;dxSkinSummer2008RS14.lib;dxSkinValentineRS14.lib;dxSkinXmas2008BlueRS14.lib;dxSkinBlueprintRS14.lib;dxSkinDevExpressDarkStyleRS14.lib;dxSkinDevExpressStyleRS14.lib;dxSkinHighContrastRS14.lib;dxSkinSevenClassicRS14.lib;dxSkinSharpPlusRS14.lib;dxSkinTheAsphaltWorldRS14.lib;dxSkinVS2010RS14.lib;dxSkinWhiteprintRS14.lib;cxTreeListRS14.lib;cxTreeListdxBarPopupMenuRS14.lib;dxBarRS14.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib;vclactnband.lib</AllPackageLibs>
 			<Multithreaded>true</Multithreaded>
 			<BCC_Defines>NO_STRICT;$(BCC_Defines)</BCC_Defines>
 			<DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
@@ -486,7 +486,7 @@
 						<VersionInfo Name="MajorVer">1</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">184</VersionInfo>
+						<VersionInfo Name="Build">185</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -498,7 +498,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">1.0.0.184</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.0.0.185</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

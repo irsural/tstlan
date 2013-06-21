@@ -23,21 +23,39 @@
 #include <irsfinal.h>
 #include <Dialogs.hpp>
 //---------------------------------------------------------------------------
+
+struct device_t
+{
+  typedef irs::string_t string_type;
+  string_type name;
+  string_type type;
+  bool enabled;
+  device_t():
+    name(),
+    type(),
+    enabled(false)
+  {
+  }
+};
+
 class options_form_t
 {
 public:
+  typedef std::vector<device_t> devices_type;
   ~options_form_t() {}
-  virtual irs::string_t device_names(size_t a_index) = 0;
-  virtual irs::string_t device_types(size_t a_index) = 0;
-  virtual size_t device_count() = 0;
+  virtual const devices_type& get_devices() const = 0;
+  //virtual const irs::string_t& device_name() const = 0;
+  //virtual const irs::string_t& device_type() const = 0;
+  //virtual size_t device_count() = 0;
   virtual irs::param_box_base_t* general_options() = 0;
   virtual bool is_device_options_button_click() = 0;
   virtual bool is_inner_options_button_click() = 0;
-  virtual bool is_import_button_click() = 0;
+  //virtual bool is_import_button_click() = 0;
   virtual bool is_options_apply() = 0;
-  virtual irs::string_t imported_ini_name() = 0;
+  //virtual irs::string_t imported_ini_name() = 0;
   virtual void show() = 0;
 };
+
 //---------------------------------------------------------------------------
 class TOptionsForm : public TForm
 {
@@ -45,35 +63,17 @@ __published:	// IDE-managed Components
   TPageControl *OptionsPageControl;
   TTabSheet *GeneralSheet;
   TTabSheet *DeviceListSheet;
-  TValueListEditor *DeviceListValueListEditor;
   TPanel *ButtonPanel;
   TButton *OkButton;
   TButton *CancelButton;
-  TButton *AddButton;
-  TButton *DeleteButton;
-  TButton *RenameButton;
   TButton *ApplyButton;
-  TEdit *NameEdit;
-  TLabel *NameLabel;
   TButton *GeneralOptionsButton;
-  TButton *DeviceOptionsButton;
   TButton *InnerButton;
-  TButton *ImportButton;
-  TOpenDialog *ImportOpenDialog;
-  TButton *CopyButton;
   void __fastcall OkButtonClick(TObject *Sender);
   void __fastcall CancelButtonClick(TObject *Sender);
-  void __fastcall AddButtonClick(TObject *Sender);
-  void __fastcall DeleteButtonClick(TObject *Sender);
-  void __fastcall RenameButtonClick(TObject *Sender);
-  void __fastcall DeviceListValueListEditorSelectCell(TObject *Sender, int ACol,
-          int ARow, bool &CanSelect);
   void __fastcall FormKeyUp(TObject *Sender, WORD &Key, TShiftState Shift);
   void __fastcall GeneralOptionsButtonClick(TObject *Sender);
-  void __fastcall DeviceOptionsButtonClick(TObject *Sender);
-  void __fastcall InnerButtonClick(TObject *Sender);
   void __fastcall ImportButtonClick(TObject *Sender);
-  void __fastcall CopyButtonClick(TObject *Sender);
 private:	// User declarations
   struct options_tune_t {
     options_tune_t(TOptionsForm* ap_OptionsForm);
@@ -81,16 +81,15 @@ private:	// User declarations
   friend class options_tune_t;
 
   irs::ini_file_t m_ini_file;
-  vector<irs::string_t> m_assembly_type_list;
   irs::handle_t<irs::param_box_base_t> mp_general_options;
   options_tune_t m_options_tune;
   irs::handle_t<options_form_t> mp_options_form;
 
-  void add_device_list(int a_row);
-  bool check_device_list(int a_row);
-  void enum_assembly_types();
+
+  //bool check_device_list(int a_row);
+
   void options_load();
-  void cur_device_update();
+  //void cur_device_update();
 public:		// User declarations
   __fastcall TOptionsForm(TComponent* Owner);
   options_form_t* data();

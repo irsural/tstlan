@@ -18,17 +18,18 @@
 
 namespace tstlan4 {
 
-bool find_device(options_form_t* ap_options_form,
-  const irs::string_t& a_name, irs::string_t* ap_type);
+//bool find_device(options_form_t* ap_options_form,
+  //const irs::string_t& a_name, irs::string_t* ap_type);
 
 irs::handle_t<irs::mxdata_assembly_t> make_assembly(
-  irs::tstlan4_base_t* ap_tstlan4lib,
-  options_form_t* ap_options_form
+  const irs::string_t& a_device_name,
+  const irs::string_t& a_device_type,
+  irs::tstlan4_base_t* ap_tstlan4lib
 );
 
 } //namespace tstlan4
 
-bool tstlan4::find_device(options_form_t* ap_options_form,
+/*bool tstlan4::find_device(options_form_t* ap_options_form,
   const irs::string_t& a_name, irs::string_t* ap_type)
 {
   bool is_finded = false;
@@ -42,13 +43,14 @@ bool tstlan4::find_device(options_form_t* ap_options_form,
     }
   }
   return is_finded;
-}
+}*/
 
 irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
-  irs::tstlan4_base_t* ap_tstlan4lib,
-  options_form_t* ap_options_form
+  const irs::string_t& a_device_name,
+  const irs::string_t& a_device_type,
+  irs::tstlan4_base_t* ap_tstlan4lib
 ) {
-  if (ap_options_form->device_count() != 0) {
+  /*if (ap_options_form->device_count() != 0) {
     irs::string_t current_device = ap_options_form->general_options()->
       get_param(irst("Текущее устройство"));
     irs::string_t current_type = irst("");
@@ -69,62 +71,141 @@ irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
       set_param(irst("Текущее устройство"), devices_absent_name);
     return irs::mxdata_assembly_types()->
       make_assembly(irst("mxnet"), ap_tstlan4lib, devices_absent_name);
-  }
+  }*/
+  return irs::mxdata_assembly_types()->
+    make_assembly(a_device_type, ap_tstlan4lib, a_device_name);
 }
 
 tstlan4::app_t::app_t(cfg_t* ap_cfg):
   mp_cfg(ap_cfg),
-  mp_tstlan4lib(mp_cfg->tstlan4lib()),
-  mp_options_form(mp_cfg->options_form()),
-  m_mxnet_client_data(IRS_NULL),
   m_mxnet_server_data(),
   m_mxnet_server(mp_cfg->mxnet_server_hardflow(),
     m_mxnet_server_data.size()/sizeof(irs_i32)),
   m_options_event(),
   m_is_mxnet_server_first_connected(true),
   m_test(),
-  mp_mxdata_assembly(make_assembly(mp_tstlan4lib, mp_options_form))
+  m_devices_map()
 {
   m_mxnet_server_data.connect(&m_mxnet_server);
-  if (mp_mxdata_assembly.get()) {
-    m_mxnet_client_data.connect(mp_mxdata_assembly->mxdata());
-  }
-  mp_tstlan4lib->options_event_connect(&m_options_event);
 }
+
+void tstlan4::app_t::set_devices(
+  const std::map<string_type, device_options_t>& a_devices)
+{
+  std::map<string_type, device_options_t>::const_iterator dev_opt_it =
+    a_devices.begin();
+
+  while (dev_opt_it != a_devices.end()) {
+    std::map<string_type, device_t>::iterator it =
+      m_devices_map.find(dev_opt_it->first);
+    bool need_reset = false;
+    if (it != m_devices_map.end()) {
+      if (it->second.type != dev_opt_it->second.type) {
+        need_reset = true;
+      }
+    } else {
+      need_reset = true;
+    }
+    if (need_reset) {
+      if (it != m_devices_map.end()) {
+        m_devices_map.erase(it);
+      }
+      device_t device;
+      device.tstlan4lib = mp_cfg->make_tstlan4lib();
+      if (!device.tstlan4lib.is_empty()) {
+        device.tstlan4lib->conf_section(irst("vars"));
+        device.tstlan4lib->ini_name(dev_opt_it->first);
+        device.tstlan4lib->load_conf();
+        device.mxdata_assembly =
+          make_assembly(dev_opt_it->first, dev_opt_it->second.type,
+          device.tstlan4lib.get());
+        if (!device.mxdata_assembly.is_empty()) {
+          device.mxdata_assembly->enabled(dev_opt_it->second.enabled);
+          device.type = dev_opt_it->second.type;
+          m_devices_map.insert(make_pair(dev_opt_it->first, device));
+        }
+      }
+    } else if (it != m_devices_map.end()) {
+      if (it->second.mxdata_assembly->enabled() != dev_opt_it->second.enabled) {
+        it->second.mxdata_assembly->enabled(dev_opt_it->second.enabled);
+      }
+    }
+
+    ++dev_opt_it;
+  }
+
+  std::map<string_type, device_t>::iterator it =
+    m_devices_map.begin();
+  std::map<string_type, device_t>::iterator delete_elem_it =
+    m_devices_map.end();
+  while (it != m_devices_map.end()) {
+    if (a_devices.find(it->first) == a_devices.end()) {
+      delete_elem_it = it;
+    }
+    ++it;
+    if (delete_elem_it != m_devices_map.end()) {
+      m_devices_map.erase(delete_elem_it);
+      delete_elem_it = m_devices_map.end();
+    }
+  }
+}
+
+void tstlan4::app_t::show_tstlan4lib(const string_type& a_name)
+{
+  std::map<string_type, device_t>::iterator it = m_devices_map.find(a_name);
+  if (it == m_devices_map.end()) {
+    Application->MessageBox(
+      irst("Устройство не обнаружено"),
+      irst("Ошибка"),
+      MB_OK + MB_ICONERROR);
+    return;
+  }
+  it->second.tstlan4lib->show();
+}
+
+void tstlan4::app_t::show_device_options(const string_type& a_name)
+{
+  std::map<string_type, device_t>::iterator it = m_devices_map.find(a_name);
+  if (it == m_devices_map.end()) {
+    Application->MessageBox(
+      irst("Устройство не обнаружено"),
+      irst("Ошибка"),
+      MB_OK + MB_ICONERROR);
+    return;
+  }
+  it->second.mxdata_assembly->show_options();
+}
+
+void tstlan4::app_t::import(
+  const string_type& a_source, const string_type& a_destination)
+{
+  irs::handle_t<irs::tstlan4_base_t> tstlan4lib =
+    mp_cfg->make_tstlan4lib();
+  string_type section = tstlan4lib->conf_section();
+  string_type ini_name = tstlan4lib->ini_name();
+  tstlan4lib->conf_section(irst("tstlan4_Vars"));
+  tstlan4lib->ini_name(a_source);
+  tstlan4lib->load_conf();
+  tstlan4lib->conf_section(section);
+  tstlan4lib->ini_name(a_destination);
+  tstlan4lib->save_conf();
+}
+
 void tstlan4::app_t::tick()
 {
   m_test.tick();
 
-  if (mp_mxdata_assembly.get()) {
-    for (int i = 0; i < 5; i++) {
-      mp_mxdata_assembly->tick();
-    }
-    if (mp_mxdata_assembly->mxdata()->connected()) {
-      //m_mxnet_client_data.month++;
-    }
-    if (mp_options_form->is_options_apply()) {
-      mp_mxdata_assembly = make_assembly(mp_tstlan4lib, mp_options_form);
-      m_mxnet_client_data.connect(mp_mxdata_assembly->mxdata());
-    }
-    if (mp_options_form->is_device_options_button_click()) {
-      mp_mxdata_assembly->show_options();
-    }
-    if (mp_options_form->is_import_button_click()) {
-      irs::string_t section = mp_tstlan4lib->conf_section();
-      irs::string_t ini_name = mp_tstlan4lib->ini_name();
-      mp_tstlan4lib->conf_section(irst("tstlan4_Vars"));
-      mp_tstlan4lib->ini_name(mp_options_form->imported_ini_name());
-      mp_tstlan4lib->load_conf();
-      mp_tstlan4lib->conf_section(section);
-      mp_tstlan4lib->ini_name(ini_name);
-      mp_tstlan4lib->save_conf();
-    }
+  std::map<string_type, device_t>::iterator it =
+    m_devices_map.begin();
+  while (it != m_devices_map.end()) {
+    it->second.tstlan4lib->tick();
+    it->second.mxdata_assembly->tick();
+    ++it;
   }
 
   for (int i = 0; i < 5; i++) {
     m_mxnet_server.tick();
   }
-  mp_tstlan4lib->tick();
 
   if (m_mxnet_server.connected()) {
     if (m_is_mxnet_server_first_connected) {
@@ -140,8 +221,6 @@ void tstlan4::app_t::tick()
     mp_options_form->show();
   }
 
-  if (mp_options_form->is_inner_options_button_click()) {
-    mp_tstlan4lib->inner_options_event()->exec();
-  }
+  
 }
 

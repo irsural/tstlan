@@ -10,11 +10,10 @@
 
 #include <irsfinal.h>
 
-tstlan4::cfg_t::cfg_t(TForm* ap_form):
+tstlan4::cfg_t::cfg_t():
   m_ini_name(irst("tstlan4.ini")),
   m_mxdata_assembly_params(m_ini_name),
   m_update_time(irs::make_cnt_ms(100)),
-  mp_tstlan4lib(IRS_NULL),
   #ifdef NOP
   mp_tstlan4lib(
     new irs::tstlan4_t(
@@ -28,9 +27,7 @@ tstlan4::cfg_t::cfg_t(TForm* ap_form):
   #endif //NOP
   mp_mxnet_client_hardflow(IRS_NULL/*irs::hardflow::make_udp_flow_client(
     irst("127.0.0.1"), 5005)*/),
-  mp_mxnet_server_hardflow(irs::hardflow::make_udp_flow_server(5005)),
-  mp_form(ap_form),
-  mp_options_form(new TOptionsForm(ap_form))
+  mp_mxnet_server_hardflow(irs::hardflow::make_udp_flow_server(5005))
 {
   #ifdef NOP
   irs::tstlan4_t* p_tstlan4lib_cb =
@@ -38,11 +35,23 @@ tstlan4::cfg_t::cfg_t(TForm* ap_form):
   p_tstlan4lib_cb->init(ap_form);
   #endif //NOP
 }
-irs::tstlan4_base_t* tstlan4::cfg_t::tstlan4lib()
+
+irs::handle_t<irs::tstlan4_base_t> tstlan4::cfg_t::make_tstlan4lib()
+{
+  irs::handle_t<irs::tstlan4_base_t> tstlan4lib(new irs::tstlan4_t(
+    irs::tstlan4_t::ft_internal,
+    m_ini_name,
+    irst(""),
+    m_update_time,
+    irs::tstlan4_t::global_log_unchange));
+  return tstlan4lib;
+}
+
+/*irs::tstlan4_base_t* tstlan4::cfg_t::tstlan4lib()
 {
   mp_tstlan4lib.reset();
   mp_tstlan4lib.reset(new irs::tstlan4_t(
-    irs::tstlan4_t::ft_external,
+    irs::tstlan4_t::ft_internal,
     m_ini_name,
     irst(""),
     m_update_time,
@@ -50,9 +59,10 @@ irs::tstlan4_base_t* tstlan4::cfg_t::tstlan4lib()
   ));
   irs::tstlan4_t* p_tstlan4lib_cb =
     static_cast<irs::tstlan4_t*>(mp_tstlan4lib.get());
-  p_tstlan4lib_cb->init(mp_form);
+  //p_tstlan4lib_cb->init(mp_form);
+  p_tstlan4lib_cb->show();
   return mp_tstlan4lib.get();
-}
+}*/
 counter_t tstlan4::cfg_t::update_time() const
 {
   return m_update_time;
@@ -68,10 +78,6 @@ irs::hardflow_t& tstlan4::cfg_t::mxnet_client_hardflow()
 irs::hardflow_t& tstlan4::cfg_t::mxnet_server_hardflow()
 {
   return *mp_mxnet_server_hardflow;
-}
-options_form_t* tstlan4::cfg_t::options_form()
-{
-  return mp_options_form->data();
 }
 
 tstlan4::test_t::test_t():
