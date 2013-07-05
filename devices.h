@@ -8,9 +8,11 @@
 #include <hardflowg.h>
 #include <mxdata.h>
 #include <mxini.h>
+#include <irsdevices.h>
 
 #include <irsfinal.h>
 
+#ifdef NOP
 namespace irs {
 
 class mxdata_assembly_t
@@ -76,6 +78,8 @@ public:
 mxdata_assembly_types_t* mxdata_assembly_types();
 
 } // namespace irs
+
+#endif // NOP
 
 #endif //devicesH
 

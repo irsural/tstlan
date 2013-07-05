@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include <tstlan4lib.h>
+#include <tstlan5lib.h>
 #include <irsstd.h>
 #include <irsstring.h>
 #include <irstime.h>
@@ -36,33 +37,34 @@ tstlan4::cfg_t::cfg_t():
   #endif //NOP
 }
 
-irs::handle_t<irs::tstlan4_base_t> tstlan4::cfg_t::make_tstlan4lib()
+irs::handle_t<irs::param_box_base_t> tstlan4::cfg_t::make_options_param_box()
 {
-  irs::handle_t<irs::tstlan4_base_t> tstlan4lib(new irs::tstlan4_t(
-    irs::tstlan4_t::ft_internal,
+  irs::handle_t<irs::param_box_base_t> options(
+    new irs::param_box_t(irst("Îïöèè"), irst("options")));
+  return options;
+}
+
+irs::handle_t<irs::tstlan4_base_t> tstlan4::cfg_t::make_tstlan4lib(
+  irs::chart_window_t* ap_chart)
+{
+  irs::handle_t<irs::tstlan4_base_t> tstlan4lib(new irs::tstlan::view_t(
+    irs::tstlan::view_t::ft_internal,
+    ap_chart,
     m_ini_name,
-    irst(""),
+    string_type(),
     m_update_time,
-    irs::tstlan4_t::global_log_unchange));
+    irs::tstlan::view_t::global_log_unchange));
   return tstlan4lib;
 }
 
-/*irs::tstlan4_base_t* tstlan4::cfg_t::tstlan4lib()
+irs::handle_t<irs::chart_window_t> tstlan4::cfg_t::make_chart()
 {
-  mp_tstlan4lib.reset();
-  mp_tstlan4lib.reset(new irs::tstlan4_t(
-    irs::tstlan4_t::ft_internal,
-    m_ini_name,
-    irst(""),
-    m_update_time,
-    irs::tstlan4_t::global_log_connect
-  ));
-  irs::tstlan4_t* p_tstlan4lib_cb =
-    static_cast<irs::tstlan4_t*>(mp_tstlan4lib.get());
-  //p_tstlan4lib_cb->init(mp_form);
-  p_tstlan4lib_cb->show();
-  return mp_tstlan4lib.get();
-}*/
+  irs::handle_t<irs::chart_window_t> chart_window(
+    new irs::chart::builder_chart_window_t(10000, 1000,
+    irs::chart::builder_chart_window_t::stay_on_top_off));
+  return chart_window;
+}
+
 counter_t tstlan4::cfg_t::update_time() const
 {
   return m_update_time;

@@ -78,6 +78,8 @@ irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
 
 tstlan4::app_t::app_t(cfg_t* ap_cfg):
   mp_cfg(ap_cfg),
+  mp_options_param_box(mp_cfg->make_options_param_box()),
+  mp_chart(mp_cfg->make_chart()),
   m_mxnet_server_data(),
   m_mxnet_server(mp_cfg->mxnet_server_hardflow(),
     m_mxnet_server_data.size()/sizeof(irs_i32)),
@@ -86,6 +88,14 @@ tstlan4::app_t::app_t(cfg_t* ap_cfg):
   m_test(),
   m_devices_map()
 {
+  mp_options_param_box->add_edit(irst("Время обновления, мс"), irst("200"));
+  mp_options_param_box->add_edit(
+    irst("Количество точек в графике"), irst("1000"));
+  mp_options_param_box->add_bool(irst("Сбросить время"), false);
+  mp_options_param_box->set_ini_name(mp_cfg->ini_name());
+  mp_options_param_box->load();
+  apply_options();
+
   m_mxnet_server_data.connect(&m_mxnet_server);
 }
 
@@ -111,9 +121,9 @@ void tstlan4::app_t::set_devices(
         m_devices_map.erase(it);
       }
       device_t device;
-      device.tstlan4lib = mp_cfg->make_tstlan4lib();
+      device.tstlan4lib = mp_cfg->make_tstlan4lib(mp_chart.get());
       if (!device.tstlan4lib.is_empty()) {
-        device.tstlan4lib->conf_section(irst("vars"));
+        //device.tstlan4lib->conf_section(irst("vars"));
         device.tstlan4lib->ini_name(dev_opt_it->first);
         device.tstlan4lib->load_conf();
         device.mxdata_assembly =
@@ -123,14 +133,15 @@ void tstlan4::app_t::set_devices(
           device.mxdata_assembly->enabled(dev_opt_it->second.enabled);
           device.type = dev_opt_it->second.type;
           m_devices_map.insert(make_pair(dev_opt_it->first, device));
+          device.tstlan4lib->connect(device.mxdata_assembly->mxdata());
         }
       }
     } else if (it != m_devices_map.end()) {
       if (it->second.mxdata_assembly->enabled() != dev_opt_it->second.enabled) {
         it->second.mxdata_assembly->enabled(dev_opt_it->second.enabled);
+        it->second.tstlan4lib->connect(it->second.mxdata_assembly->mxdata());
       }
     }
-
     ++dev_opt_it;
   }
 
@@ -176,11 +187,46 @@ void tstlan4::app_t::show_device_options(const string_type& a_name)
   it->second.mxdata_assembly->show_options();
 }
 
+void tstlan4::app_t::show_chart()
+{
+  mp_chart->show();
+}
+
+void tstlan4::app_t::show_modal_options()
+{
+  if (mp_options_param_box->show()) {
+    apply_options();
+  }
+  mp_options_param_box->save();
+}
+
+void tstlan4::app_t::apply_options()
+{
+  const double refresh_time =
+    irs::param_box_read_number<irs_i32>(mp_options_param_box.get(),
+    irst("Время обновления, мс"));
+  mp_chart->set_refresh_time(refresh_time);
+  const irs_u32 chart_size =
+    irs::param_box_read_number<irs_u32>(mp_options_param_box.get(),
+    irst("Количество точек в графике"));
+  mp_chart->resize(chart_size);
+  if (mp_options_param_box->get_param(irst("Сбросить время")) ==
+    irst("true")) {
+    mp_options_param_box->set_param(irst("Сбросить время"), irst("false"));
+    std::map<string_type, device_t>::iterator it = m_devices_map.begin();
+    while (it == m_devices_map.end()) {
+      it->second.tstlan4lib->reset_chart();
+      ++it;
+    }
+    mp_chart->clear();
+  }
+}
+
 void tstlan4::app_t::import(
   const string_type& a_source, const string_type& a_destination)
 {
   irs::handle_t<irs::tstlan4_base_t> tstlan4lib =
-    mp_cfg->make_tstlan4lib();
+    mp_cfg->make_tstlan4lib(NULL);
   string_type section = tstlan4lib->conf_section();
   string_type ini_name = tstlan4lib->ini_name();
   tstlan4lib->conf_section(irst("tstlan4_Vars"));
@@ -217,9 +263,9 @@ void tstlan4::app_t::tick()
     }
   }
 
-  if (m_options_event.check()) {
+  /*if (m_options_event.check()) {
     mp_options_form->show();
-  }
+  }*/
 
   
 }

@@ -106,12 +106,19 @@ TMainForm *MainForm;
 // при попытке открыть происходит переполнение буфера при конвертации
 // имени из wchar_t в char (csvwork.cpp:165)
 // ---------------------------------------------------------------------------
-__fastcall TMainForm::TMainForm(TComponent* Owner) : TForm(Owner),
-mp_memo_buf(new irs::memobuf(LogMemo, 200)), m_cfg(), m_app(&m_cfg),
-m_ini_file(), m_devices_config_dir(irst("devices")),
-m_device_config_file_ext(irst("ini")),
-m_device_options_section(irst("device")), m_assembly_type_list(),
-m_assembly_type_default(), m_devices() {
+__fastcall TMainForm::TMainForm(TComponent* Owner) :
+  TForm(Owner),
+  mp_memo_buf(new irs::memobuf(LogMemo, 200)),
+  m_cfg(),
+  m_app(&m_cfg),
+  m_ini_file(),
+  m_devices_config_dir(irst("devices")),
+  m_device_config_file_ext(irst("ini")),
+  m_device_options_section(irst("device")),
+  m_assembly_type_list(),
+  m_assembly_type_default(),
+  m_devices()
+{
   enum {
     clearance = 10
   };
@@ -130,8 +137,14 @@ m_assembly_type_default(), m_devices() {
   // irs::mlog() << irs::sdatetime << "Запуск программы" << endl;
   irs::cbuilder::file_version_t file_version;
   irs::cbuilder::get_file_version(Application->ExeName.c_str(), file_version);
+  const string_type file_version_str =
+    irs::cbuilder::file_version_to_str(file_version);
+
+  MainForm->Caption = irst("Тест сети ") +
+    irs::str_conv<String>(file_version_str);
+
   irs::irs_string_t version_str = IRS_SIMPLE_FROM_TYPE_STR
-      (irs::cbuilder::file_version_to_str(file_version).c_str());
+    (irs::cbuilder::file_version_to_str(file_version).c_str());
   irs::mlog() << "Версия: " << version_str << endl;
   irs::mlog() << endl;
 
@@ -146,7 +159,7 @@ m_assembly_type_default(), m_devices() {
   // vector<irs::string_t> m_assembly_type_list;
   irs::mxdata_assembly_types()->enum_types(&m_assembly_type_list);
   TcxComboBoxProperties* Props = dynamic_cast<TcxComboBoxProperties*>
-      (TypeColumn->Properties);
+    (TypeColumn->Properties);
   for (int i = 0; i < m_assembly_type_list.size(); i++) {
     Props->Items->Add(irs::str_conv<String>(m_assembly_type_list[i]));
   }
@@ -166,18 +179,19 @@ m_assembly_type_default(), m_devices() {
 }
 
 void __fastcall TMainForm::DevicesCXGridDataControllerBeforeDelete
-    (TcxCustomDataController* ADataController, int ARecordIndex) {
+  (TcxCustomDataController* ADataController, int ARecordIndex)
+{
   IRS_DBG_MSG("DevicesCXGridDataControllerBeforeDelete");
-
 }
 
 void __fastcall TMainForm::DevicesCXGridDataControllerAfterDelete
-    (TcxCustomDataController* ADataController) {
+  (TcxCustomDataController* ADataController)
+{
   IRS_DBG_MSG("DevicesCXGridDataControllerAfterDelete");
 }
 
-void TMainForm::load_devices_list() {
-
+void TMainForm::load_devices_list()
+{
   DevicesCXGrid->ActiveView->DataController->RecordCount = 0;
 
   TSearchRec sr;
@@ -186,16 +200,19 @@ void TMainForm::load_devices_list() {
 
   String filter = dir + String(irst("\\*")) + irst(".") + irs::str_conv<String>
     (m_device_config_file_ext);
+  DevicesCXGrid->ActiveView->BeginUpdate();
   if (FindFirst(filter, faAnyFile, sr) == 0) {
     add_device(dir + irst("\\") + sr.Name);
     while (FindNext(sr) == 0) {
       add_device(dir + irst("\\") + sr.Name);
     }
   }
+  DevicesCXGrid->ActiveView->EndUpdate();
   FindClose(sr);
 }
 
-void TMainForm::add_device(const String& a_file_name) {
+void TMainForm::add_device(const String& a_file_name)
+{
   irs::ini_file_t ini_file;
   ini_file.set_ini_name(a_file_name);
   ini_file.set_section(m_device_options_section);
@@ -222,20 +239,21 @@ void TMainForm::add_device(const String& a_file_name) {
       device_options.type) != m_assembly_type_list.end()) {
     DevicesCXGrid->ActiveView->DataController->Values[row][TypeColumn->Index]
       = Variant(irs::str_conv<String>(device_options.type));
-  }
-  else {
+  } else {
     DevicesCXGrid->ActiveView->DataController->Values[row][TypeColumn->Index]
       = Variant(irs::str_conv<String>(m_assembly_type_default));
   }
 }
 
 // ---------------------------------------------------------------------------
-__fastcall TMainForm::~TMainForm() {
+__fastcall TMainForm::~TMainForm()
+{
   m_ini_file.save();
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TMainForm::TickTimerTimer(TObject *Sender) {
+void __fastcall TMainForm::TickTimerTimer(TObject *Sender)
+{
   if (!tstlan4::tick_lock()->check()) {
     m_app.tick();
   }
@@ -257,11 +275,13 @@ struct less_nocase_t {
 
 
 
-void TMainForm::enum_assembly_types() {
+void TMainForm::enum_assembly_types()
+{
   irs::mxdata_assembly_types()->enum_types(&m_assembly_type_list);
 }
 
-String TMainForm::ExtractFileUltraShortName(const String& Name) {
+String TMainForm::ExtractFileUltraShortName(const String& Name)
+{
   String ShortFileName = ExtractFileName(Name);
   String ExtFileName = ExtractFileExt(ShortFileName);
   int LengthFileName = ShortFileName.Length();
@@ -287,7 +307,8 @@ TMainForm::string_type TMainForm::make_file_full_name(
     m_device_config_file_ext;
 }
 
-TPoint TMainForm::GetFocusedCellCoord() {
+TPoint TMainForm::GetFocusedCellCoord()
+{
   TcxCustomGridTableView * AView = (TcxCustomGridTableView*)
     DevicesCXGrid->FocusedView;
   TcxCustomGridTableController * AController = AView->Controller;
@@ -300,13 +321,13 @@ TPoint TMainForm::GetFocusedCellCoord() {
 }
 // ---------------------------------------------------------------------------
 
-
-TMainForm::string_type TMainForm::generate_new_unique_name
-    (const string_type& a_device_name) {
+TMainForm::string_type TMainForm::generate_new_unique_name(
+  const string_type& a_device_name)
+{
   int i = 1;
   while (true) {
     const string_type new_full_file_name = make_file_full_name
-        (a_device_name + irst("_") + irs::num_to_str(i));
+      (a_device_name + irst("_") + irs::num_to_str(i));
     if (m_devices.find(new_full_file_name) == m_devices.end()) {
       return new_full_file_name;
     }
@@ -316,78 +337,31 @@ TMainForm::string_type TMainForm::generate_new_unique_name
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::DeviceListValueListEditorSelectCell(TObject *Sender,
-  int ACol, int ARow, bool &CanSelect) {
+  int ACol, int ARow, bool &CanSelect)
+{
   // NameEdit->Text = DeviceListValueListEditor->Keys[ARow];
 }
 // ---------------------------------------------------------------------------
 
-
-void __fastcall TMainForm::TypeColumnGetProperties
-    (TcxCustomGridTableItem *Sender, TcxCustomGridRecord *ARecord,
-  TcxCustomEditProperties *&AProperties)
-
-{
-  TcxComboBoxProperties* Props = dynamic_cast<TcxComboBoxProperties*>
-      (AProperties);
-  if (Props) {
-    // Props->Items->Clear();
-    // TStringList *pMyStringList = new TStringList();
-    /* if (ARecord->RecordIndex == 0) {
-    Props->Items->Add("2");
-    Props->Items->Add("3");
-    Props->Items->Add("4");
-    } else {
-    Props->Items->Add("20");
-    Props->Items->Add("30");
-    Props->Items->Add("40");
-    } */
-    // Props->Items->Clear();
-    // Props->Items->AddStrings(pMyStringList);*/
-  }
-}
-// ---------------------------------------------------------------------------
-
-
 void __fastcall TMainForm::OptionsColumnPropertiesButtonClick(TObject *Sender,
   int AButtonIndex)
-
 {
   String name = FileNameColumn->EditValue;
   m_app.show_device_options(irs::str_conv<string_type>(name));
 }
 // ---------------------------------------------------------------------------
 
-void __fastcall TMainForm::ShowTstlanColumnPropertiesButtonClick
-    (TObject *Sender, int AButtonIndex) {
+void __fastcall TMainForm::ShowTstlanColumnPropertiesButtonClick(
+  TObject *Sender, int AButtonIndex)
+{
   String name = FileNameColumn->EditValue;
   m_app.show_tstlan4lib(irs::str_conv<string_type>(name));
 }
 // ---------------------------------------------------------------------------
 
-void __fastcall TMainForm::NameColumnPropertiesEditValueChanged
-    (TObject *Sender) {
-  IRS_DBG_MSG("NameColumnPropertiesEditValueChanged");
-
-}
-// ---------------------------------------------------------------------------
-
-void __fastcall TMainForm::NameColumnPropertiesCloseQuery(TObject *Sender,
-  bool &CanClose)
-
-{
-  IRS_DBG_MSG("NameColumnPropertiesCloseQuery");
-  // CanClose = false;
-}
-// ---------------------------------------------------------------------------
-
-
-void __fastcall TMainForm::NameColumnPropertiesCloseUp(TObject *Sender) {
-  IRS_DBG_MSG("NameColumnPropertiesCloseUp");
-}
-// ---------------------------------------------------------------------------
-
 void __fastcall TMainForm::NameColumnPropertiesValidate(TObject *Sender,
-  Variant &DisplayValue, TCaption &ErrorText, bool &Error) {
+  Variant &DisplayValue, TCaption &ErrorText, bool &Error)
+{
   TPoint point = GetFocusedCellCoord();
   int row = point.y;
   int col = point.x;
@@ -399,41 +373,31 @@ void __fastcall TMainForm::NameColumnPropertiesValidate(TObject *Sender,
       Error = true;
       return;
     }
-    /*const String file_name_bstr_test =
-      DevicesCXGrid->ActiveView->DataController->DisplayTexts[row]
-      [FileNameColumn->Index];*/
     const String file_name_bstr =
       DevicesCXGrid->ActiveView->DataController->Values[row]
       [FileNameColumn->Index];
     const string_type file_name = irs::str_conv<string_type>(file_name_bstr);
-    if (file_name.empty()) {
-
+    std::map<string_type,
+    tstlan4::device_options_t>::iterator it = m_devices.find(file_name);
+    IRS_LIB_ASSERT(it != m_devices.end());
+    const string_type new_file_name = make_file_full_name(new_name);
+    if (!RenameFile(file_name_bstr, irs::str_conv<String>(new_file_name))) {
+      ErrorText = irst("Ошибка при переименовании файла");
+      Error = true;
+      return;
     }
-    else {
-      std::map<string_type,
-      tstlan4::device_options_t>::iterator it = m_devices.find(file_name);
-      IRS_LIB_ASSERT(it != m_devices.end());
-      const string_type new_file_name = make_file_full_name(new_name);
-      if (!RenameFile(file_name_bstr, irs::str_conv<String>(new_file_name))) {
-        ErrorText = irst("Файл конфигурации с таким именем уже существует");
-        Error = true;
-        return;
-      }
-      tstlan4::device_options_t device_options = it->second;
-      m_devices.erase(it);
-      m_devices.insert(make_pair(new_file_name, device_options));
-      DevicesCXGrid->ActiveView->DataController->Values[row]
-        [FileNameColumn->Index] = Variant(irs::str_conv<String>(new_file_name));
-      m_app.set_devices(m_devices);
-    }
+    tstlan4::device_options_t device_options = it->second;
+    m_devices.erase(it);
+    m_devices.insert(make_pair(new_file_name, device_options));
+    DevicesCXGrid->ActiveView->DataController->Values[row]
+      [FileNameColumn->Index] = Variant(irs::str_conv<String>(new_file_name));
+    m_app.set_devices(m_devices);
   }
-
-  // IRS_DBG_MSG(irs::str_conv<irs::string>(dname));
-  // Error = false;
 }
 // ---------------------------------------------------------------------------
 
-void __fastcall TMainForm::DeleteDeviceActionExecute(TObject *Sender) {
+void __fastcall TMainForm::DeleteDeviceActionExecute(TObject *Sender)
+{
   TPoint point = GetFocusedCellCoord();
   const String file_full_name_bstr =
     DevicesCXGrid->ActiveView->DataController->Values[point.y]
@@ -455,7 +419,8 @@ void __fastcall TMainForm::DeleteDeviceActionExecute(TObject *Sender) {
 }
 // ---------------------------------------------------------------------------
 
-void __fastcall TMainForm::CopyDeviceActionExecute(TObject *Sender) {
+void __fastcall TMainForm::CopyDeviceActionExecute(TObject *Sender)
+{
   TPoint point = GetFocusedCellCoord();
   const String file_name_bstr =
     DevicesCXGrid->ActiveView->DataController->Values[point.y]
@@ -475,14 +440,10 @@ void __fastcall TMainForm::CopyDeviceActionExecute(TObject *Sender) {
 }
 // ---------------------------------------------------------------------------
 
-void __fastcall TMainForm::AddDeviceActionExecute(TObject *Sender) {
+void __fastcall TMainForm::AddDeviceActionExecute(TObject *Sender)
+{
   const string_type file_full_name = generate_new_unique_name
-      (irst("новое_устройство"));
-  /*if (!CopyFileTo(file_name_bstr, new_file_name_bstr)) {
-    Application->MessageBox(irst("Создать копию файла не удалось"),
-      irst("Ошибка"), MB_OK + MB_ICONERROR);
-    return;
-  }*/
+    (irst("новое_устройство"));
   add_device(irs::str_conv<String>(file_full_name));
   m_app.set_devices(m_devices);
 }
@@ -552,4 +513,16 @@ void __fastcall TMainForm::TypeColumnPropertiesChange(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TMainForm::ShowChartActionExecute(TObject *Sender)
+{
+  m_app.show_chart();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::OptionsActionExecute(TObject *Sender)
+{
+  m_app.show_modal_options();
+}
+//---------------------------------------------------------------------------
 

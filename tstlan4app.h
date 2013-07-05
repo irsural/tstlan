@@ -70,9 +70,12 @@ public:
     const std::map<string_type, device_options_t>& a_devices);
   void show_tstlan4lib(const string_type& a_name);
   void show_device_options(const string_type& a_name);
+  void show_chart();
+  void show_modal_options();
   void import(const string_type& a_source, const string_type& a_destination);
   void tick();
 private:
+  void apply_options();
   typedef irs::string_t string_type;
   struct device_t
   {
@@ -82,7 +85,9 @@ private:
   };
   cfg_t* mp_cfg;
   //irs::tstlan4_base_t* mp_tstlan4lib;
-  options_form_t* mp_options_form;
+  //options_form_t* mp_options_form;
+  irs::handle_t<irs::param_box_base_t> mp_options_param_box;
+  irs::handle_t<irs::chart_window_t> mp_chart;
   mxnet_vars_data_t m_mxnet_server_data;
   irs::mxnet_t m_mxnet_server;
   irs::event_t m_options_event;

@@ -12,6 +12,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
+#ifdef NOP
 TOptionsForm *OptionsForm;
 //---------------------------------------------------------------------------
 #ifdef NOP
@@ -297,4 +298,4 @@ void __fastcall TOptionsForm::ImportButtonClick(TObject *Sender)
   
 }
 //---------------------------------------------------------------------------
-
+#endif // NOP

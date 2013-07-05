@@ -13,8 +13,9 @@
 #include <irscpp.h>
 #include <irsstrdefs.h>
 #include <hardflowg.h>
+#include <irsparam.h>
 
-#include "options.h"
+#include "devices.h"
 
 #include <irsfinal.h>
 
@@ -46,10 +47,11 @@ class cfg_t
 {
 public:
   typedef irs::string_t string_type;
-
   cfg_t();
-  //irs::tstlan4_base_t* tstlan4lib();
-  irs::handle_t<irs::tstlan4_base_t> make_tstlan4lib();
+  irs::handle_t<irs::param_box_base_t> make_options_param_box();
+  irs::handle_t<irs::tstlan4_base_t> make_tstlan4lib(
+    irs::chart_window_t* ap_chart);
+  irs::handle_t<irs::chart_window_t> make_chart();
   counter_t update_time() const;
   string_type ini_name() const;
   irs::hardflow_t& mxnet_client_hardflow();
@@ -58,7 +60,6 @@ private:
   string_type m_ini_name;
   irs::mxdata_assembly_params_t m_mxdata_assembly_params;
   counter_t m_update_time;
-  //irs::handle_t<irs::tstlan4_base_t> mp_tstlan4lib;
   irs::handle_t<irs::hardflow_t> mp_mxnet_client_hardflow;
   irs::handle_t<irs::hardflow_t> mp_mxnet_server_hardflow;
 };

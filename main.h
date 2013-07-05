@@ -126,16 +126,15 @@ __published:	// IDE-managed Components
   TSpeedButton *SpeedButton3;
   TAction *ImportAction;
   TSpeedButton *SpeedButton4;
+  TSpeedButton *SpeedButton5;
+  TAction *ShowChartAction;
+  TAction *OptionsAction;
+  TSpeedButton *SpeedButton6;
   void __fastcall TickTimerTimer(TObject *Sender);
   void __fastcall DeviceListValueListEditorSelectCell(TObject *Sender, int ACol,
           int ARow, bool &CanSelect);
-  void __fastcall TypeColumnGetProperties(TcxCustomGridTableItem *Sender,
-          TcxCustomGridRecord *ARecord, TcxCustomEditProperties *&AProperties);
   void __fastcall OptionsColumnPropertiesButtonClick(TObject *Sender, int AButtonIndex);
   void __fastcall ShowTstlanColumnPropertiesButtonClick(TObject *Sender, int AButtonIndex);
-  void __fastcall NameColumnPropertiesEditValueChanged(TObject *Sender);
-  void __fastcall NameColumnPropertiesCloseQuery(TObject *Sender, bool &CanClose);
-  void __fastcall NameColumnPropertiesCloseUp(TObject *Sender);
   void __fastcall NameColumnPropertiesValidate(TObject *Sender, Variant &DisplayValue,
           TCaption &ErrorText, bool &Error);
   void __fastcall DeleteDeviceActionExecute(TObject *Sender);
@@ -145,6 +144,8 @@ __published:	// IDE-managed Components
   void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
   void __fastcall EnabledColumnPropertiesChange(TObject *Sender);
   void __fastcall TypeColumnPropertiesChange(TObject *Sender);
+  void __fastcall ShowChartActionExecute(TObject *Sender);
+  void __fastcall OptionsActionExecute(TObject *Sender);
 
 
 private:	// User declarations

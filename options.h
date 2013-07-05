@@ -23,7 +23,7 @@
 #include <irsfinal.h>
 #include <Dialogs.hpp>
 //---------------------------------------------------------------------------
-
+#ifdef NOP
 struct device_t
 {
   typedef irs::string_t string_type;
@@ -96,5 +96,6 @@ public:		// User declarations
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TOptionsForm *OptionsForm;
+#endif
 //---------------------------------------------------------------------------
 #endif

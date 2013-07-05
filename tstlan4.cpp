@@ -10,7 +10,6 @@
 
 #include <irsfinal.h>
 //---------------------------------------------------------------------------
-USEFORM("options.cpp", OptionsForm);
 USEFORM("main.cpp", MainForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)

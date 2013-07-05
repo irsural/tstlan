@@ -13,6 +13,7 @@
 
 #include <irsfinal.h>
 
+#ifdef NOP
 namespace irs {
 
 class mxdata_assembly_params_container_t
@@ -629,4 +630,4 @@ irs::handle_t<irs::mxdata_assembly_t>
   }
   return result_assembly;
 }
-
+#endif // NOP

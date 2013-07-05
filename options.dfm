@@ -22,7 +22,7 @@ object OptionsForm: TOptionsForm
     Top = 0
     Width = 654
     Height = 483
-    ActivePage = GeneralSheet
+    ActivePage = DeviceListSheet
     Align = alClient
     TabOrder = 0
     object GeneralSheet: TTabSheet

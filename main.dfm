@@ -21,7 +21,6 @@ object MainForm: TMainForm
     Height = 434
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 28
     object DevicesCXGridTableView1: TcxGridTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.Filter.Options = [fcoCaseInsensitive]
@@ -43,6 +42,7 @@ object MainForm: TMainForm
         Properties.BlobEditKind = bekMemo
         Properties.BlobPaintStyle = bpsText
         Properties.ReadOnly = True
+        Visible = False
         Width = 69
       end
       object EnabledColumn: TcxGridColumn
@@ -58,7 +58,6 @@ object MainForm: TMainForm
         Properties.DropDownListStyle = lsFixedList
         Properties.ReadOnly = False
         Properties.OnChange = TypeColumnPropertiesChange
-        OnGetProperties = TypeColumnGetProperties
         Width = 149
       end
       object OptionsColumn: TcxGridColumn
@@ -98,30 +97,44 @@ object MainForm: TMainForm
     object SpeedButton1: TSpeedButton
       Left = 0
       Top = 0
-      Width = 89
+      Width = 72
       Height = 22
       Action = AddDeviceAction
     end
     object SpeedButton2: TSpeedButton
-      Left = 89
+      Left = 72
       Top = 0
       Width = 72
       Height = 22
       Action = CopyDeviceAction
     end
     object SpeedButton3: TSpeedButton
-      Left = 161
+      Left = 144
       Top = 0
-      Width = 64
+      Width = 72
       Height = 22
       Action = DeleteDeviceAction
     end
     object SpeedButton4: TSpeedButton
-      Left = 225
+      Left = 216
       Top = 0
-      Width = 64
+      Width = 72
       Height = 22
       Action = ImportAction
+    end
+    object SpeedButton5: TSpeedButton
+      Left = 288
+      Top = 0
+      Width = 72
+      Height = 22
+      Action = ShowChartAction
+    end
+    object SpeedButton6: TSpeedButton
+      Left = 360
+      Top = 0
+      Width = 72
+      Height = 22
+      Action = OptionsAction
     end
   end
   object TickTimer: TTimer
@@ -131,10 +144,10 @@ object MainForm: TMainForm
     Top = 1
   end
   object ImportOpenDialog: TOpenDialog
-    Left = 680
+    Left = 648
   end
   object ActionManager: TActionManager
-    Left = 712
+    Left = 680
     StyleName = 'Platform Default'
     object AddDeviceAction: TAction
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100
@@ -146,12 +159,19 @@ object MainForm: TMainForm
     end
     object DeleteDeviceAction: TAction
       Caption = #1059#1076#1072#1083#1080#1090#1100
-      ShortCut = 16430
       OnExecute = DeleteDeviceActionExecute
     end
     object ImportAction: TAction
       Caption = #1048#1084#1087#1086#1088#1090
       OnExecute = ImportActionExecute
+    end
+    object ShowChartAction: TAction
+      Caption = #1043#1088#1072#1092#1080#1082
+      OnExecute = ShowChartActionExecute
+    end
+    object OptionsAction: TAction
+      Caption = #1054#1087#1094#1080#1080
+      OnExecute = OptionsActionExecute
     end
   end
 end
