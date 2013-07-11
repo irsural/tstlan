@@ -131,8 +131,6 @@ __published:	// IDE-managed Components
   TAction *OptionsAction;
   TSpeedButton *SpeedButton6;
   void __fastcall TickTimerTimer(TObject *Sender);
-  void __fastcall DeviceListValueListEditorSelectCell(TObject *Sender, int ACol,
-          int ARow, bool &CanSelect);
   void __fastcall OptionsColumnPropertiesButtonClick(TObject *Sender, int AButtonIndex);
   void __fastcall ShowTstlanColumnPropertiesButtonClick(TObject *Sender, int AButtonIndex);
   void __fastcall NameColumnPropertiesValidate(TObject *Sender, Variant &DisplayValue,
@@ -156,6 +154,7 @@ private:	// User declarations
   void __fastcall DevicesCXGridDataControllerAfterDelete(
     TcxCustomDataController* ADataController);
   void enum_assembly_types();
+  void create_devices_dir();
   void load_devices_list();
   void add_device(const String& a_file_name);
   string_type generate_new_unique_name(const string_type& a_device_name);

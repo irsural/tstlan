@@ -135,6 +135,7 @@ object MainForm: TMainForm
       Width = 72
       Height = 22
       Action = OptionsAction
+      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
     end
   end
   object TickTimer: TTimer

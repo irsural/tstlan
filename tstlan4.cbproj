@@ -47,7 +47,6 @@
 			<BCC_wpad>true</BCC_wpad>
 			<BCC_wucp>true</BCC_wucp>
 			<BCC_wstv>true</BCC_wstv>
-			<BCC_wuse>true</BCC_wuse>
 			<BCC_wstl>true</BCC_wstl>
 			<BCC_wprc>true</BCC_wprc>
 			<TASM_Defines>NO_STRICT;$(TASM_Defines)</TASM_Defines>
@@ -69,12 +68,12 @@
 			<Multithreaded>true</Multithreaded>
 			<BCC_Defines>NO_STRICT;IRS_USE_DEV_EXPRESS=1;$(BCC_Defines)</BCC_Defines>
 			<DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
-			<BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wuse -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod</BCC_UserSuppliedOptions>
+			<BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod</BCC_UserSuppliedOptions>
 			<DCC_ObjPath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;$(DCC_ObjPath)</DCC_ObjPath>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
 			<BCC_Defines>_DEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
-			<BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wuse -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod -k</BCC_UserSuppliedOptions>
+			<BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod -k</BCC_UserSuppliedOptions>
 			<ILINK_LibraryPath>$(BDS)\lib\debug;$(ILINK_LibraryPath);$(ILINK_LibraryPath)</ILINK_LibraryPath>
 			<DCC_Define>DEBUG;$(DCC_Define);$(DCC_Define)</DCC_Define>
 			<BCC_SourceDebuggingOn>true</BCC_SourceDebuggingOn>
@@ -93,7 +92,7 @@
 			<BCC_Defines>NDEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
 			<IntermediateOutputDir>build\release\</IntermediateOutputDir>
 			<BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
-			<BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wuse -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod -r</BCC_UserSuppliedOptions>
+			<BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod -r</BCC_UserSuppliedOptions>
 			<TASM_Debugging>None</TASM_Debugging>
 			<DCC_AdditionalSwitches> -$O+</DCC_AdditionalSwitches>
 			<ILINK_LibraryPath>$(BDS)\lib\release;$(ILINK_LibraryPath);$(ILINK_LibraryPath)</ILINK_LibraryPath>
@@ -492,8 +491,8 @@
 						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
 						<VersionInfo Name="MajorVer">4</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
-						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">188</VersionInfo>
+						<VersionInfo Name="Release">1</VersionInfo>
+						<VersionInfo Name="Build">192</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -505,7 +504,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">4.1.0.188</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">4.1.1.192</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

@@ -345,7 +345,7 @@ void irs::mxnet_assembly_t::tick()
 void irs::mxnet_assembly_t::show_options()
 {
   if (mp_param_box->show() && m_enabled) {
-    mp_mxnet_client_hardflow->set_param(irst("remote_adress"),
+    mp_mxnet_client_hardflow->set_param(irst("remote_address"),
       mp_param_box->get_param(irst("IP")));
     mp_mxnet_client_hardflow->set_param(irst("remote_port"),
       mp_param_box->get_param(irst("Порт")));
@@ -554,7 +554,7 @@ void irs::modbus_assembly_t::tick()
 void irs::modbus_assembly_t::show_options()
 {
   if (mp_param_box->show()) {
-    mp_modbus_client_hardflow->set_param(irst("remote_adress"),
+    mp_modbus_client_hardflow->set_param(irst("remote_address"),
       mp_param_box->get_param(irst("IP")));
     mp_modbus_client_hardflow->set_param(irst("remote_port"),
       mp_param_box->get_param(irst("Порт")));
@@ -631,3 +631,4 @@ irs::handle_t<irs::mxdata_assembly_t>
   return result_assembly;
 }
 #endif // NOP
+

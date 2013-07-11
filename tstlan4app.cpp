@@ -50,28 +50,6 @@ irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
   const irs::string_t& a_device_type,
   irs::tstlan4_base_t* ap_tstlan4lib
 ) {
-  /*if (ap_options_form->device_count() != 0) {
-    irs::string_t current_device = ap_options_form->general_options()->
-      get_param(irst("Текущее устройство"));
-    irs::string_t current_type = irst("");
-    if (find_device(ap_options_form, current_device, &current_type)) {
-      return irs::mxdata_assembly_types()->
-        make_assembly(current_type, ap_tstlan4lib, current_device);
-    } else {
-      irs::string_t first_type = ap_options_form->device_types(0);
-      irs::string_t first_device = ap_options_form->device_names(0);
-      ap_options_form->general_options()->
-        set_param(irst("Текущее устройство"), first_device);
-      return irs::mxdata_assembly_types()->
-        make_assembly(first_type, ap_tstlan4lib, first_device);
-    }
-  } else {
-    irs::string_t devices_absent_name = irst("<Устройства отсутствуют>");
-    ap_options_form->general_options()->
-      set_param(irst("Текущее устройство"), devices_absent_name);
-    return irs::mxdata_assembly_types()->
-      make_assembly(irst("mxnet"), ap_tstlan4lib, devices_absent_name);
-  }*/
   return irs::mxdata_assembly_types()->
     make_assembly(a_device_type, ap_tstlan4lib, a_device_name);
 }
@@ -202,7 +180,7 @@ void tstlan4::app_t::show_modal_options()
 
 void tstlan4::app_t::apply_options()
 {
-  const double refresh_time =
+  const irs_i32 refresh_time =
     irs::param_box_read_number<irs_i32>(mp_options_param_box.get(),
     irst("Время обновления, мс"));
   mp_chart->set_refresh_time(refresh_time);

@@ -134,7 +134,6 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
 
   irs::mlog().rdbuf(mp_memo_buf.get());
 
-  // irs::mlog() << irs::sdatetime << "Запуск программы" << endl;
   irs::cbuilder::file_version_t file_version;
   irs::cbuilder::get_file_version(Application->ExeName.c_str(), file_version);
   const string_type file_version_str =
@@ -156,11 +155,10 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
   irst("Ctrl+R - переименовать устройство"); */
   // NameEdit->ShowHint = true;
 
-  // vector<irs::string_t> m_assembly_type_list;
   irs::mxdata_assembly_types()->enum_types(&m_assembly_type_list);
   TcxComboBoxProperties* Props = dynamic_cast<TcxComboBoxProperties*>
     (TypeColumn->Properties);
-  for (int i = 0; i < m_assembly_type_list.size(); i++) {
+  for (std::size_t i = 0; i < m_assembly_type_list.size(); i++) {
     Props->Items->Add(irs::str_conv<String>(m_assembly_type_list[i]));
   }
   m_assembly_type_default = m_assembly_type_list.at(0);
@@ -168,9 +166,6 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
   load_devices_list();
 
   m_app.set_devices(m_devices);
-
-  //DevicesCXGrid->ActiveView->DataController->DataModeController->SmartRefresh =
-    //true;
 
   DevicesCXGrid->ActiveView->DataController->OnAfterDelete =
     DevicesCXGridDataControllerAfterDelete;
@@ -188,6 +183,17 @@ void __fastcall TMainForm::DevicesCXGridDataControllerAfterDelete
   (TcxCustomDataController* ADataController)
 {
   IRS_DBG_MSG("DevicesCXGridDataControllerAfterDelete");
+}
+
+void TMainForm::create_devices_dir()
+{
+  String dir = GetCurrentDir() + irst("\\") + irs::str_conv<String>
+    (m_devices_config_dir);
+  if (!DirectoryExists(dir)) {
+    if (!ForceDirectories(dir)) {
+      throw Exception("Cannot create c:\\temp directory.");
+    }
+  }
 }
 
 void TMainForm::load_devices_list()
@@ -213,6 +219,7 @@ void TMainForm::load_devices_list()
 
 void TMainForm::add_device(const String& a_file_name)
 {
+  create_devices_dir();
   irs::ini_file_t ini_file;
   ini_file.set_ini_name(a_file_name);
   ini_file.set_section(m_device_options_section);
@@ -336,12 +343,6 @@ TMainForm::string_type TMainForm::generate_new_unique_name(
 }
 // ---------------------------------------------------------------------------
 
-void __fastcall TMainForm::DeviceListValueListEditorSelectCell(TObject *Sender,
-  int ACol, int ARow, bool &CanSelect)
-{
-  // NameEdit->Text = DeviceListValueListEditor->Keys[ARow];
-}
-// ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::OptionsColumnPropertiesButtonClick(TObject *Sender,
   int AButtonIndex)
