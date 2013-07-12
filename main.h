@@ -12,7 +12,7 @@
 
 #include <mxini.h>
 
-#include "tstlan4app.h"
+#include "tstlanapp.h"
 
 #include <irsfinal.h>
 #include <Grids.hpp>
@@ -149,14 +149,12 @@ __published:	// IDE-managed Components
 private:	// User declarations
   typedef irs::string_t string_type;
   typedef std::map<string_type, tstlan4::device_options_t> devices_type;
-  void __fastcall DevicesCXGridDataControllerBeforeDelete(
-    TcxCustomDataController* ADataController, int ARecordIndex);
-  void __fastcall DevicesCXGridDataControllerAfterDelete(
-    TcxCustomDataController* ADataController);
   void enum_assembly_types();
   void create_devices_dir();
   void load_devices_list();
   void add_device(const String& a_file_name);
+  String create_grid_configuration_file_full_name(
+    const String& a_device_file_full_name);
   string_type generate_new_unique_name(const string_type& a_device_name);
   String ExtractFileUltraShortName(const String& Name);
   String MakeFileFullName(const String& aUltraShortName);

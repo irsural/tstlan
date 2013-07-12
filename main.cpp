@@ -6,6 +6,7 @@
 #include <irsstring.h>
 #include <irsstrconv.h>
 #include <cbsysutils.h>
+#include <tstlan5lib.h>
 
 #include "main.h"
 #include "locktick.h"
@@ -139,8 +140,10 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
   const string_type file_version_str =
     irs::cbuilder::file_version_to_str(file_version);
 
-  MainForm->Caption = irst("Тест сети ") +
+  String program_name = irst("Тест сети ") +
     irs::str_conv<String>(file_version_str);
+  MainForm->Caption = program_name;
+  Application->Title = program_name;
 
   irs::irs_string_t version_str = IRS_SIMPLE_FROM_TYPE_STR
     (irs::cbuilder::file_version_to_str(file_version).c_str());
@@ -166,23 +169,6 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
   load_devices_list();
 
   m_app.set_devices(m_devices);
-
-  DevicesCXGrid->ActiveView->DataController->OnAfterDelete =
-    DevicesCXGridDataControllerAfterDelete;
-  DevicesCXGrid->ActiveView->DataController->OnBeforeDelete =
-    DevicesCXGridDataControllerBeforeDelete;
-}
-
-void __fastcall TMainForm::DevicesCXGridDataControllerBeforeDelete
-  (TcxCustomDataController* ADataController, int ARecordIndex)
-{
-  IRS_DBG_MSG("DevicesCXGridDataControllerBeforeDelete");
-}
-
-void __fastcall TMainForm::DevicesCXGridDataControllerAfterDelete
-  (TcxCustomDataController* ADataController)
-{
-  IRS_DBG_MSG("DevicesCXGridDataControllerAfterDelete");
 }
 
 void TMainForm::create_devices_dir()
@@ -191,7 +177,7 @@ void TMainForm::create_devices_dir()
     (m_devices_config_dir);
   if (!DirectoryExists(dir)) {
     if (!ForceDirectories(dir)) {
-      throw Exception("Cannot create c:\\temp directory.");
+      throw Exception(irst("Не удалось создать директорию ") + dir);
     }
   }
 }
@@ -387,12 +373,24 @@ void __fastcall TMainForm::NameColumnPropertiesValidate(TObject *Sender,
       Error = true;
       return;
     }
+    String grid_conf_file_name =
+      create_grid_configuration_file_full_name(file_name_bstr);
+    String new_grid_conf_file_name =
+      create_grid_configuration_file_full_name(
+      irs::str_conv<String>(new_file_name));
+
+    RenameFile(grid_conf_file_name, new_grid_conf_file_name);
+
     tstlan4::device_options_t device_options = it->second;
     m_devices.erase(it);
     m_devices.insert(make_pair(new_file_name, device_options));
     DevicesCXGrid->ActiveView->DataController->Values[row]
       [FileNameColumn->Index] = Variant(irs::str_conv<String>(new_file_name));
     m_app.set_devices(m_devices);
+
+    // tstlan при уничтожении восстанавливает файл. Удаляем его еще раз
+    DeleteFile(file_name_bstr);
+    DeleteFile(grid_conf_file_name);
   }
 }
 // ---------------------------------------------------------------------------
@@ -417,6 +415,21 @@ void __fastcall TMainForm::DeleteDeviceActionExecute(TObject *Sender)
   m_app.set_devices(m_devices);
   // tstlan при уничтожении восстанавливает файл. Удаляем его еще раз
   DeleteFile(file_full_name_bstr);
+  String grid_configuration_file_name =
+    create_grid_configuration_file_full_name(file_full_name_bstr);
+  DeleteFile(grid_configuration_file_name);
+}
+
+String TMainForm::create_grid_configuration_file_full_name(
+  const String& a_device_file_full_name)
+{
+  String grid_options_file_ext =
+    irs::str_conv<String>(irs::tstlan::get_grid_options_file_ext());
+  String grid_configuration_file_name =
+    ExtractFileDir(a_device_file_full_name) +
+    irst("\\") + irs::extract_file_ultra_short_name(a_device_file_full_name) +
+    irst(".") + grid_options_file_ext;
+  return grid_configuration_file_name;
 }
 // ---------------------------------------------------------------------------
 
