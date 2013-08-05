@@ -116,6 +116,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
   m_devices_config_dir(irst("devices")),
   m_device_config_file_ext(irst("ini")),
   m_device_options_section(irst("device")),
+  m_chart_position(),
   m_assembly_type_list(),
   m_assembly_type_default(),
   m_devices()
@@ -128,10 +129,23 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
   Height = Screen->WorkAreaHeight - 2 * clearance;
   Width = 550;
 
+  m_chart_position = m_app.chart()->position();
+
   m_ini_file.set_ini_name(m_cfg.ini_name().c_str());
   m_ini_file.set_section("MainForm");
   m_ini_file.add("", this);
+  m_ini_file.set_section("ChartForm");
+  m_ini_file.add(String("left"),
+    reinterpret_cast<irs_u32*>(&m_chart_position.left));
+  m_ini_file.add("top",
+    reinterpret_cast<irs_u32*>(&m_chart_position.top));
+  m_ini_file.add("right",
+    reinterpret_cast<irs_u32*>(&m_chart_position.right));
+  m_ini_file.add("bottom",
+    reinterpret_cast<irs_u32*>(&m_chart_position.bottom));
   m_ini_file.load();
+
+  m_app.chart()->set_position(m_chart_position);
 
   irs::mlog().rdbuf(mp_memo_buf.get());
 
@@ -241,6 +255,7 @@ void TMainForm::add_device(const String& a_file_name)
 // ---------------------------------------------------------------------------
 __fastcall TMainForm::~TMainForm()
 {
+  m_chart_position = m_app.chart()->position();
   m_ini_file.save();
 }
 

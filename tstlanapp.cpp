@@ -195,6 +195,11 @@ void tstlan4::app_t::import(
   tstlan4lib->save_conf();
 }
 
+irs::chart_window_t* tstlan4::app_t::chart()
+{
+  return mp_chart.get();
+}
+
 void tstlan4::app_t::tick()
 {
   m_test.tick();

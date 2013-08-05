@@ -169,6 +169,7 @@ private:	// User declarations
   const string_type m_devices_config_dir;
   const string_type m_device_config_file_ext;
   const String m_device_options_section;
+  irs::rect_t m_chart_position;
   vector<string_type> m_assembly_type_list;
   string_type m_assembly_type_default;
   devices_type m_devices;

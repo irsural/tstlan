@@ -73,6 +73,7 @@ public:
   void show_chart();
   void show_modal_options();
   void import(const string_type& a_source, const string_type& a_destination);
+  irs::chart_window_t* chart();
   void tick();
 private:
   void apply_options();
