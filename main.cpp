@@ -262,8 +262,30 @@ __fastcall TMainForm::~TMainForm()
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::TickTimerTimer(TObject *Sender)
 {
-  if (!tstlan4::tick_lock()->check()) {
-    m_app.tick();
+  try
+  {
+    if (!tstlan4::tick_lock()->check()) {
+      m_app.tick();
+    }
+  }
+  catch (Exception &exception)
+  {
+    tstlan4::tick_lock()->enable();
+    Application->ShowException(&exception);
+    tstlan4::tick_lock()->disable();
+  }
+  catch (...)
+  {
+    try
+	{
+      throw Exception("");
+    }
+	catch (Exception &exception)
+	{
+	  tstlan4::tick_lock()->enable();
+	  Application->ShowException(&exception);
+	  tstlan4::tick_lock()->disable();
+	}
   }
 }
 // ---------------------------------------------------------------------------
