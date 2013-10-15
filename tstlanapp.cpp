@@ -49,7 +49,7 @@ tstlan4::app_t::app_t(cfg_t* ap_cfg):
 {
   mp_options_param_box->add_edit(irst("Время обновления, мс"), irst("200"));
   mp_options_param_box->add_edit(
-    irst("Количество точек в графике"), irst("1000"));
+	irst("Количество точек в графике"), irst("1000"));
   mp_options_param_box->add_bool(irst("Сбросить время"), false);
   mp_options_param_box->set_ini_name(mp_cfg->ini_name());
   mp_options_param_box->load();
@@ -66,7 +66,7 @@ void tstlan4::app_t::set_devices(
 
   while (dev_opt_it != a_devices.end()) {
     std::map<string_type, device_t>::iterator it =
-      m_devices_map.find(dev_opt_it->first);
+	  m_devices_map.find(dev_opt_it->first);
     bool need_reset = false;
     if (it != m_devices_map.end()) {
       if (it->second.type != dev_opt_it->second.type) {
@@ -153,7 +153,7 @@ void tstlan4::app_t::show_chart()
 void tstlan4::app_t::show_modal_options()
 {
   if (mp_options_param_box->show()) {
-    apply_options();
+	apply_options();
   }
   mp_options_param_box->save();
 }
@@ -165,18 +165,18 @@ void tstlan4::app_t::apply_options()
     irst("Время обновления, мс"));
   mp_chart->set_refresh_time(refresh_time);
   const irs_u32 chart_size =
-    irs::param_box_read_number<irs_u32>(mp_options_param_box.get(),
-    irst("Количество точек в графике"));
+	irs::param_box_read_number<irs_u32>(mp_options_param_box.get(),
+	irst("Количество точек в графике"));
   mp_chart->resize(chart_size);
   if (mp_options_param_box->get_param(irst("Сбросить время")) ==
-    irst("true")) {
-    mp_options_param_box->set_param(irst("Сбросить время"), irst("false"));
-    std::map<string_type, device_t>::iterator it = m_devices_map.begin();
-    while (it == m_devices_map.end()) {
-      it->second.tstlan4lib->reset_chart();
-      ++it;
-    }
-    mp_chart->clear();
+	irst("true")) {
+	mp_options_param_box->set_param(irst("Сбросить время"), irst("false"));
+	std::map<string_type, device_t>::iterator it = m_devices_map.begin();
+	while (it != m_devices_map.end()) {
+	  it->second.tstlan4lib->reset_chart();
+	  ++it;
+	}
+	mp_chart->clear();
   }
 }
 
