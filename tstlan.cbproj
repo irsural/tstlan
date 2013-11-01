@@ -55,7 +55,7 @@
 			<DCC_UnitSearchPath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;D:\Docs\Borland Studio Projects;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_ResourcePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;$(DCC_ResourcePath)</DCC_ResourcePath>
 			<PackageImports>vcl.bpi;vclx.bpi;dbrtl.bpi;Rave65VCL.bpi;bdertl.bpi;rtl.bpi;vcldb.bpi;adortl.bpi;dbxcds.bpi;dbexpress.bpi;vclib.bpi;ibxpress.bpi;xmlrtl.bpi;vclactnband.bpi;inet.bpi;IntrawebDB_90_100.bpi;Intraweb_90_100.bpi;vclie.bpi;inetdbbde.bpi;inetdbxpress.bpi;IndyCore.bpi;IndySystem.bpi;bcbofficexp.bpi;bcbsmp.bpi;soaprtl.bpi;dsnap.bpi;IndyProtocols.bpi;bcbie.bpi;teeui.bpi;teedb.bpi;tee.bpi;vcldbx.bpi;dsnapcon.bpi;websnap.bpi;webdsnap.bpi</PackageImports>
-			<BCC_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;$(BDS)\include;$(BDS)\include\dinkumware;$(BDS)\include\vcl;$(BCC_IncludePath)</BCC_IncludePath>
+			<BCC_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;$(BDS)\include;$(BDS)\include\dinkumware;$(BDS)\include\vcl;..\extern_libs\winapi\hid;$(BCC_IncludePath)</BCC_IncludePath>
 			<BRCC_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;$(BDS)\include;$(BDS)\include\dinkumware;$(BDS)\include\vcl;$(BRCC_IncludePath)</BRCC_IncludePath>
 			<DCC_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;D:\Docs\Borland Studio Projects;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_IncludePath)</DCC_IncludePath>
 			<BCC_PCHCache>true</BCC_PCHCache>
@@ -66,7 +66,7 @@
 			<ILINK_ObjectSearchPath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;$(ILINK_ObjectSearchPath)</ILINK_ObjectSearchPath>
 			<AllPackageLibs>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;vclimg.lib;vcldb.lib;xmlrtl.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib;vclactnband.lib;cxDataRS14.lib;cxLibraryRS14.lib;dxGDIPlusRS14.lib;dxCoreRS14.lib;dxThemeRS14.lib;cxEditorsRS14.lib;cxGridRS14.lib;dxLayoutControlRS14.lib;cxPageControlRS14.lib;dxComnRS14.lib;cxExportRS14.lib;dxServerModeRS14.lib;cxTreeListRS14.lib;cxTreeListdxBarPopupMenuRS14.lib;dxBarRS14.lib;dxSkinsCoreRS14.lib;dxSkinscxPCPainterRS14.lib;dxSkinBlackRS14.lib;dxSkinBlueRS14.lib;dxSkinCaramelRS14.lib;dxSkinCoffeeRS14.lib;dxSkinDarkRoomRS14.lib;dxSkinDarkSideRS14.lib;dxSkinFoggyRS14.lib;dxSkinGlassOceansRS14.lib;dxSkiniMaginaryRS14.lib;dxSkinLilianRS14.lib;dxSkinLiquidSkyRS14.lib;dxSkinLondonLiquidSkyRS14.lib;dxSkinMcSkinRS14.lib;dxSkinMoneyTwinsRS14.lib;dxSkinOffice2007BlackRS14.lib;dxSkinOffice2007BlueRS14.lib;dxSkinOffice2007GreenRS14.lib;dxSkinOffice2007PinkRS14.lib;dxSkinOffice2007SilverRS14.lib;dxSkinOffice2010BlackRS14.lib;dxSkinOffice2010BlueRS14.lib;dxSkinOffice2010SilverRS14.lib;dxSkinPumpkinRS14.lib;dxSkinSevenRS14.lib;dxSkinSharpRS14.lib;dxSkinSilverRS14.lib;dxSkinSpringTimeRS14.lib;dxSkinStardustRS14.lib;dxSkinSummer2008RS14.lib;dxSkinValentineRS14.lib;dxSkinXmas2008BlueRS14.lib;dxSkinBlueprintRS14.lib;dxSkinDevExpressDarkStyleRS14.lib;dxSkinDevExpressStyleRS14.lib;dxSkinHighContrastRS14.lib;dxSkinSevenClassicRS14.lib;dxSkinSharpPlusRS14.lib;dxSkinTheAsphaltWorldRS14.lib;dxSkinVS2010RS14.lib;dxSkinWhiteprintRS14.lib</AllPackageLibs>
 			<Multithreaded>true</Multithreaded>
-			<BCC_Defines>NO_STRICT;IRS_USE_DEV_EXPRESS=1;$(BCC_Defines)</BCC_Defines>
+			<BCC_Defines>NO_STRICT;IRS_USE_DEV_EXPRESS=1;IRS_USE_HID_WIN_API=1;$(BCC_Defines)</BCC_Defines>
 			<DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
 			<BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod</BCC_UserSuppliedOptions>
 			<DCC_ObjPath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;$(DCC_ObjPath)</DCC_ObjPath>
@@ -487,8 +487,8 @@
 						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
 						<VersionInfo Name="MajorVer">5</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
-						<VersionInfo Name="Release">3</VersionInfo>
-						<VersionInfo Name="Build">202</VersionInfo>
+						<VersionInfo Name="Release">4</VersionInfo>
+						<VersionInfo Name="Build">203</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -500,7 +500,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">5.0.3.202</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">5.0.4.203</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>
