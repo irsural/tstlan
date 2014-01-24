@@ -107,20 +107,12 @@ TMainForm *MainForm;
 // при попытке открыть происходит переполнение буфера при конвертации
 // имени из wchar_t в char (csvwork.cpp:165)
 // ---------------------------------------------------------------------------
-__fastcall TMainForm::TMainForm(TComponent* Owner) :
-  TForm(Owner),
-  mp_memo_buf(new irs::memobuf(LogMemo, 200)),
-  m_cfg(),
-  m_app(&m_cfg),
-  m_ini_file(),
-  m_devices_config_dir(irst("devices")),
-  m_device_config_file_ext(irst("ini")),
-  m_device_options_section(irst("device")),
-  m_chart_position(),
-  m_assembly_type_list(),
-  m_assembly_type_default(),
-  m_devices()
-{
+__fastcall TMainForm::TMainForm(TComponent* Owner) : TForm(Owner),
+mp_memo_buf(new irs::memobuf(LogMemo, 200)), m_cfg(), m_app(&m_cfg),
+m_ini_file(), m_devices_config_dir(irst("devices")),
+m_device_config_file_ext(irst("ini")),
+m_device_options_section(irst("device")), m_chart_position(),
+m_assembly_type_list(), m_assembly_type_default(), m_devices() {
   enum {
     clearance = 10
   };
@@ -137,10 +129,8 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
   m_ini_file.set_section("ChartForm");
   m_ini_file.add(String("left"),
     reinterpret_cast<irs_u32*>(&m_chart_position.left));
-  m_ini_file.add("top",
-    reinterpret_cast<irs_u32*>(&m_chart_position.top));
-  m_ini_file.add("right",
-    reinterpret_cast<irs_u32*>(&m_chart_position.right));
+  m_ini_file.add("top", reinterpret_cast<irs_u32*>(&m_chart_position.top));
+  m_ini_file.add("right", reinterpret_cast<irs_u32*>(&m_chart_position.right));
   m_ini_file.add("bottom",
     reinterpret_cast<irs_u32*>(&m_chart_position.bottom));
   m_ini_file.load();
@@ -151,16 +141,16 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
 
   irs::cbuilder::file_version_t file_version;
   irs::cbuilder::get_file_version(Application->ExeName.c_str(), file_version);
-  const string_type file_version_str =
-    irs::cbuilder::file_version_to_str(file_version);
+  const string_type file_version_str = irs::cbuilder::file_version_to_str
+      (file_version);
 
-  String program_name = irst("Тест сети ") +
-    irs::str_conv<String>(file_version_str);
+  String program_name = irst("Тест сети ") + irs::str_conv<String>
+      (file_version_str);
   MainForm->Caption = program_name;
   Application->Title = program_name;
 
   irs::irs_string_t version_str = IRS_SIMPLE_FROM_TYPE_STR
-    (irs::cbuilder::file_version_to_str(file_version).c_str());
+      (irs::cbuilder::file_version_to_str(file_version).c_str());
   irs::mlog() << "Версия: " << version_str << endl;
   irs::mlog() << endl;
 
@@ -174,7 +164,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
 
   irs::mxdata_assembly_types()->enum_types(&m_assembly_type_list);
   TcxComboBoxProperties* Props = dynamic_cast<TcxComboBoxProperties*>
-    (TypeColumn->Properties);
+      (TypeColumn->Properties);
   for (std::size_t i = 0; i < m_assembly_type_list.size(); i++) {
     Props->Items->Add(irs::str_conv<String>(m_assembly_type_list[i]));
   }
@@ -182,13 +172,24 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
 
   load_devices_list();
 
-  m_app.set_devices(m_devices);
+  const vector<string_type>bad_devices = m_app.set_devices(m_devices);
+  if (!bad_devices.empty()) {
+    show_bad_devices_if_exists(bad_devices);
+    for (size_type i = 0; i < bad_devices.size(); i++) {
+      devices_type::iterator it = m_devices.find(bad_devices[i]);
+      IRS_LIB_ASSERT(it != m_devices.end());
+      it->second.enabled = false;
+      const int row = FindRowDevice(it->first);
+      IRS_LIB_ASSERT(row >= 0);
+      DevicesCXGrid->ActiveView->DataController->Values[row]
+        [EnabledColumn->Index] = Variant(false);
+    }
+  }
 }
 
-void TMainForm::create_devices_dir()
-{
-  String dir = GetCurrentDir() + irst("\\") + irs::str_conv<String>
-    (m_devices_config_dir);
+void TMainForm::create_devices_dir() {
+  String dir = GetCurrentDir() + irst("\\") +
+    irs::str_conv<String>(m_devices_config_dir);
   if (!DirectoryExists(dir)) {
     if (!ForceDirectories(dir)) {
       throw Exception(irst("Не удалось создать директорию ") + dir);
@@ -196,16 +197,15 @@ void TMainForm::create_devices_dir()
   }
 }
 
-void TMainForm::load_devices_list()
-{
+void TMainForm::load_devices_list() {
   DevicesCXGrid->ActiveView->DataController->RecordCount = 0;
 
   TSearchRec sr;
-  String dir = GetCurrentDir() + irst("\\") + irs::str_conv<String>
-    (m_devices_config_dir);
+  String dir = GetCurrentDir() + irst("\\") +
+    irs::str_conv<String>(m_devices_config_dir);
 
-  String filter = dir + String(irst("\\*")) + irst(".") + irs::str_conv<String>
-    (m_device_config_file_ext);
+  String filter = dir + String(irst("\\*")) + irst(".") +
+    irs::str_conv<String>(m_device_config_file_ext);
   DevicesCXGrid->ActiveView->BeginUpdate();
   if (FindFirst(filter, faAnyFile, sr) == 0) {
     add_device(dir + irst("\\") + sr.Name);
@@ -217,8 +217,7 @@ void TMainForm::load_devices_list()
   FindClose(sr);
 }
 
-void TMainForm::add_device(const String& a_file_name)
-{
+void TMainForm::add_device(const String& a_file_name) {
   create_devices_dir();
   irs::ini_file_t ini_file;
   ini_file.set_ini_name(a_file_name);
@@ -248,7 +247,22 @@ void TMainForm::add_device(const String& a_file_name)
       = Variant(irs::str_conv<String>(device_options.type));
   } else {
     DevicesCXGrid->ActiveView->DataController->Values[row][TypeColumn->Index]
-      = Variant(irs::str_conv<String>(m_assembly_type_default));
+        = Variant(irs::str_conv<String>(m_assembly_type_default));
+  }
+}
+
+void TMainForm::show_bad_devices_if_exists(
+  const std::vector<string_type>& a_bad_devices) {
+  if (!a_bad_devices.empty()) {
+    string_type msg = irst("Следующие устройства включить не удалось: ");
+    for (size_type i = 0; i < a_bad_devices.size(); i++) {
+      if (i > 0) {
+        msg += irst(", ");
+      }
+      msg += irst("\"") + a_bad_devices[i] + irst("\"");
+    }
+    msg += irst(".");
+    Application->MessageBox(msg.c_str(), irst("Ошибка"), MB_OK + MB_ICONERROR);
   }
 }
 
@@ -262,37 +276,32 @@ __fastcall TMainForm::~TMainForm()
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::TickTimerTimer(TObject *Sender)
 {
-  try
-  {
+  try {
     if (!tstlan4::tick_lock()->check()) {
       m_app.tick();
     }
   }
-  catch (Exception &exception)
-  {
+  catch(Exception & exception) {
     tstlan4::tick_lock()->enable();
     Application->ShowException(&exception);
     tstlan4::tick_lock()->disable();
-  }
-  catch (...)
-  {
-    try
-	{
+  } catch(...) {
+    try {
       throw Exception("");
     }
-	catch (Exception &exception)
-	{
-	  tstlan4::tick_lock()->enable();
-	  Application->ShowException(&exception);
-	  tstlan4::tick_lock()->disable();
-	}
+    catch(Exception & exception) {
+      tstlan4::tick_lock()->enable();
+      Application->ShowException(&exception);
+      tstlan4::tick_lock()->disable();
+    }
   }
 }
 // ---------------------------------------------------------------------------
 
 struct less_nocase_t {
-  bool operator()(const irs::string_t & a_left, const irs::string_t & a_right)
-      const {
+  bool operator()(const irs::string_t & a_left,
+    const irs::string_t & a_right) const
+  {
     irs::string_t left;
     irs::string_t right;
     transform(a_left.begin(), a_left.end(), back_inserter(left),
@@ -303,10 +312,7 @@ struct less_nocase_t {
   }
 };
 
-
-
-void TMainForm::enum_assembly_types()
-{
+void TMainForm::enum_assembly_types() {
   irs::mxdata_assembly_types()->enum_types(&m_assembly_type_list);
 }
 
@@ -324,17 +330,17 @@ String TMainForm::ExtractFileUltraShortName(const String& Name)
 
 String TMainForm::MakeFileFullName(const String& aUltraShortName)
 {
-  return irs::str_conv<String>(make_file_full_name(
-    irs::str_conv<string_type>(aUltraShortName)));
+  return irs::str_conv<String>(make_file_full_name(irs::str_conv<string_type>
+    (aUltraShortName)));
 }
 
 TMainForm::string_type TMainForm::make_file_full_name(
   const string_type& a_file_ultra_short_name)
 {
-  string_type dir = irs::str_conv<string_type>(GetCurrentDir()) + irst("\\") +
-    m_devices_config_dir;
-  return dir + irst("\\") + a_file_ultra_short_name + irst(".") +
-    m_device_config_file_ext;
+  string_type dir = irs::str_conv<string_type>(GetCurrentDir()) + irst("\\")
+    + m_devices_config_dir;
+  return dir + irst("\\") + a_file_ultra_short_name + irst(".")
+    + m_device_config_file_ext;
 }
 
 TPoint TMainForm::GetFocusedCellCoord()
@@ -349,6 +355,20 @@ TPoint TMainForm::GetFocusedCellCoord()
   point.y = AController->FocusedRecordIndex;
   return point;
 }
+
+int TMainForm::FindRowDevice(const string_type& a_device_full_name)
+{
+  for (int i = 0; i < DevicesCXGrid->ActiveView->DataController->RowCount;
+    i++) {
+    const String file_name_bstr =
+      DevicesCXGrid->ActiveView->DataController->Values[i]
+      [FileNameColumn->Index];
+    if (irs::str_conv<string_type>(file_name_bstr) == a_device_full_name) {
+      return i;
+    }
+  }
+  return -1;
+}
 // ---------------------------------------------------------------------------
 
 TMainForm::string_type TMainForm::generate_new_unique_name(
@@ -356,8 +376,8 @@ TMainForm::string_type TMainForm::generate_new_unique_name(
 {
   int i = 1;
   while (true) {
-    const string_type new_full_file_name = make_file_full_name
-      (a_device_name + irst("_") + irs::num_to_str(i));
+    const string_type new_full_file_name =
+      make_file_full_name(a_device_name + irst("_") + irs::num_to_str(i));
     if (m_devices.find(new_full_file_name) == m_devices.end()) {
       return new_full_file_name;
     }
@@ -365,7 +385,6 @@ TMainForm::string_type TMainForm::generate_new_unique_name(
   }
 }
 // ---------------------------------------------------------------------------
-
 
 void __fastcall TMainForm::OptionsColumnPropertiesButtonClick(TObject *Sender,
   int AButtonIndex)
@@ -375,8 +394,8 @@ void __fastcall TMainForm::OptionsColumnPropertiesButtonClick(TObject *Sender,
 }
 // ---------------------------------------------------------------------------
 
-void __fastcall TMainForm::ShowTstlanColumnPropertiesButtonClick(
-  TObject *Sender, int AButtonIndex)
+void __fastcall TMainForm::ShowTstlanColumnPropertiesButtonClick
+  (TObject *Sender, int AButtonIndex)
 {
   String name = FileNameColumn->EditValue;
   m_app.show_tstlan4lib(irs::str_conv<string_type>(name));
@@ -410,11 +429,10 @@ void __fastcall TMainForm::NameColumnPropertiesValidate(TObject *Sender,
       Error = true;
       return;
     }
-    String grid_conf_file_name =
-      create_grid_configuration_file_full_name(file_name_bstr);
-    String new_grid_conf_file_name =
-      create_grid_configuration_file_full_name(
-      irs::str_conv<String>(new_file_name));
+    String grid_conf_file_name = create_grid_configuration_file_full_name
+        (file_name_bstr);
+    String new_grid_conf_file_name = create_grid_configuration_file_full_name
+        (irs::str_conv<String>(new_file_name));
 
     RenameFile(grid_conf_file_name, new_grid_conf_file_name);
 
@@ -422,7 +440,8 @@ void __fastcall TMainForm::NameColumnPropertiesValidate(TObject *Sender,
     m_devices.erase(it);
     m_devices.insert(make_pair(new_file_name, device_options));
     DevicesCXGrid->ActiveView->DataController->Values[row]
-      [FileNameColumn->Index] = Variant(irs::str_conv<String>(new_file_name));
+        [FileNameColumn->Index] = Variant
+        (irs::str_conv<String>(new_file_name));
     m_app.set_devices(m_devices);
 
     // tstlan при уничтожении восстанавливает файл. Удаляем его еще раз
@@ -436,8 +455,8 @@ void __fastcall TMainForm::DeleteDeviceActionExecute(TObject *Sender)
 {
   TPoint point = GetFocusedCellCoord();
   const String file_full_name_bstr =
-    DevicesCXGrid->ActiveView->DataController->Values[point.y]
-    [FileNameColumn->Index];
+      DevicesCXGrid->ActiveView->DataController->Values[point.y]
+      [FileNameColumn->Index];
 
   if (!DeleteFile(file_full_name_bstr)) {
     Application->MessageBox(irst("Удалить файл не удалось"), irst("Ошибка"),
@@ -446,26 +465,25 @@ void __fastcall TMainForm::DeleteDeviceActionExecute(TObject *Sender)
   }
   DevicesCXGrid->ActiveView->DataController->DeleteSelection();
   const string_type file_full_name = irs::str_conv<string_type>
-    (file_full_name_bstr);
+      (file_full_name_bstr);
   IRS_LIB_ASSERT(m_devices.find(file_full_name) != m_devices.end());
   m_devices.erase(file_full_name);
   m_app.set_devices(m_devices);
   // tstlan при уничтожении восстанавливает файл. Удаляем его еще раз
   DeleteFile(file_full_name_bstr);
-  String grid_configuration_file_name =
-    create_grid_configuration_file_full_name(file_full_name_bstr);
+  String grid_configuration_file_name = create_grid_configuration_file_full_name
+      (file_full_name_bstr);
   DeleteFile(grid_configuration_file_name);
 }
 
-String TMainForm::create_grid_configuration_file_full_name(
-  const String& a_device_file_full_name)
+String TMainForm::create_grid_configuration_file_full_name
+  (const String& a_device_file_full_name)
 {
-  String grid_options_file_ext =
-    irs::str_conv<String>(irs::tstlan::get_grid_options_file_ext());
-  String grid_configuration_file_name =
-    ExtractFileDir(a_device_file_full_name) +
-    irst("\\") + irs::extract_file_ultra_short_name(a_device_file_full_name) +
-    irst(".") + grid_options_file_ext;
+  String grid_options_file_ext = irs::str_conv<String>(
+    irs::tstlan::get_grid_options_file_ext());
+  String grid_configuration_file_name = ExtractFileDir(
+    a_device_file_full_name) + irst("\\") + irs::extract_file_ultra_short_name(
+    a_device_file_full_name) + irst(".") + grid_options_file_ext;
   return grid_configuration_file_name;
 }
 // ---------------------------------------------------------------------------
@@ -477,10 +495,10 @@ void __fastcall TMainForm::CopyDeviceActionExecute(TObject *Sender)
     DevicesCXGrid->ActiveView->DataController->Values[point.y]
     [FileNameColumn->Index];
 
-  const String device_name_bstr = ExtractFileUltraShortName
-    (irs::str_conv<String>(file_name_bstr));
-  const String new_file_name_bstr = irs::str_conv<String>
-    (generate_new_unique_name(irs::str_conv<string_type>(device_name_bstr)));
+  const String device_name_bstr = ExtractFileUltraShortName(
+    irs::str_conv<String>(file_name_bstr));
+  const String new_file_name_bstr = irs::str_conv<String>(
+    generate_new_unique_name(irs::str_conv<string_type>(device_name_bstr)));
   if (!CopyFileTo(file_name_bstr, new_file_name_bstr)) {
     Application->MessageBox(irst("Создать копию файла не удалось"),
       irst("Ошибка"), MB_OK + MB_ICONERROR);
@@ -493,24 +511,23 @@ void __fastcall TMainForm::CopyDeviceActionExecute(TObject *Sender)
 
 void __fastcall TMainForm::AddDeviceActionExecute(TObject *Sender)
 {
-  const string_type file_full_name = generate_new_unique_name
-    (irst("новое_устройство"));
+  const string_type file_full_name = generate_new_unique_name(
+    irst("новое_устройство"));
   add_device(irs::str_conv<String>(file_full_name));
   m_app.set_devices(m_devices);
 }
 // ---------------------------------------------------------------------------
 
-
 void __fastcall TMainForm::ImportActionExecute(TObject *Sender)
 {
   if (ImportOpenDialog->Execute()) {
-    const string_type destination = string_type(irst(".\\"))
-        + m_devices_config_dir + +irst(".") + m_device_config_file_ext;
+    const string_type destination = string_type(irst(".\\")) +
+      m_devices_config_dir + +irst(".") + m_device_config_file_ext;
     m_app.import(irs::str_conv<string_type>(ImportOpenDialog->FileName),
       destination);
   }
 }
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::FormClose(TObject *Sender, TCloseAction &Action)
 {
@@ -527,7 +544,7 @@ void __fastcall TMainForm::FormClose(TObject *Sender, TCloseAction &Action)
     ++it;
   }
 }
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 TMainForm::devices_type::iterator TMainForm::get_focused_device()
 {
@@ -535,8 +552,8 @@ TMainForm::devices_type::iterator TMainForm::get_focused_device()
   const String file_full_name_bstr =
     DevicesCXGrid->ActiveView->DataController->Values[point.y]
     [FileNameColumn->Index];
-  devices_type::iterator it = m_devices.find(
-    irs::str_conv<string_type>(file_full_name_bstr));
+  devices_type::iterator it = m_devices.find(irs::str_conv<string_type>
+    (file_full_name_bstr));
   return it;
 }
 
@@ -546,34 +563,38 @@ void __fastcall TMainForm::EnabledColumnPropertiesChange(TObject *Sender)
   TPoint point = GetFocusedCellCoord();
   devices_type::iterator it = get_focused_device();
   IRS_LIB_ASSERT(it != m_devices.end());
-  it->second.enabled = DevicesCXGrid->ActiveView->DataController->
-    Values[point.y][EnabledColumn->Index];
-  m_app.set_devices(m_devices);
+  it->second.enabled = DevicesCXGrid->ActiveView->DataController->Values
+    [point.y][EnabledColumn->Index];
+  const vector<string_type>bad_devices = m_app.set_devices(m_devices);
+  if (!bad_devices.empty()) {
+    show_bad_devices_if_exists(bad_devices);
+    DevicesCXGrid->ActiveView->DataController->Values[point.y]
+      [EnabledColumn->Index] = Variant(false);
+    it->second.enabled = false;
+  }
 }
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TypeColumnPropertiesChange(TObject *Sender)
 {
   DevicesCXGrid->ActiveView->DataController->PostEditingData();
   TPoint point = GetFocusedCellCoord();
   devices_type::iterator it = get_focused_device();
-  String type_bstr = DevicesCXGrid->ActiveView->DataController->Values
-    [point.y][TypeColumn->Index];
+  String type_bstr = DevicesCXGrid->ActiveView->DataController->Values[point.y]
+    [TypeColumn->Index];
   it->second.type = irs::str_conv<string_type>(type_bstr);
   m_app.set_devices(m_devices);
 }
-//---------------------------------------------------------------------------
-
+// ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::ShowChartActionExecute(TObject *Sender)
 {
   m_app.show_chart();
 }
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::OptionsActionExecute(TObject *Sender)
 {
   m_app.show_modal_options();
 }
-//---------------------------------------------------------------------------
-
+// ---------------------------------------------------------------------------

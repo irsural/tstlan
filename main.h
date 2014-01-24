@@ -147,12 +147,15 @@ __published:	// IDE-managed Components
 
 
 private:	// User declarations
+  typedef std::size_t size_type;
   typedef irs::string_t string_type;
   typedef std::map<string_type, tstlan4::device_options_t> devices_type;
   void enum_assembly_types();
   void create_devices_dir();
   void load_devices_list();
   void add_device(const String& a_file_name);
+  void show_bad_devices_if_exists(
+    const std::vector<string_type>& a_bad_devices);
   String create_grid_configuration_file_full_name(
     const String& a_device_file_full_name);
   string_type generate_new_unique_name(const string_type& a_device_name);
@@ -161,6 +164,7 @@ private:	// User declarations
   string_type make_file_full_name(const string_type& a_file_ultra_short_name);
   TPoint GetFocusedCellCoord();
   devices_type::iterator get_focused_device();
+  int FindRowDevice(const string_type& a_device_full_name);
 
   irs::handle_t<irs::memobuf> mp_memo_buf;
   tstlan4::cfg_t m_cfg;

@@ -66,7 +66,7 @@ public:
   typedef std::size_t size_type;
   typedef irs::string_t string_type;
   app_t(cfg_t* ap_cfg);
-  void set_devices(
+  std::vector<string_type> set_devices(
     const std::map<string_type, device_options_t>& a_devices);
   void show_tstlan4lib(const string_type& a_name);
   void show_device_options(const string_type& a_name);

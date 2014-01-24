@@ -58,12 +58,12 @@ tstlan4::app_t::app_t(cfg_t* ap_cfg):
   m_mxnet_server_data.connect(&m_mxnet_server);
 }
 
-void tstlan4::app_t::set_devices(
+std::vector<tstlan4::app_t::string_type> tstlan4::app_t::set_devices(
   const std::map<string_type, device_options_t>& a_devices)
 {
   std::map<string_type, device_options_t>::const_iterator dev_opt_it =
     a_devices.begin();
-
+  std::vector<string_type> bad_devices;
   while (dev_opt_it != a_devices.end()) {
     std::map<string_type, device_t>::iterator it =
 	  m_devices_map.find(dev_opt_it->first);
@@ -75,30 +75,35 @@ void tstlan4::app_t::set_devices(
     } else {
       need_reset = true;
     }
-    if (need_reset) {
-      if (it != m_devices_map.end()) {
-        m_devices_map.erase(it);
-      }
-      device_t device;
-      device.tstlan4lib = mp_cfg->make_tstlan4lib(mp_chart.get());
-      if (!device.tstlan4lib.is_empty()) {
-        device.tstlan4lib->ini_name(dev_opt_it->first);
-        device.tstlan4lib->load_conf();
-        device.mxdata_assembly =
-          make_assembly(dev_opt_it->first, dev_opt_it->second.type,
-          device.tstlan4lib.get());
-        if (!device.mxdata_assembly.is_empty()) {
-          device.mxdata_assembly->enabled(dev_opt_it->second.enabled);
-          device.type = dev_opt_it->second.type;
-          m_devices_map.insert(make_pair(dev_opt_it->first, device));
-          device.tstlan4lib->connect(device.mxdata_assembly->mxdata());
+    try {
+      if (need_reset) {
+        if (it != m_devices_map.end()) {
+          m_devices_map.erase(it);
+        }
+        device_t device;
+        device.tstlan4lib = mp_cfg->make_tstlan4lib(mp_chart.get());
+        if (!device.tstlan4lib.is_empty()) {
+          device.tstlan4lib->ini_name(dev_opt_it->first);
+          device.tstlan4lib->load_conf();
+          device.mxdata_assembly =
+            make_assembly(dev_opt_it->first, dev_opt_it->second.type,
+            device.tstlan4lib.get());
+          if (!device.mxdata_assembly.is_empty()) {
+            device.mxdata_assembly->enabled(dev_opt_it->second.enabled);
+            device.type = dev_opt_it->second.type;
+            m_devices_map.insert(make_pair(dev_opt_it->first, device));
+            device.tstlan4lib->connect(device.mxdata_assembly->mxdata());
+          }
+        }
+      } else if (it != m_devices_map.end()) {
+        if (it->second.mxdata_assembly->enabled() !=
+            dev_opt_it->second.enabled) {
+          it->second.mxdata_assembly->enabled(dev_opt_it->second.enabled);
+          it->second.tstlan4lib->connect(it->second.mxdata_assembly->mxdata());
         }
       }
-    } else if (it != m_devices_map.end()) {
-      if (it->second.mxdata_assembly->enabled() != dev_opt_it->second.enabled) {
-        it->second.mxdata_assembly->enabled(dev_opt_it->second.enabled);
-        it->second.tstlan4lib->connect(it->second.mxdata_assembly->mxdata());
-      }
+    } catch (...) {
+      bad_devices.push_back(dev_opt_it->first);
     }
     ++dev_opt_it;
   }
@@ -117,6 +122,7 @@ void tstlan4::app_t::set_devices(
       delete_elem_it = m_devices_map.end();
     }
   }
+  return bad_devices;
 }
 
 void tstlan4::app_t::show_tstlan4lib(const string_type& a_name)
