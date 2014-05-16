@@ -88,6 +88,8 @@
 #pragma link "cxHyperLinkEdit"
 #pragma link "cxCalc"
 #pragma link "cxCurrencyEdit"
+#pragma link "dxColorEdit"
+#pragma link "cxColorComboBox"
 #pragma resource "*.dfm"
 
 TMainForm *MainForm;
@@ -107,12 +109,19 @@ TMainForm *MainForm;
 // при попытке открыть происходит переполнение буфера при конвертации
 // имени из wchar_t в char (csvwork.cpp:165)
 // ---------------------------------------------------------------------------
-__fastcall TMainForm::TMainForm(TComponent* Owner) : TForm(Owner),
-mp_memo_buf(new irs::memobuf(LogMemo, 200)), m_cfg(), m_app(&m_cfg),
-m_ini_file(), m_devices_config_dir(irst("devices")),
-m_device_config_file_ext(irst("ini")),
-m_device_options_section(irst("device")), m_chart_position(),
-m_assembly_type_list(), m_assembly_type_default(), m_devices() {
+__fastcall TMainForm::TMainForm(TComponent* Owner) :
+  TForm(Owner),
+  mp_memo_buf(new irs::memobuf(LogMemo, 200)), m_cfg(), m_app(&m_cfg),
+  m_ini_file(),
+  m_devices_config_dir(irst("devices")),
+  m_device_config_file_ext(irst("ini")),
+  m_device_options_section(irst("device")),
+  m_chart_position(),
+  m_assembly_type_list(),
+  m_assembly_type_default(),
+  m_devices(),
+  m_update_status_timer(irs::make_cnt_s(0.5))
+{
   enum {
     clearance = 10
   };
@@ -279,6 +288,17 @@ void __fastcall TMainForm::TickTimerTimer(TObject *Sender)
   try {
     if (!tstlan4::tick_lock()->check()) {
       m_app.tick();
+      if (m_update_status_timer.check()) {
+        update_device_status_color();
+      }
+      /*devices_type::iterator it = m_devices.begin();
+      int device_index = 0;
+      while (it != m_devices.end()) {
+        const error_string_list_type error_list =
+          m_app.get_last_error_string_list(it->first);
+        it->second.
+        ++it;
+      } */
     }
   }
   catch(Exception & exception) {
@@ -295,6 +315,40 @@ void __fastcall TMainForm::TickTimerTimer(TObject *Sender)
       tstlan4::tick_lock()->disable();
     }
   }
+}
+
+void TMainForm::update_device_status_color()
+{
+  DevicesCXGrid->ActiveView->BeginUpdate();
+  devices_type::iterator it = m_devices.begin();
+  int device_index = 0;
+  while (it != m_devices.end()) {
+    device_status_type status = m_app.get_status(it->first);
+    TColor color = clWhite;
+    if (it->second.enabled) {
+      switch (status) {
+        case irs::mxdata_assembly_t::status_not_supported: {
+          color = clBlack;
+        } break;
+        case irs::mxdata_assembly_t::status_connected: {
+          color = clGreen;
+        } break;
+        case irs::mxdata_assembly_t::status_busy: {
+          color = clYellow;
+        } break;
+        case irs::mxdata_assembly_t::status_error: {
+          color = clRed;
+        } break;
+      }
+    } else {
+      color = clWhite;
+    }
+    DevicesCXGrid->ActiveView->DataController->Values[device_index]
+      [StatusColumn->Index] = Variant(color);
+    device_index++;
+    ++it;
+  }
+  DevicesCXGrid->ActiveView->EndUpdate();
 }
 // ---------------------------------------------------------------------------
 
@@ -598,3 +652,11 @@ void __fastcall TMainForm::OptionsActionExecute(TObject *Sender)
   m_app.show_modal_options();
 }
 // ---------------------------------------------------------------------------
+void __fastcall TMainForm::LogColumnPropertiesButtonClick(TObject *Sender, int AButtonIndex)
+
+{
+  String name = FileNameColumn->EditValue;
+  m_app.show_connection_log(irs::str_conv<string_type>(name));
+}
+//---------------------------------------------------------------------------
+

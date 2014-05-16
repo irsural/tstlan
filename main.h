@@ -100,6 +100,8 @@
 #include <Buttons.hpp>
 #include <ComCtrls.hpp>
 #include <ToolWin.hpp>
+#include "dxColorEdit.hpp"
+#include "cxColorComboBox.hpp"
 //---------------------------------------------------------------------------
 class TMainForm : public TForm
 {
@@ -130,6 +132,8 @@ __published:	// IDE-managed Components
   TAction *ShowChartAction;
   TAction *OptionsAction;
   TSpeedButton *SpeedButton6;
+  TcxGridColumn *StatusColumn;
+  TcxGridColumn *ConnectionLogColumn;
   void __fastcall TickTimerTimer(TObject *Sender);
   void __fastcall OptionsColumnPropertiesButtonClick(TObject *Sender, int AButtonIndex);
   void __fastcall ShowTstlanColumnPropertiesButtonClick(TObject *Sender, int AButtonIndex);
@@ -144,12 +148,16 @@ __published:	// IDE-managed Components
   void __fastcall TypeColumnPropertiesChange(TObject *Sender);
   void __fastcall ShowChartActionExecute(TObject *Sender);
   void __fastcall OptionsActionExecute(TObject *Sender);
+  void __fastcall LogColumnPropertiesButtonClick(TObject *Sender, int AButtonIndex);
+
 
 
 private:	// User declarations
   typedef std::size_t size_type;
   typedef irs::string_t string_type;
   typedef std::map<string_type, tstlan4::device_options_t> devices_type;
+  typedef tstlan4::app_t::device_status_type device_status_type;
+  typedef irs::mxdata_assembly_t::error_string_list_type error_string_list_type;
   void enum_assembly_types();
   void create_devices_dir();
   void load_devices_list();
@@ -165,6 +173,7 @@ private:	// User declarations
   TPoint GetFocusedCellCoord();
   devices_type::iterator get_focused_device();
   int FindRowDevice(const string_type& a_device_full_name);
+  void update_device_status_color();
 
   irs::handle_t<irs::memobuf> mp_memo_buf;
   tstlan4::cfg_t m_cfg;
@@ -177,6 +186,7 @@ private:	// User declarations
   vector<string_type> m_assembly_type_list;
   string_type m_assembly_type_default;
   devices_type m_devices;
+  irs::loop_timer_t m_update_status_timer;
 public:		// User declarations
   __fastcall TMainForm(TComponent* Owner);
   __fastcall ~TMainForm();

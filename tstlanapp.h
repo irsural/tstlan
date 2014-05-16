@@ -9,6 +9,7 @@
 #include <mxdata.h>
 #include <irsint.h>
 #include <irsdevices.h>
+#include "connectionlog.h"
 
 #include "tstlancfg.h"
 
@@ -65,11 +66,16 @@ class app_t
 public:
   typedef std::size_t size_type;
   typedef irs::string_t string_type;
+  typedef irs::mxdata_assembly_t::status_t device_status_type;
+  typedef irs::mxdata_assembly_t::error_string_list_type error_string_list_type;
   app_t(cfg_t* ap_cfg);
   std::vector<string_type> set_devices(
     const std::map<string_type, device_options_t>& a_devices);
+  void show_connection_log(const string_type& a_name);
   void show_tstlan4lib(const string_type& a_name);
   void show_device_options(const string_type& a_name);
+  device_status_type get_status(const string_type& a_name);
+  //error_string_list_type get_last_error_string_list(const string_type& a_name);
   void show_chart();
   void show_modal_options();
   void import(const string_type& a_source, const string_type& a_destination);
@@ -83,6 +89,11 @@ private:
     string_type type;
     irs::handle_t<irs::tstlan4_base_t> tstlan4lib;
     irs::handle_t<irs::mxdata_assembly_t> mxdata_assembly;
+    irs::handle_t<TConnectionLogForm> connection_log;
+    ~device_t()
+    {
+      //int i = 0;
+    }
   };
   cfg_t* mp_cfg;
   irs::handle_t<irs::param_box_base_t> mp_options_param_box;

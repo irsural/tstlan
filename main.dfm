@@ -52,6 +52,22 @@ object MainForm: TMainForm
         Properties.OnChange = EnabledColumnPropertiesChange
         Width = 61
       end
+      object StatusColumn: TcxGridColumn
+        Caption = #1057#1090#1072#1090#1091#1089
+        PropertiesClassName = 'TdxColorEditProperties'
+        Properties.ReadOnly = True
+        Properties.DefaultColor = clWhite
+        Options.Editing = False
+        Options.ShowEditButtons = isebNever
+        Width = 46
+      end
+      object ConnectionLogColumn: TcxGridColumn
+        Caption = #1051#1086#1075
+        PropertiesClassName = 'TcxBlobEditProperties'
+        Properties.BlobEditKind = bekBlob
+        Properties.OnButtonClick = LogColumnPropertiesButtonClick
+        Width = 37
+      end
       object TypeColumn: TcxGridColumn
         Caption = #1058#1080#1087
         PropertiesClassName = 'TcxComboBoxProperties'

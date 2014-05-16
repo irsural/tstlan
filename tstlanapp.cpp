@@ -91,10 +91,12 @@ std::vector<tstlan4::app_t::string_type> tstlan4::app_t::set_devices(
           if (!device.mxdata_assembly.is_empty()) {
             device.mxdata_assembly->enabled(dev_opt_it->second.enabled);
             device.type = dev_opt_it->second.type;
+            device.connection_log.reset(new TConnectionLogForm(NULL));
             m_devices_map.insert(make_pair(dev_opt_it->first, device));
             device.tstlan4lib->connect(device.mxdata_assembly->mxdata());
           }
         }
+
       } else if (it != m_devices_map.end()) {
         if (it->second.mxdata_assembly->enabled() !=
             dev_opt_it->second.enabled) {
@@ -125,6 +127,19 @@ std::vector<tstlan4::app_t::string_type> tstlan4::app_t::set_devices(
   return bad_devices;
 }
 
+void tstlan4::app_t::show_connection_log(const string_type& a_name)
+{
+  std::map<string_type, device_t>::iterator it = m_devices_map.find(a_name);
+  if (it == m_devices_map.end()) {
+    Application->MessageBox(
+      irst("Устройство не обнаружено"),
+      irst("Ошибка"),
+      MB_OK + MB_ICONERROR);
+    return;
+  }
+  it->second.connection_log->Show();
+}
+
 void tstlan4::app_t::show_tstlan4lib(const string_type& a_name)
 {
   std::map<string_type, device_t>::iterator it = m_devices_map.find(a_name);
@@ -151,6 +166,34 @@ void tstlan4::app_t::show_device_options(const string_type& a_name)
   it->second.mxdata_assembly->show_options();
 }
 
+tstlan4::app_t::device_status_type
+tstlan4::app_t::get_status(const string_type& a_name)
+{
+  std::map<string_type, device_t>::iterator it = m_devices_map.find(a_name);
+  if (it == m_devices_map.end()) {
+    Application->MessageBox(
+      irst("Устройство не обнаружено"),
+      irst("Ошибка"),
+      MB_OK + MB_ICONERROR);
+    return irs::mxdata_assembly_t::status_not_supported;
+  }
+  return it->second.mxdata_assembly->get_status();
+}
+
+/*tstlan4::app_t::error_string_list_type
+tstlan4::app_t::get_last_error_string_list(const string_type& a_name)
+{
+  std::map<string_type, device_t>::iterator it = m_devices_map.find(a_name);
+  if (it == m_devices_map.end()) {
+    Application->MessageBox(
+      irst("Устройство не обнаружено"),
+      irst("Ошибка"),
+      MB_OK + MB_ICONERROR);
+    return irs::mxdata_assembly_t::status_not_supported;
+  }
+  return it->second.mxdata_assembly->get_last_error_string_list();
+} */
+
 void tstlan4::app_t::show_chart()
 {
   mp_chart->show();
@@ -159,7 +202,7 @@ void tstlan4::app_t::show_chart()
 void tstlan4::app_t::show_modal_options()
 {
   if (mp_options_param_box->show()) {
-	apply_options();
+	  apply_options();
   }
   mp_options_param_box->save();
 }
@@ -215,6 +258,14 @@ void tstlan4::app_t::tick()
   while (it != m_devices_map.end()) {
     it->second.tstlan4lib->tick();
     it->second.mxdata_assembly->tick();
+    ++it;
+  }
+
+  it =
+    m_devices_map.begin();
+  while (it != m_devices_map.end()) {
+    it->second.connection_log->add_errors(
+      it->second.mxdata_assembly->get_last_error_string_list());
     ++it;
   }
 
