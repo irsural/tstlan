@@ -111,8 +111,11 @@ TMainForm *MainForm;
 // ---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent* Owner) :
   TForm(Owner),
-  mp_memo_buf(new irs::memobuf(LogMemo, 200)), m_cfg(), m_app(&m_cfg),
+  mp_memo_buf(new irs::memobuf(LogMemo, 200)),
+  m_cfg(),
+  m_app(&m_cfg),
   m_ini_file(),
+  m_grid_options_file_name(),
   m_devices_config_dir(irst("devices")),
   m_device_config_file_ext(irst("ini")),
   m_device_options_section(irst("device")),
@@ -120,7 +123,8 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
   m_assembly_type_list(),
   m_assembly_type_default(),
   m_devices(),
-  m_update_status_timer(irs::make_cnt_s(0.5))
+  m_update_status_timer(irs::make_cnt_s(0.5)),
+  m_update_options_timer(irs::make_cnt_s(0.5))
 {
   enum {
     clearance = 10
@@ -131,6 +135,12 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
   Width = 550;
 
   m_chart_position = m_app.chart()->position();
+
+  const string_type exe_dir = irs::str_conv<string_type>(ExtractFileDir(
+    Application->ExeName));
+
+  m_grid_options_file_name = exe_dir + irst("\\") +
+    m_cfg.grid_options_file_name();
 
   m_ini_file.set_ini_name(m_cfg.ini_name().c_str());
   m_ini_file.set_section("MainForm");
@@ -144,17 +154,19 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
     reinterpret_cast<irs_u32*>(&m_chart_position.bottom));
   m_ini_file.load();
 
+  load_grid_options();
+
   m_app.chart()->set_position(m_chart_position);
 
-  irs::mlog().rdbuf(mp_memo_buf.get());
+  update_options();
 
   irs::cbuilder::file_version_t file_version;
   irs::cbuilder::get_file_version(Application->ExeName.c_str(), file_version);
   const string_type file_version_str = irs::cbuilder::file_version_to_str
-      (file_version);
-
+    (file_version);
   String program_name = irst("Тест сети ") + irs::str_conv<String>
-      (file_version_str);
+    (file_version_str);
+
   MainForm->Caption = program_name;
   Application->Title = program_name;
 
@@ -226,6 +238,27 @@ void TMainForm::load_devices_list() {
   FindClose(sr);
 }
 
+void TMainForm::load_grid_options()
+{
+  TcxGridStorageOptions options;
+  options = (TcxGridStorageOptions() << gsoUseFilter << gsoUseSummary);
+  bool children_creating = true;
+  bool children_deleting = false;
+  DevicesCXGrid->ActiveView->RestoreFromIniFile(
+    irs::str_conv<String>(m_grid_options_file_name),
+    children_creating, children_deleting, options);
+}
+
+void TMainForm::save_grid_options()
+{
+  TcxGridStorageOptions AOptions;
+  bool recreate = false;
+  AOptions = (TcxGridStorageOptions() << gsoUseFilter << gsoUseSummary);
+  DevicesCXGrid->ActiveView->StoreToIniFile(
+    irs::str_conv<String>(m_grid_options_file_name),
+    recreate, AOptions);
+}
+
 void TMainForm::add_device(const String& a_file_name) {
   create_devices_dir();
   irs::ini_file_t ini_file;
@@ -280,6 +313,7 @@ __fastcall TMainForm::~TMainForm()
 {
   m_chart_position = m_app.chart()->position();
   m_ini_file.save();
+  save_grid_options();
 }
 
 // ---------------------------------------------------------------------------
@@ -299,6 +333,9 @@ void __fastcall TMainForm::TickTimerTimer(TObject *Sender)
         it->second.
         ++it;
       } */
+    }
+    if (m_update_options_timer.check()) {
+      update_options();
     }
   }
   catch(Exception & exception) {
@@ -320,15 +357,23 @@ void __fastcall TMainForm::TickTimerTimer(TObject *Sender)
 void TMainForm::update_device_status_color()
 {
   DevicesCXGrid->ActiveView->BeginUpdate();
-  devices_type::iterator it = m_devices.begin();
-  int device_index = 0;
-  while (it != m_devices.end()) {
-    device_status_type status = m_app.get_status(it->first);
+
+  for (int i = 0; i < DevicesCXGrid->ActiveView->DataController->RecordCount;
+    i++) {
+    const bool enabled = DevicesCXGrid->ActiveView->DataController->Values
+        [i][EnabledColumn->Index];
     TColor color = clWhite;
-    if (it->second.enabled) {
+    if (enabled) {
+      const String file_full_name_bstr =
+        DevicesCXGrid->ActiveView->DataController->Values[i]
+        [FileNameColumn->Index];
+      devices_type::iterator it = m_devices.find(irs::str_conv<string_type>
+        (file_full_name_bstr));
+      device_status_type status = m_app.get_status(it->first);
+
       switch (status) {
         case irs::mxdata_assembly_t::status_not_supported: {
-          color = clBlack;
+          color = clSilver;
         } break;
         case irs::mxdata_assembly_t::status_connected: {
           color = clGreen;
@@ -340,15 +385,24 @@ void TMainForm::update_device_status_color()
           color = clRed;
         } break;
       }
-    } else {
-      color = clWhite;
     }
-    DevicesCXGrid->ActiveView->DataController->Values[device_index]
+    DevicesCXGrid->ActiveView->DataController->Values[i]
       [StatusColumn->Index] = Variant(color);
-    device_index++;
-    ++it;
   }
+
   DevicesCXGrid->ActiveView->EndUpdate();
+}
+
+void TMainForm::update_options()
+{
+  if (m_app.options()->get_param(irst("Отображать лог")) ==
+      irst("true")) {
+    LogMemo->Visible = true;
+    irs::mlog().rdbuf(mp_memo_buf.get());
+  } else {
+    LogMemo->Visible = false;
+    irs::mlog().rdbuf(NULL);
+  }
 }
 // ---------------------------------------------------------------------------
 
@@ -399,14 +453,18 @@ TMainForm::string_type TMainForm::make_file_full_name(
 
 TPoint TMainForm::GetFocusedCellCoord()
 {
-  TcxCustomGridTableView * AView = (TcxCustomGridTableView*)
+  TcxCustomGridView* View = DevicesCXGrid->ActiveView;
+  TcxCustomDataController* DataController = View->DataController;
+
+  TcxCustomGridTableView * TableView = (TcxCustomGridTableView*)
     DevicesCXGrid->FocusedView;
-  TcxCustomGridTableController * AController = AView->Controller;
-  int row = AController->FocusedRecordIndex;
-  int col = AController->FocusedItemIndex;
+  TcxCustomGridTableController * TableController = TableView->Controller;
+
+  const int row = DataController->FocusedRecordIndex;
+  const int col = TableController->FocusedItemIndex;
   TPoint point;
-  point.x = AController->FocusedItemIndex;
-  point.y = AController->FocusedRecordIndex;
+  point.x = col;
+  point.y = row;
   return point;
 }
 
@@ -617,8 +675,10 @@ void __fastcall TMainForm::EnabledColumnPropertiesChange(TObject *Sender)
   TPoint point = GetFocusedCellCoord();
   devices_type::iterator it = get_focused_device();
   IRS_LIB_ASSERT(it != m_devices.end());
-  it->second.enabled = DevicesCXGrid->ActiveView->DataController->Values
+
+  const bool enabled = DevicesCXGrid->ActiveView->DataController->Values
     [point.y][EnabledColumn->Index];
+  it->second.enabled = enabled;
   const vector<string_type>bad_devices = m_app.set_devices(m_devices);
   if (!bad_devices.empty()) {
     show_bad_devices_if_exists(bad_devices);
@@ -659,4 +719,5 @@ void __fastcall TMainForm::LogColumnPropertiesButtonClick(TObject *Sender, int A
   m_app.show_connection_log(irs::str_conv<string_type>(name));
 }
 //---------------------------------------------------------------------------
+
 

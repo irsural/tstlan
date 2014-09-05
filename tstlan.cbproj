@@ -20,6 +20,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<Defines>IRS_USE_JSON_CPP=1;$(Defines)</Defines>
 			<BCC_MonitorInlinePtrAccess>true</BCC_MonitorInlinePtrAccess>
 			<BCC_MonitorGlobalAndStackData>true</BCC_MonitorGlobalAndStackData>
 			<BCC_MonitorThis>true</BCC_MonitorThis>
@@ -32,9 +33,9 @@
 			<BCC_wsig>true</BCC_wsig>
 			<BCC_wpar>false</BCC_wpar>
 			<BCC_wbbf>true</BCC_wbbf>
-			<ILINK_LibraryPath>..\mxsrclib\;..\mxsrclib\arch\cbuilder\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<ILINK_LibraryPath>..\extern_libs\jsoncpp\src\lib_json\;..\mxsrclib\;..\mxsrclib\arch\cbuilder\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 			<LinkPackageStatics>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;vclimg.lib;vcldb.lib;xmlrtl.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib;vclactnband.lib;cxDataRS14.lib;cxLibraryRS14.lib;dxGDIPlusRS14.lib;dxCoreRS14.lib;dxThemeRS14.lib;cxEditorsRS14.lib;cxGridRS14.lib;dxLayoutControlRS14.lib;cxPageControlRS14.lib;dxComnRS14.lib;cxExportRS14.lib;dxServerModeRS14.lib;cxTreeListRS14.lib;cxTreeListdxBarPopupMenuRS14.lib;dxBarRS14.lib;dxSkinsCoreRS14.lib;dxSkinscxPCPainterRS14.lib;dxSkinBlackRS14.lib;dxSkinBlueRS14.lib;dxSkinCaramelRS14.lib;dxSkinCoffeeRS14.lib;dxSkinDarkRoomRS14.lib;dxSkinDarkSideRS14.lib;dxSkinFoggyRS14.lib;dxSkinGlassOceansRS14.lib;dxSkiniMaginaryRS14.lib;dxSkinLilianRS14.lib;dxSkinLiquidSkyRS14.lib;dxSkinLondonLiquidSkyRS14.lib;dxSkinMcSkinRS14.lib;dxSkinMoneyTwinsRS14.lib;dxSkinOffice2007BlackRS14.lib;dxSkinOffice2007BlueRS14.lib;dxSkinOffice2007GreenRS14.lib;dxSkinOffice2007PinkRS14.lib;dxSkinOffice2007SilverRS14.lib;dxSkinOffice2010BlackRS14.lib;dxSkinOffice2010BlueRS14.lib;dxSkinOffice2010SilverRS14.lib;dxSkinPumpkinRS14.lib;dxSkinSevenRS14.lib;dxSkinSharpRS14.lib;dxSkinSilverRS14.lib;dxSkinSpringTimeRS14.lib;dxSkinStardustRS14.lib;dxSkinSummer2008RS14.lib;dxSkinValentineRS14.lib;dxSkinXmas2008BlueRS14.lib;dxSkinBlueprintRS14.lib;dxSkinDevExpressDarkStyleRS14.lib;dxSkinDevExpressStyleRS14.lib;dxSkinHighContrastRS14.lib;dxSkinSevenClassicRS14.lib;dxSkinSharpPlusRS14.lib;dxSkinTheAsphaltWorldRS14.lib;dxSkinVS2010RS14.lib;dxSkinWhiteprintRS14.lib</LinkPackageStatics>
-			<IncludePath>..\mxsrclib\;..\mxsrclib\arch\cbuilder\;$(IncludePath)</IncludePath>
+			<IncludePath>..\mxsrclib\;..\mxsrclib\arch\cbuilder\;..\extern_libs\jsoncpp\include;..\extern_libs\jsoncpp\src\lib_json\;$(IncludePath)</IncludePath>
 			<BCC_wamb>true</BCC_wamb>
 			<BCC_waus>false</BCC_waus>
 			<BCC_wasm>true</BCC_wasm>
@@ -98,41 +99,9 @@
 			<ILINK_LibraryPath>$(BDS)\lib\release;$(ILINK_LibraryPath);$(ILINK_LibraryPath)</ILINK_LibraryPath>
 		</PropertyGroup>
 		<ItemGroup>
-			<CppCompile Include="..\mxsrclib\irsfilter.cpp">
-				<DependentOn>..\mxsrclib\irsfilter.h</DependentOn>
-				<BuildOrder>67</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsfunnel.cpp">
-				<DependentOn>..\mxsrclib\irsfunnel.h</DependentOn>
-				<BuildOrder>68</BuildOrder>
-			</CppCompile>
 			<CppCompile Include="..\mxsrclib\irsgpio.cpp">
 				<DependentOn>..\mxsrclib\irsgpio.h</DependentOn>
 				<BuildOrder>69</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsdsp.cpp">
-				<DependentOn>..\mxsrclib\irsdsp.h</DependentOn>
-				<BuildOrder>64</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irserror.cpp">
-				<DependentOn>..\mxsrclib\irserror.h</DependentOn>
-				<BuildOrder>65</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsexcept.cpp">
-				<DependentOn>..\mxsrclib\irsexcept.h</DependentOn>
-				<BuildOrder>66</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsmath.cpp">
-				<DependentOn>..\mxsrclib\irsmath.h</DependentOn>
-				<BuildOrder>73</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsmatrix.cpp">
-				<DependentOn>..\mxsrclib\irsmatrix.h</DependentOn>
-				<BuildOrder>74</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irstcpip.cpp">
-				<DependentOn>..\mxsrclib\irstcpip.h</DependentOn>
-				<BuildOrder>81</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="..\mxsrclib\irsint.cpp">
 				<DependentOn>..\mxsrclib\irsint.h</DependentOn>
@@ -142,120 +111,21 @@
 				<DependentOn>..\mxsrclib\irskbd.h</DependentOn>
 				<BuildOrder>71</BuildOrder>
 			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irsexcept.cpp">
+				<DependentOn>..\mxsrclib\irsexcept.h</DependentOn>
+				<BuildOrder>66</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irsfilter.cpp">
+				<DependentOn>..\mxsrclib\irsfilter.h</DependentOn>
+				<BuildOrder>67</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irsfunnel.cpp">
+				<DependentOn>..\mxsrclib\irsfunnel.h</DependentOn>
+				<BuildOrder>68</BuildOrder>
+			</CppCompile>
 			<CppCompile Include="..\mxsrclib\mxextbase.cpp">
 				<DependentOn>..\mxsrclib\mxextbase.h</DependentOn>
 				<BuildOrder>87</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsdev.cpp">
-				<DependentOn>..\mxsrclib\irsdev.h</DependentOn>
-				<BuildOrder>63</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\correct_alg.cpp">
-				<DependentOn>..\mxsrclib\correct_alg.h</DependentOn>
-				<BuildOrder>54</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\csvwork.cpp">
-				<DependentOn>..\mxsrclib\csvwork.h</DependentOn>
-				<BuildOrder>55</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\dbgprn.cpp">
-				<DependentOn>..\mxsrclib\dbgprn.h</DependentOn>
-				<BuildOrder>56</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\mxifa.h">
-				<BuildOrder>86</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\mxnetd.h">
-				<BuildOrder>90</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\tstlan4abs.h">
-				<BuildOrder>95</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\irscalc.cpp">
-				<DependentOn>..\mxsrclib\irscalc.h</DependentOn>
-				<BuildOrder>60</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irscpu.cpp">
-				<DependentOn>..\mxsrclib\irscpu.h</DependentOn>
-				<BuildOrder>61</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsdbgutil.cpp">
-				<DependentOn>..\mxsrclib\irsdbgutil.h</DependentOn>
-				<BuildOrder>62</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\hardflowg.cpp">
-				<DependentOn>..\mxsrclib\hardflowg.h</DependentOn>
-				<BuildOrder>57</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsadc.cpp">
-				<DependentOn>..\mxsrclib\irsadc.h</DependentOn>
-				<BuildOrder>58</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsalg.cpp">
-				<DependentOn>..\mxsrclib\irsalg.h</DependentOn>
-				<BuildOrder>59</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxnetr.cpp">
-				<DependentOn>..\mxsrclib\mxnetr.h</DependentOn>
-				<BuildOrder>92</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsmbus.cpp">
-				<DependentOn>..\mxsrclib\irsmbus.h</DependentOn>
-				<BuildOrder>75</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\niusbgpib_hardflow.cpp">
-				<DependentOn>..\mxsrclib\niusbgpib_hardflow.h</DependentOn>
-				<BuildOrder>94</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxifar.cpp">
-				<DependentOn>..\mxsrclib\mxifar.h</DependentOn>
-				<BuildOrder>89</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\measmul.cpp">
-				<DependentOn>..\mxsrclib\measmul.h</DependentOn>
-				<BuildOrder>84</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxnetc.cpp">
-				<DependentOn>..\mxsrclib\mxnetc.h</DependentOn>
-				<BuildOrder>91</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\irsdevices.h">
-				<BuildOrder>98</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\irsdevices.cpp">
-				<BuildOrder>99</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="connectionlog.cpp">
-				<Form>ConnectionLogForm</Form>
-				<DependentOn>connectionlog.h</DependentOn>
-				<BuildOrder>100</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\timer.cpp">
-				<DependentOn>..\mxsrclib\timer.h</DependentOn>
-				<BuildOrder>95</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxnet.cpp">
-				<DependentOn>..\mxsrclib\mxnet.h</DependentOn>
-				<BuildOrder>90</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\tstlan5lib.cpp">
-				<BuildOrder>97</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxextchart.cpp">
-				<DependentOn>..\mxsrclib\mxextchart.h</DependentOn>
-				<BuildOrder>88</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsprop.cpp">
-				<DependentOn>..\mxsrclib\irsprop.h</DependentOn>
-				<BuildOrder>79</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsstd.cpp">
-				<DependentOn>..\mxsrclib\irsstd.h</DependentOn>
-				<BuildOrder>80</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\hardflow.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\hardflow.h</DependentOn>
-				<BuildOrder>15</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="..\mxsrclib\irsmcutil.cpp">
 				<DependentOn>..\mxsrclib\irsmcutil.h</DependentOn>
@@ -269,17 +139,115 @@
 				<DependentOn>..\mxsrclib\irslocale.h</DependentOn>
 				<BuildOrder>72</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="..\mxsrclib\meassup.cpp">
-				<DependentOn>..\mxsrclib\meassup.h</DependentOn>
-				<BuildOrder>85</BuildOrder>
+			<CppCompile Include="..\mxsrclib\irsmath.cpp">
+				<DependentOn>..\mxsrclib\irsmath.h</DependentOn>
+				<BuildOrder>73</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxdata.cpp">
-				<DependentOn>..\mxsrclib\mxdata.h</DependentOn>
-				<BuildOrder>86</BuildOrder>
+			<CppCompile Include="..\mxsrclib\irsmatrix.cpp">
+				<DependentOn>..\mxsrclib\irsmatrix.h</DependentOn>
+				<BuildOrder>74</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="..\mxsrclib\niusbgpib.cpp">
-				<DependentOn>..\mxsrclib\niusbgpib.h</DependentOn>
-				<BuildOrder>93</BuildOrder>
+			<CppCompile Include="..\mxsrclib\irstcpip.cpp">
+				<DependentOn>..\mxsrclib\irstcpip.h</DependentOn>
+				<BuildOrder>81</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\dbgprn.cpp">
+				<DependentOn>..\mxsrclib\dbgprn.h</DependentOn>
+				<BuildOrder>56</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\hardflowg.cpp">
+				<DependentOn>..\mxsrclib\hardflowg.h</DependentOn>
+				<BuildOrder>57</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irsadc.cpp">
+				<DependentOn>..\mxsrclib\irsadc.h</DependentOn>
+				<BuildOrder>58</BuildOrder>
+			</CppCompile>
+			<None Include="..\mxsrclib\tstlan4abs.h">
+				<BuildOrder>95</BuildOrder>
+			</None>
+			<CppCompile Include="..\mxsrclib\correct_alg.cpp">
+				<DependentOn>..\mxsrclib\correct_alg.h</DependentOn>
+				<BuildOrder>54</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\csvwork.cpp">
+				<DependentOn>..\mxsrclib\csvwork.h</DependentOn>
+				<BuildOrder>55</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irsalg.cpp">
+				<DependentOn>..\mxsrclib\irsalg.h</DependentOn>
+				<BuildOrder>59</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irsdev.cpp">
+				<DependentOn>..\mxsrclib\irsdev.h</DependentOn>
+				<BuildOrder>63</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irsdsp.cpp">
+				<DependentOn>..\mxsrclib\irsdsp.h</DependentOn>
+				<BuildOrder>64</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irserror.cpp">
+				<DependentOn>..\mxsrclib\irserror.h</DependentOn>
+				<BuildOrder>65</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irscalc.cpp">
+				<DependentOn>..\mxsrclib\irscalc.h</DependentOn>
+				<BuildOrder>60</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irscpu.cpp">
+				<DependentOn>..\mxsrclib\irscpu.h</DependentOn>
+				<BuildOrder>61</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irsdbgutil.cpp">
+				<DependentOn>..\mxsrclib\irsdbgutil.h</DependentOn>
+				<BuildOrder>62</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\timer.cpp">
+				<DependentOn>..\mxsrclib\timer.h</DependentOn>
+				<BuildOrder>95</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\mxnet.cpp">
+				<DependentOn>..\mxsrclib\mxnet.h</DependentOn>
+				<BuildOrder>90</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\arch\cbuilder\tstlan5lib.cpp">
+				<BuildOrder>97</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\mxnetr.cpp">
+				<DependentOn>..\mxsrclib\mxnetr.h</DependentOn>
+				<BuildOrder>92</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irsmbus.cpp">
+				<DependentOn>..\mxsrclib\irsmbus.h</DependentOn>
+				<BuildOrder>75</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\niusbgpib_hardflow.cpp">
+				<DependentOn>..\mxsrclib\niusbgpib_hardflow.h</DependentOn>
+				<BuildOrder>94</BuildOrder>
+			</CppCompile>
+			<None Include="..\mxsrclib\irsdevices.h">
+				<BuildOrder>98</BuildOrder>
+			</None>
+			<CppCompile Include="..\extern_libs\jsoncpp\src\lib_json\json_reader.cpp">
+				<BuildOrder>102</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\extern_libs\jsoncpp\src\lib_json\json_value.cpp">
+				<BuildOrder>103</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\extern_libs\jsoncpp\src\lib_json\json_writer.cpp">
+				<BuildOrder>104</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irsdevices.cpp">
+				<BuildOrder>99</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="connectionlog.cpp">
+				<Form>ConnectionLogForm</Form>
+				<DependentOn>connectionlog.h</DependentOn>
+				<BuildOrder>100</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irs_chart_data.cpp">
+				<DependentOn>..\mxsrclib\irs_chart_data.h</DependentOn>
+				<BuildOrder>101</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="..\mxsrclib\irstime.cpp">
 				<DependentOn>..\mxsrclib\irstime.h</DependentOn>
@@ -293,8 +261,48 @@
 				<DependentOn>..\mxsrclib\irsmenu.h</DependentOn>
 				<BuildOrder>78</BuildOrder>
 			</CppCompile>
-			<None Include="..\mxsrclib\mxdatastd.h">
-				<BuildOrder>83</BuildOrder>
+			<CppCompile Include="..\mxsrclib\irsprop.cpp">
+				<DependentOn>..\mxsrclib\irsprop.h</DependentOn>
+				<BuildOrder>79</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\irsstd.cpp">
+				<DependentOn>..\mxsrclib\irsstd.h</DependentOn>
+				<BuildOrder>80</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\arch\cbuilder\hardflow.cpp">
+				<DependentOn>..\mxsrclib\arch\cbuilder\hardflow.h</DependentOn>
+				<BuildOrder>15</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\meassup.cpp">
+				<DependentOn>..\mxsrclib\meassup.h</DependentOn>
+				<BuildOrder>85</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\mxifar.cpp">
+				<DependentOn>..\mxsrclib\mxifar.h</DependentOn>
+				<BuildOrder>89</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\measmul.cpp">
+				<DependentOn>..\mxsrclib\measmul.h</DependentOn>
+				<BuildOrder>84</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\mxnetc.cpp">
+				<DependentOn>..\mxsrclib\mxnetc.h</DependentOn>
+				<BuildOrder>91</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\mxdata.cpp">
+				<DependentOn>..\mxsrclib\mxdata.h</DependentOn>
+				<BuildOrder>86</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\niusbgpib.cpp">
+				<DependentOn>..\mxsrclib\niusbgpib.h</DependentOn>
+				<BuildOrder>93</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\mxextchart.cpp">
+				<DependentOn>..\mxsrclib\mxextchart.h</DependentOn>
+				<BuildOrder>88</BuildOrder>
+			</CppCompile>
+			<None Include="..\mxsrclib\mxnetd.h">
+				<BuildOrder>90</BuildOrder>
 			</None>
 			<CppCompile Include="..\mxsrclib\arch\cbuilder\cbsysutils.cpp">
 				<DependentOn>..\mxsrclib\arch\cbuilder\cbsysutils.h</DependentOn>
@@ -319,9 +327,10 @@
 				<DependentOn>..\mxsrclib\arch\cbuilder\irsparam.h</DependentOn>
 				<BuildOrder>17</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\MxBase.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\MxBase.h</DependentOn>
-				<BuildOrder>18</BuildOrder>
+			<CppCompile Include="tstlancfg.cpp">
+				<BuildOrder>44</BuildOrder>
+				<DependentOn>tstlancfg.h</DependentOn>
+				<BuildOrder>16</BuildOrder>
 			</CppCompile>
 			<None Include="..\mxsrclib\irsstrconv.h">
 				<BuildOrder>67</BuildOrder>
@@ -329,20 +338,19 @@
 			<None Include="..\mxsrclib\irschartwin.h">
 				<BuildOrder>33</BuildOrder>
 			</None>
-			<CppCompile Include="tstlancfg.cpp">
-				<BuildOrder>44</BuildOrder>
-				<DependentOn>tstlancfg.h</DependentOn>
-				<BuildOrder>16</BuildOrder>
-			</CppCompile>
+			<None Include="..\mxsrclib\irslimits.h">
+				<BuildOrder>52</BuildOrder>
+			</None>
 			<None Include="..\mxsrclib\arch\cbuilder\mxnetda.h">
 				<BuildOrder>22</BuildOrder>
 			</None>
 			<None Include="..\mxsrclib\arch\cbuilder\ni488.h">
 				<BuildOrder>23</BuildOrder>
 			</None>
-			<None Include="..\mxsrclib\arch\cbuilder\Decl-32.h">
-				<BuildOrder>14</BuildOrder>
-			</None>
+			<CppCompile Include="..\mxsrclib\arch\cbuilder\MxBase.cpp">
+				<DependentOn>..\mxsrclib\arch\cbuilder\MxBase.h</DependentOn>
+				<BuildOrder>18</BuildOrder>
+			</CppCompile>
 			<ResFiles Include="tstlan.res">
 				<BuildOrder>-1</BuildOrder>
 				<BuildOrder>1</BuildOrder>
@@ -367,10 +375,9 @@
 				<DependentOn>locktick.h</DependentOn>
 				<BuildOrder>57</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\cbcomp.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\cbcomp.h</DependentOn>
-				<BuildOrder>11</BuildOrder>
-			</CppCompile>
+			<None Include="..\mxsrclib\irsspi.h">
+				<BuildOrder>65</BuildOrder>
+			</None>
 			<CppCompile Include="main.cpp">
 				<BuildOrder>31</BuildOrder>
 				<Form>MainForm</Form>
@@ -381,8 +388,8 @@
 				<DependentOn>..\mxsrclib\arch\cbuilder\counter.h</DependentOn>
 				<BuildOrder>13</BuildOrder>
 			</CppCompile>
-			<None Include="..\mxsrclib\irsspi.h">
-				<BuildOrder>65</BuildOrder>
+			<None Include="..\mxsrclib\arch\cbuilder\Decl-32.h">
+				<BuildOrder>14</BuildOrder>
 			</None>
 			<CppCompile Include="..\mxsrclib\arch\cbuilder\mxifa.cpp">
 				<BuildOrder>18</BuildOrder>
@@ -390,17 +397,18 @@
 			<None Include="..\mxsrclib\irspch.h">
 				<BuildOrder>62</BuildOrder>
 			</None>
-			<None Include="..\mxsrclib\irsstrmstd.h">
-				<BuildOrder>71</BuildOrder>
-			</None>
+			<CppCompile Include="..\mxsrclib\arch\cbuilder\cbcomp.cpp">
+				<DependentOn>..\mxsrclib\arch\cbuilder\cbcomp.h</DependentOn>
+				<BuildOrder>11</BuildOrder>
+			</CppCompile>
 			<None Include="..\mxsrclib\irsconfig.h">
 				<BuildOrder>34</BuildOrder>
 			</None>
 			<None Include="..\mxsrclib\irstable.h">
 				<BuildOrder>73</BuildOrder>
 			</None>
-			<None Include="..\mxsrclib\irsstrdefs.h">
-				<BuildOrder>68</BuildOrder>
+			<None Include="..\mxsrclib\irstest.h">
+				<BuildOrder>75</BuildOrder>
 			</None>
 			<None Include="..\mxsrclib\irsparamabs.h">
 				<BuildOrder>61</BuildOrder>
@@ -408,30 +416,29 @@
 			<None Include="..\mxsrclib\irsstrm.h">
 				<BuildOrder>70</BuildOrder>
 			</None>
+			<None Include="..\mxsrclib\irsstrmstd.h">
+				<BuildOrder>71</BuildOrder>
+			</None>
+			<None Include="..\mxsrclib\irsstring.h">
+				<BuildOrder>69</BuildOrder>
+			</None>
+			<None Include="..\mxsrclib\irsconfig0.h">
+				<BuildOrder>35</BuildOrder>
+			</None>
+			<None Include="..\mxsrclib\mxdatastd.h">
+				<BuildOrder>83</BuildOrder>
+			</None>
+			<None Include="..\mxsrclib\mxifa.h">
+				<BuildOrder>86</BuildOrder>
+			</None>
+			<None Include="..\mxsrclib\irssysutils.h">
+				<BuildOrder>72</BuildOrder>
+			</None>
 			<None Include="..\mxsrclib\irstree.h">
 				<BuildOrder>77</BuildOrder>
 			</None>
 			<None Include="..\mxsrclib\measdef.h">
 				<BuildOrder>79</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsconfig0.h">
-				<BuildOrder>35</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irstest.h">
-				<BuildOrder>75</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsstring.h">
-				<BuildOrder>69</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irssysutils.h">
-				<BuildOrder>72</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\tstlan4lib.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\tstlan4lib.h</DependentOn>
-				<BuildOrder>24</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\irsadcabs.h">
-				<BuildOrder>30</BuildOrder>
 			</None>
 			<None Include="..\mxsrclib\irsdefs.h">
 				<BuildOrder>41</BuildOrder>
@@ -439,35 +446,42 @@
 			<None Include="..\mxsrclib\irsfinal.h">
 				<BuildOrder>47</BuildOrder>
 			</None>
-			<None Include="..\mxsrclib\irslimits.h">
-				<BuildOrder>52</BuildOrder>
-			</None>
+			<CppCompile Include="..\mxsrclib\irsstring.cpp">
+				<DependentOn>..\mxsrclib\irsstring.h</DependentOn>
+				<BuildOrder>97</BuildOrder>
+			</CppCompile>
 			<None Include="..\mxsrclib\irsconsole.h">
 				<BuildOrder>36</BuildOrder>
 			</None>
 			<None Include="..\mxsrclib\irsconsolestd.h">
 				<BuildOrder>37</BuildOrder>
 			</None>
+			<None Include="..\mxsrclib\irsadcabs.h">
+				<BuildOrder>30</BuildOrder>
+			</None>
+			<None Include="..\mxsrclib\irsnetdefs.h">
+				<BuildOrder>60</BuildOrder>
+			</None>
+			<CppCompile Include="..\mxsrclib\irsinit.cpp">
+				<BuildOrder>96</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="..\mxsrclib\arch\cbuilder\tstlan4lib.cpp">
+				<DependentOn>..\mxsrclib\arch\cbuilder\tstlan4lib.h</DependentOn>
+				<BuildOrder>24</BuildOrder>
+			</CppCompile>
+			<None Include="..\mxsrclib\irsstrdefs.h">
+				<BuildOrder>68</BuildOrder>
+			</None>
+			<CppCompile Include="..\mxsrclib\irssysutils.cpp">
+				<DependentOn>..\mxsrclib\irssysutils.h</DependentOn>
+				<BuildOrder>100</BuildOrder>
+			</CppCompile>
 			<None Include="..\mxsrclib\irscpp.h">
 				<BuildOrder>38</BuildOrder>
 			</None>
 			<None Include="..\mxsrclib\irsrect.h">
 				<BuildOrder>64</BuildOrder>
 			</None>
-			<CppCompile Include="..\mxsrclib\irsinit.cpp">
-				<BuildOrder>96</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsstring.cpp">
-				<DependentOn>..\mxsrclib\irsstring.h</DependentOn>
-				<BuildOrder>97</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\irsnetdefs.h">
-				<BuildOrder>60</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\irssysutils.cpp">
-				<DependentOn>..\mxsrclib\irssysutils.h</DependentOn>
-				<BuildOrder>100</BuildOrder>
-			</CppCompile>
 			<FormResources Include="connectionlog.dfm"/>
 			<FormResources Include="main.dfm"/>
 			<BuildConfiguration Include="Base">
@@ -493,8 +507,8 @@
 						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
 						<VersionInfo Name="MajorVer">5</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
-						<VersionInfo Name="Release">6</VersionInfo>
-						<VersionInfo Name="Build">215</VersionInfo>
+						<VersionInfo Name="Release">10</VersionInfo>
+						<VersionInfo Name="Build">221</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -506,7 +520,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">5.0.6.215</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">5.0.10.221</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

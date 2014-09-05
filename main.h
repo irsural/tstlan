@@ -161,11 +161,14 @@ private:	// User declarations
   void enum_assembly_types();
   void create_devices_dir();
   void load_devices_list();
+  void load_grid_options();
+  void save_grid_options();
   void add_device(const String& a_file_name);
   void show_bad_devices_if_exists(
     const std::vector<string_type>& a_bad_devices);
   String create_grid_configuration_file_full_name(
     const String& a_device_file_full_name);
+
   string_type generate_new_unique_name(const string_type& a_device_name);
   String ExtractFileUltraShortName(const String& Name);
   String MakeFileFullName(const String& aUltraShortName);
@@ -174,11 +177,13 @@ private:	// User declarations
   devices_type::iterator get_focused_device();
   int FindRowDevice(const string_type& a_device_full_name);
   void update_device_status_color();
+  void update_options();
 
   irs::handle_t<irs::memobuf> mp_memo_buf;
   tstlan4::cfg_t m_cfg;
   tstlan4::app_t m_app;
   irs::ini_file_t m_ini_file;
+  string_type m_grid_options_file_name;
   const string_type m_devices_config_dir;
   const string_type m_device_config_file_ext;
   const String m_device_options_section;
@@ -187,6 +192,7 @@ private:	// User declarations
   string_type m_assembly_type_default;
   devices_type m_devices;
   irs::loop_timer_t m_update_status_timer;
+  irs::loop_timer_t m_update_options_timer;
 public:		// User declarations
   __fastcall TMainForm(TComponent* Owner);
   __fastcall ~TMainForm();

@@ -13,6 +13,8 @@
 
 tstlan4::cfg_t::cfg_t():
   m_ini_name(irst("tstlan.ini")),
+  m_grid_options_file_name(string_type(irst("tstlan.")) +
+    irs::tstlan::get_grid_options_file_ext()),
   m_update_time(irs::make_cnt_ms(100)),
   mp_mxnet_client_hardflow(IRS_NULL),
   mp_mxnet_server_hardflow(irs::hardflow::make_udp_flow_server(5005))
@@ -54,6 +56,10 @@ counter_t tstlan4::cfg_t::update_time() const
 tstlan4::cfg_t::string_type tstlan4::cfg_t::ini_name() const
 {
   return m_ini_name;
+}
+tstlan4::cfg_t::string_type tstlan4::cfg_t::grid_options_file_name() const
+{
+  return m_grid_options_file_name;
 }
 irs::hardflow_t& tstlan4::cfg_t::mxnet_client_hardflow()
 {

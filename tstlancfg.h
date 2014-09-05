@@ -52,10 +52,12 @@ public:
   irs::handle_t<irs::chart_window_t> make_chart();
   counter_t update_time() const;
   string_type ini_name() const;
+  string_type grid_options_file_name() const;
   irs::hardflow_t& mxnet_client_hardflow();
   irs::hardflow_t& mxnet_server_hardflow();
 private:
   string_type m_ini_name;
+  string_type m_grid_options_file_name;
   counter_t m_update_time;
   irs::handle_t<irs::hardflow_t> mp_mxnet_client_hardflow;
   irs::handle_t<irs::hardflow_t> mp_mxnet_server_hardflow;
