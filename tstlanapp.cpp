@@ -90,11 +90,21 @@ std::vector<tstlan4::app_t::string_type> tstlan4::app_t::set_devices(
           device.mxdata_assembly =
             make_assembly(dev_opt_it->first, dev_opt_it->second.type,
             device.tstlan4lib.get());
+
+
           if (!device.mxdata_assembly.is_empty()) {
-            device.mxdata_assembly->enabled(dev_opt_it->second.enabled);
             device.type = dev_opt_it->second.type;
             device.connection_log.reset(new TConnectionLogForm(NULL));
             m_devices_map.insert(make_pair(dev_opt_it->first, device));
+            try {
+              device.mxdata_assembly->enabled(dev_opt_it->second.enabled);
+            } catch (Exception& e) {
+              if (dev_opt_it->second.enabled) {
+                device.mxdata_assembly->enabled(false);
+                device.tstlan4lib->connect(NULL);
+              }
+              throw;
+            }
             device.tstlan4lib->connect(device.mxdata_assembly->mxdata());
           }
         }

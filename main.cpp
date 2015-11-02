@@ -13,6 +13,9 @@
 #include "error.h"
 
 #include <irsfinal.h>
+/*#include "tstlan5lib.h"
+#include "MxChart.h"
+#include "MxBase.h"*/
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "cxClasses"
@@ -288,8 +291,8 @@ void TMainForm::add_device(const String& a_file_name) {
     DevicesCXGrid->ActiveView->DataController->Values[row][TypeColumn->Index]
       = Variant(irs::str_conv<String>(device_options.type));
   } else {
-    DevicesCXGrid->ActiveView->DataController->Values[row][TypeColumn->Index]
-        = Variant(irs::str_conv<String>(m_assembly_type_default));
+    DevicesCXGrid->ActiveView->DataController->Values[row][TypeColumn->Index] =
+      Variant(irs::str_conv<String>(m_assembly_type_default));
   }
 }
 
@@ -339,17 +342,21 @@ void __fastcall TMainForm::TickTimerTimer(TObject *Sender)
     }
   }
   catch(Exception & exception) {
+    TickTimer->Enabled = false;
     tstlan4::tick_lock()->enable();
     Application->ShowException(&exception);
     tstlan4::tick_lock()->disable();
+    Close();
   } catch(...) {
     try {
       throw Exception("");
     }
     catch(Exception & exception) {
+      TickTimer->Enabled = false;
       tstlan4::tick_lock()->enable();
       Application->ShowException(&exception);
       tstlan4::tick_lock()->disable();
+      Close();
     }
   }
 }
@@ -552,8 +559,8 @@ void __fastcall TMainForm::NameColumnPropertiesValidate(TObject *Sender,
     m_devices.erase(it);
     m_devices.insert(make_pair(new_file_name, device_options));
     DevicesCXGrid->ActiveView->DataController->Values[row]
-        [FileNameColumn->Index] = Variant
-        (irs::str_conv<String>(new_file_name));
+      [FileNameColumn->Index] = Variant
+      (irs::str_conv<String>(new_file_name));
     m_app.set_devices(m_devices);
 
     // tstlan при уничтожении восстанавливает файл. Удаляем его еще раз
@@ -719,5 +726,6 @@ void __fastcall TMainForm::LogColumnPropertiesButtonClick(TObject *Sender, int A
   m_app.show_connection_log(irs::str_conv<string_type>(name));
 }
 //---------------------------------------------------------------------------
+
 
 
