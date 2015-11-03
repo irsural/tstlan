@@ -1,0 +1,101 @@
+﻿[Main]
+Version=2
+
+[MainForm.DevicesCXGridTableView1: TcxGridTableView]
+=
+Footer="False"
+GroupByBox="True"
+GroupFooters=0
+NewItemRow="False"
+FilterActive="False"
+Filter="Hex:FEFFFFFF0000000000"
+Version=1
+
+[MainForm.DevicesCXGridTableView1/NameColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=355
+AlignmentHorz=0
+Index=0
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[MainForm.DevicesCXGridTableView1/FileNameColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=69
+AlignmentHorz=0
+Index=1
+Visible="false"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[MainForm.DevicesCXGridTableView1/EnabledColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=61
+AlignmentHorz=0
+Index=2
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[MainForm.DevicesCXGridTableView1/StatusColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=46
+AlignmentHorz=0
+Index=3
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[MainForm.DevicesCXGridTableView1/ConnectionLogColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=37
+AlignmentHorz=0
+Index=4
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[MainForm.DevicesCXGridTableView1/TypeColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=149
+AlignmentHorz=0
+Index=5
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[MainForm.DevicesCXGridTableView1/OptionsColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=64
+AlignmentHorz=0
+Index=6
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[MainForm.DevicesCXGridTableView1/ShowTstlanColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=64
+AlignmentHorz=0
+Index=7
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
