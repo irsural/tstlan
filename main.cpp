@@ -221,7 +221,8 @@ void TMainForm::create_devices_dir() {
   }
 }
 
-void TMainForm::load_devices_list() {
+void TMainForm::load_devices_list()
+{
   DevicesCXGrid->ActiveView->DataController->RecordCount = 0;
 
   TSearchRec sr;

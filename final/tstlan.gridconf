@@ -7,19 +7,20 @@ Footer="False"
 GroupByBox="True"
 GroupFooters=0
 NewItemRow="False"
-FilterActive="False"
+FilterActive="True"
 Filter="Hex:FEFFFFFF0000000000"
 Version=1
+FilterMRUItem0="Hex:FEFFFFFF000100000000445855464D5400050000006D0078006E0065007400050000000A000000540079007000650043006F006C0075006D006E0012050000006D0078006E0065007400"
 
 [MainForm.DevicesCXGridTableView1/NameColumn: TcxGridColumn]
 =
 GroupIndex=-1
-Width=355
+Width=337
 AlignmentHorz=0
 Index=0
 Visible="true"
-SortOrder="soNone"
-SortIndex=-1
+SortOrder="soAscending"
+SortIndex=0
 WasVisibleBeforeGrouping="False"
 
 [MainForm.DevicesCXGridTableView1/FileNameColumn: TcxGridColumn]
@@ -58,7 +59,7 @@ WasVisibleBeforeGrouping="False"
 [MainForm.DevicesCXGridTableView1/ConnectionLogColumn: TcxGridColumn]
 =
 GroupIndex=-1
-Width=37
+Width=71
 AlignmentHorz=0
 Index=4
 Visible="true"
