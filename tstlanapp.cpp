@@ -50,9 +50,11 @@ tstlan4::app_t::app_t(cfg_t* ap_cfg):
   mp_options_param_box->add_edit(
     irst("Период обновления графика, мс"), irst("200"));
   mp_options_param_box->add_edit(
-	irst("Количество точек в графике"), irst("1000"));
+    irst("Количество точек в графике"), irst("1000"));
   mp_options_param_box->add_bool(irst("Сбросить время"), false);
   mp_options_param_box->add_bool(irst("Отображать лог"), false);
+  mp_options_param_box->add_bool(
+    irst("Все графики в едином масштабе по Y"), false);
   mp_options_param_box->set_ini_name(mp_cfg->ini_name());
   mp_options_param_box->load();
   apply_options();
@@ -238,6 +240,13 @@ void tstlan4::app_t::apply_options()
       ++it;
     }
     mp_chart->clear();
+  }
+  if (mp_options_param_box->get_param(
+    irst("Все графики в едином масштабе по Y")) == irst("true"))
+  {
+    mp_chart->group_all();
+  } else {
+    mp_chart->ungroup_all();
   }
 }
 

@@ -1,0 +1,90 @@
+﻿[Main]
+Version=2
+
+[GridView: TcxGridTableView]
+=
+Footer="False"
+GroupByBox="True"
+GroupFooters=0
+NewItemRow="False"
+FilterActive="False"
+Filter="Hex:FEFFFFFF0000000000"
+Version=1
+
+[GridView/IndexColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=45
+AlignmentHorz=0
+Index=0
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[GridView/NetworkPosColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=45
+AlignmentHorz=0
+Index=1
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[GridView/NameColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=150
+AlignmentHorz=0
+Index=2
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[GridView/TypeColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=80
+AlignmentHorz=0
+Index=3
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[GridView/ValueColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=150
+AlignmentHorz=0
+Index=4
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[GridView/ChartColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=40
+AlignmentHorz=0
+Index=5
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[GridView/CategoryColumn: TcxGridColumn]
+=
+GroupIndex=-1
+Width=150
+AlignmentHorz=0
+Index=6
+Visible="true"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+

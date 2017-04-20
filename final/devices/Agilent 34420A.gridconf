@@ -62,8 +62,8 @@ Width=150
 AlignmentHorz=0
 Index=4
 Visible="true"
-SortOrder="soAscending"
-SortIndex=0
+SortOrder="soNone"
+SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
 [GridView/ChartColumn: TcxGridColumn]
