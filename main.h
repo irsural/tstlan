@@ -102,6 +102,9 @@
 #include <ToolWin.hpp>
 #include "dxColorEdit.hpp"
 #include "cxColorComboBox.hpp"
+#include "cxNavigator.hpp"
+#include "dxDateRanges.hpp"
+#include <System.Actions.hpp>
 //---------------------------------------------------------------------------
 class TMainForm : public TForm
 {
