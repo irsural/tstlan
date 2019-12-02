@@ -166,12 +166,11 @@
         <BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod -k</BCC_UserSuppliedOptions>
         <LinkPackageStatics>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;vclimg.lib;vcldb.lib;xmlrtl.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib;vclactnband.lib;cxLibraryRS26.lib;dxGDIPlusRS26.lib;dxCoreRS26.lib;dbexpress.lib;DbxCommonDriver.lib;vclie.lib;cxGridRS26.lib;cxExportRS26.lib;dxSpreadSheetCoreDialogsRS26.lib;dxSpreadSheetCoreRS26.lib;dxComnRS26.lib;dxSpreadSheetRS26.lib;dxServerModeRS26.lib;cxTreeListRS26.lib;dxSkinsCoreRS26.lib;cxTreeListdxBarPopupMenuRS26.lib;dxBarRS26.lib</LinkPackageStatics>
         <BCC_IncludePath>C:\Program Files (x86)\DevExpress\VCL\Library\RS17;C:\Program Files (x86)\DevExpress\VCL\Library\RS26;C:\Users\503\Downloads\DevExpress_VCL_19.1.2_Full_Source_with_DxAutoInstaller_2.2.2\DevExpress VCL 19.1.2 Full Source with DxAutoInstaller 2.2.2\Win_DX_N_BDE_IBX.groupproj Full Source 19.1.2\Source;$(BCC_IncludePath)</BCC_IncludePath>
-        <VerInfo_MajorVer>1</VerInfo_MajorVer>
-        <VerInfo_Release>0</VerInfo_Release>
-        <VerInfo_Build>0</VerInfo_Build>
+        <VerInfo_Build>248</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=5.0.20.248;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <IncludePath>C:\Program Files (x86)\DevExpress\VCL\Library\RS17;C:\Program Files (x86)\DevExpress\VCL\Library\RS26;$(IncludePath)</IncludePath>
+        <VerInfo_AutoGenVersion>false</VerInfo_AutoGenVersion>
         <ILINK_LibraryPath>C:\Program Files (x86)\DevExpress\VCL\Library\RS26;$(ILINK_LibraryPath)</ILINK_LibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
