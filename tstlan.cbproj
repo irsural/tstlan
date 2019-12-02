@@ -1,571 +1,677 @@
-﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-		<PropertyGroup>
-			<ProjectGuid>{9AAE2587-5CC5-4867-B8E3-D6372D9CD23F}</ProjectGuid>
-			<ProjectType>CppVCLApplication</ProjectType>
-			<MainSource>tstlan.cpp</MainSource>
-			<Config Condition="'$(Config)'==''">Debug</Config>
-			<ProjectVersion>12.0</ProjectVersion>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
-			<Base>true</Base>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
-			<Cfg_1>true</Cfg_1>
-			<CfgParent>Base</CfgParent>
-			<Base>true</Base>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
-			<Cfg_2>true</Cfg_2>
-			<CfgParent>Base</CfgParent>
-			<Base>true</Base>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Base)'!=''">
-			<Defines>IRS_USE_JSON_CPP=1;$(Defines)</Defines>
-			<BCC_MonitorInlinePtrAccess>true</BCC_MonitorInlinePtrAccess>
-			<BCC_MonitorGlobalAndStackData>true</BCC_MonitorGlobalAndStackData>
-			<BCC_MonitorThis>true</BCC_MonitorThis>
-			<FinalOutputDir>final</FinalOutputDir>
-			<BCC_wnod>true</BCC_wnod>
-			<BCC_wdef>true</BCC_wdef>
-			<BCC_wcln>true</BCC_wcln>
-			<BCC_wpin>true</BCC_wpin>
-			<BCC_wrch>false</BCC_wrch>
-			<BCC_wsig>true</BCC_wsig>
-			<BCC_wpar>false</BCC_wpar>
-			<BCC_wbbf>true</BCC_wbbf>
-			<ILINK_LibraryPath>..\extern_libs\jsoncpp\src\lib_json\;..\mxsrclib\;..\mxsrclib\arch\cbuilder\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
-			<LinkPackageStatics>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;vclimg.lib;vcldb.lib;xmlrtl.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib;vclactnband.lib;cxDataRS14.lib;cxLibraryRS14.lib;dxGDIPlusRS14.lib;dxCoreRS14.lib;dxThemeRS14.lib;cxEditorsRS14.lib;cxGridRS14.lib;dxLayoutControlRS14.lib;cxPageControlRS14.lib;dxComnRS14.lib;cxExportRS14.lib;dxServerModeRS14.lib;cxTreeListRS14.lib;cxTreeListdxBarPopupMenuRS14.lib;dxBarRS14.lib;dxSkinsCoreRS14.lib;dxSkinscxPCPainterRS14.lib;dxSkinBlackRS14.lib;dxSkinBlueRS14.lib;dxSkinCaramelRS14.lib;dxSkinCoffeeRS14.lib;dxSkinDarkRoomRS14.lib;dxSkinDarkSideRS14.lib;dxSkinFoggyRS14.lib;dxSkinGlassOceansRS14.lib;dxSkiniMaginaryRS14.lib;dxSkinLilianRS14.lib;dxSkinLiquidSkyRS14.lib;dxSkinLondonLiquidSkyRS14.lib;dxSkinMcSkinRS14.lib;dxSkinMoneyTwinsRS14.lib;dxSkinOffice2007BlackRS14.lib;dxSkinOffice2007BlueRS14.lib;dxSkinOffice2007GreenRS14.lib;dxSkinOffice2007PinkRS14.lib;dxSkinOffice2007SilverRS14.lib;dxSkinOffice2010BlackRS14.lib;dxSkinOffice2010BlueRS14.lib;dxSkinOffice2010SilverRS14.lib;dxSkinPumpkinRS14.lib;dxSkinSevenRS14.lib;dxSkinSharpRS14.lib;dxSkinSilverRS14.lib;dxSkinSpringTimeRS14.lib;dxSkinStardustRS14.lib;dxSkinSummer2008RS14.lib;dxSkinValentineRS14.lib;dxSkinXmas2008BlueRS14.lib;dxSkinBlueprintRS14.lib;dxSkinDevExpressDarkStyleRS14.lib;dxSkinDevExpressStyleRS14.lib;dxSkinHighContrastRS14.lib;dxSkinSevenClassicRS14.lib;dxSkinSharpPlusRS14.lib;dxSkinTheAsphaltWorldRS14.lib;dxSkinVS2010RS14.lib;dxSkinWhiteprintRS14.lib</LinkPackageStatics>
-			<IncludePath>..\mxsrclib\;..\mxsrclib\arch\cbuilder\;..\extern_libs\jsoncpp\include;..\extern_libs\jsoncpp\src\lib_json\;$(IncludePath)</IncludePath>
-			<BCC_wamb>true</BCC_wamb>
-			<BCC_waus>false</BCC_waus>
-			<BCC_wasm>true</BCC_wasm>
-			<BCC_wamp>true</BCC_wamp>
-			<BCC_wstu>true</BCC_wstu>
-			<BCC_wimp>true</BCC_wimp>
-			<BCC_wexc>true</BCC_wexc>
-			<BCC_wntn>true</BCC_wntn>
-			<BCC_wmls>false</BCC_wmls>
-			<BCC_wpad>true</BCC_wpad>
-			<BCC_wucp>true</BCC_wucp>
-			<BCC_wstv>true</BCC_wstv>
-			<BCC_wstl>true</BCC_wstl>
-			<BCC_wprc>true</BCC_wprc>
-			<TASM_Defines>NO_STRICT;$(TASM_Defines)</TASM_Defines>
-			<BRCC_Defines>NO_STRICT;$(BRCC_Defines)</BRCC_Defines>
-			<ILINK_AppType>Windows</ILINK_AppType>
-			<DCC_UnitSearchPath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;D:\Docs\Borland Studio Projects;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-			<DCC_ResourcePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;$(DCC_ResourcePath)</DCC_ResourcePath>
-			<PackageImports>vcl.bpi;vclx.bpi;dbrtl.bpi;Rave65VCL.bpi;bdertl.bpi;rtl.bpi;vcldb.bpi;adortl.bpi;dbxcds.bpi;dbexpress.bpi;vclib.bpi;ibxpress.bpi;xmlrtl.bpi;vclactnband.bpi;inet.bpi;IntrawebDB_90_100.bpi;Intraweb_90_100.bpi;vclie.bpi;inetdbbde.bpi;inetdbxpress.bpi;IndyCore.bpi;IndySystem.bpi;bcbofficexp.bpi;bcbsmp.bpi;soaprtl.bpi;dsnap.bpi;IndyProtocols.bpi;bcbie.bpi;teeui.bpi;teedb.bpi;tee.bpi;vcldbx.bpi;dsnapcon.bpi;websnap.bpi;webdsnap.bpi</PackageImports>
-			<BCC_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;$(BDS)\include;$(BDS)\include\dinkumware;$(BDS)\include\vcl;..\extern_libs\winapi\hid;$(BCC_IncludePath)</BCC_IncludePath>
-			<BRCC_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;$(BDS)\include;$(BDS)\include\dinkumware;$(BDS)\include\vcl;$(BRCC_IncludePath)</BRCC_IncludePath>
-			<DCC_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;D:\Docs\Borland Studio Projects;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_IncludePath)</DCC_IncludePath>
-			<BCC_PCHCache>true</BCC_PCHCache>
-			<TASM_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;$(BDS)\include;$(BDS)\include\dinkumware;$(BDS)\include\vcl;$(TASM_IncludePath)</TASM_IncludePath>
-			<BCC_GenerateWindowsApp>true</BCC_GenerateWindowsApp>
-			<OutputExt>exe</OutputExt>
-			<BCC_GenerateMultithreaded>true</BCC_GenerateMultithreaded>
-			<ILINK_ObjectSearchPath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;$(ILINK_ObjectSearchPath)</ILINK_ObjectSearchPath>
-			<AllPackageLibs>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;vclimg.lib;vcldb.lib;xmlrtl.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib;vclactnband.lib;cxDataRS14.lib;cxLibraryRS14.lib;dxGDIPlusRS14.lib;dxCoreRS14.lib;dxThemeRS14.lib;cxEditorsRS14.lib;cxGridRS14.lib;dxLayoutControlRS14.lib;cxPageControlRS14.lib;dxComnRS14.lib;cxExportRS14.lib;dxServerModeRS14.lib;cxTreeListRS14.lib;cxTreeListdxBarPopupMenuRS14.lib;dxBarRS14.lib;dxSkinsCoreRS14.lib;dxSkinscxPCPainterRS14.lib;dxSkinBlackRS14.lib;dxSkinBlueRS14.lib;dxSkinCaramelRS14.lib;dxSkinCoffeeRS14.lib;dxSkinDarkRoomRS14.lib;dxSkinDarkSideRS14.lib;dxSkinFoggyRS14.lib;dxSkinGlassOceansRS14.lib;dxSkiniMaginaryRS14.lib;dxSkinLilianRS14.lib;dxSkinLiquidSkyRS14.lib;dxSkinLondonLiquidSkyRS14.lib;dxSkinMcSkinRS14.lib;dxSkinMoneyTwinsRS14.lib;dxSkinOffice2007BlackRS14.lib;dxSkinOffice2007BlueRS14.lib;dxSkinOffice2007GreenRS14.lib;dxSkinOffice2007PinkRS14.lib;dxSkinOffice2007SilverRS14.lib;dxSkinOffice2010BlackRS14.lib;dxSkinOffice2010BlueRS14.lib;dxSkinOffice2010SilverRS14.lib;dxSkinPumpkinRS14.lib;dxSkinSevenRS14.lib;dxSkinSharpRS14.lib;dxSkinSilverRS14.lib;dxSkinSpringTimeRS14.lib;dxSkinStardustRS14.lib;dxSkinSummer2008RS14.lib;dxSkinValentineRS14.lib;dxSkinXmas2008BlueRS14.lib;dxSkinBlueprintRS14.lib;dxSkinDevExpressDarkStyleRS14.lib;dxSkinDevExpressStyleRS14.lib;dxSkinHighContrastRS14.lib;dxSkinSevenClassicRS14.lib;dxSkinSharpPlusRS14.lib;dxSkinTheAsphaltWorldRS14.lib;dxSkinVS2010RS14.lib;dxSkinWhiteprintRS14.lib</AllPackageLibs>
-			<Multithreaded>true</Multithreaded>
-			<BCC_Defines>NO_STRICT;IRS_USE_DEV_EXPRESS=1;IRS_USE_HID_WIN_API=1;$(BCC_Defines)</BCC_Defines>
-			<DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
-			<BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod</BCC_UserSuppliedOptions>
-			<DCC_ObjPath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;$(DCC_ObjPath)</DCC_ObjPath>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Cfg_1)'!=''">
-			<BCC_Defines>_DEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
-			<BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod -k</BCC_UserSuppliedOptions>
-			<ILINK_LibraryPath>$(BDS)\lib\debug;$(ILINK_LibraryPath);$(ILINK_LibraryPath)</ILINK_LibraryPath>
-			<DCC_Define>DEBUG;$(DCC_Define);$(DCC_Define)</DCC_Define>
-			<BCC_SourceDebuggingOn>true</BCC_SourceDebuggingOn>
-			<IntermediateOutputDir>build\debug\</IntermediateOutputDir>
-			<ILINK_FullDebugInfo>true</ILINK_FullDebugInfo>
-			<TASM_DisplaySourceLines>true</TASM_DisplaySourceLines>
-			<ILINK_DisableIncrementalLinking>true</ILINK_DisableIncrementalLinking>
-			<BCC_DisableOptimizations>true</BCC_DisableOptimizations>
-			<TASM_Debugging>Full</TASM_Debugging>
-			<DCC_AdditionalSwitches> -V</DCC_AdditionalSwitches>
-			<BCC_DebugLineNumbers>true</BCC_DebugLineNumbers>
-			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
-			<BCC_InlineFunctionExpansion>false</BCC_InlineFunctionExpansion>
-		</PropertyGroup>
-		<PropertyGroup Condition="'$(Cfg_2)'!=''">
-			<BCC_Defines>NDEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
-			<IntermediateOutputDir>build\release\</IntermediateOutputDir>
-			<BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
-			<BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod -r</BCC_UserSuppliedOptions>
-			<TASM_Debugging>None</TASM_Debugging>
-			<DCC_AdditionalSwitches> -$O+</DCC_AdditionalSwitches>
-			<ILINK_LibraryPath>$(BDS)\lib\release;$(ILINK_LibraryPath);$(ILINK_LibraryPath)</ILINK_LibraryPath>
-		</PropertyGroup>
-		<ItemGroup>
-			<None Include="error.h">
-				<BuildOrder>56</BuildOrder>
-			</None>
-			<CppCompile Include="tstlanapp.cpp">
-				<BuildOrder>43</BuildOrder>
-				<DependentOn>tstlanapp.h</DependentOn>
-				<BuildOrder>14</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="locktick.cpp">
-				<DependentOn>locktick.h</DependentOn>
-				<BuildOrder>57</BuildOrder>
-			</CppCompile>
-			<ResFiles Include="tstlan.res">
-				<BuildOrder>-1</BuildOrder>
-				<BuildOrder>1</BuildOrder>
-			</ResFiles>
-			<CppCompile Include="tstlan.cpp">
-				<BuildOrder>-1</BuildOrder>
-				<BuildOrder>0</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="trash.cpp">
-				<DependentOn>trash.h</DependentOn>
-				<BuildOrder>54</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\irsspi.h">
-				<BuildOrder>65</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\mxifa.cpp">
-				<BuildOrder>18</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\irspch.h">
-				<BuildOrder>62</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\cbcomp.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\cbcomp.h</DependentOn>
-				<BuildOrder>11</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="main.cpp">
-				<BuildOrder>31</BuildOrder>
-				<Form>MainForm</Form>
-				<DependentOn>main.h</DependentOn>
-				<BuildOrder>2</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\counter.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\counter.h</DependentOn>
-				<BuildOrder>13</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\arch\cbuilder\Decl-32.h">
-				<BuildOrder>14</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\mxini.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\mxini.h</DependentOn>
-				<BuildOrder>21</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\irscberror.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\irscberror.h</DependentOn>
-				<BuildOrder>16</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\irsparam.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\irsparam.h</DependentOn>
-				<BuildOrder>17</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\cbsysutils.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\cbsysutils.h</DependentOn>
-				<BuildOrder>12</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\MxChart.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\MxChart.h</DependentOn>
-				<BuildOrder>19</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\arch\cbuilder\mxifal.h">
-				<BuildOrder>20</BuildOrder>
-			</None>
-			<CppCompile Include="tstlancfg.cpp">
-				<BuildOrder>44</BuildOrder>
-				<DependentOn>tstlancfg.h</DependentOn>
-				<BuildOrder>16</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\arch\cbuilder\mxnetda.h">
-				<BuildOrder>22</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\arch\cbuilder\ni488.h">
-				<BuildOrder>23</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\MxBase.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\MxBase.h</DependentOn>
-				<BuildOrder>18</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\irsstrconv.h">
-				<BuildOrder>67</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irschartwin.h">
-				<BuildOrder>33</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irslimits.h">
-				<BuildOrder>52</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsconsole.h">
-				<BuildOrder>36</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsconsolestd.h">
-				<BuildOrder>37</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsadcabs.h">
-				<BuildOrder>30</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsdefs.h">
-				<BuildOrder>41</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsfinal.h">
-				<BuildOrder>47</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\irsstring.cpp">
-				<DependentOn>..\mxsrclib\irsstring.h</DependentOn>
-				<BuildOrder>97</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\irsnetdefs.h">
-				<BuildOrder>60</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\irssysutils.cpp">
-				<DependentOn>..\mxsrclib\irssysutils.h</DependentOn>
-				<BuildOrder>100</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\irscpp.h">
-				<BuildOrder>38</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsrect.h">
-				<BuildOrder>64</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\irsinit.cpp">
-				<BuildOrder>96</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\tstlan4lib.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\tstlan4lib.h</DependentOn>
-				<BuildOrder>24</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\irsstrdefs.h">
-				<BuildOrder>68</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsparamabs.h">
-				<BuildOrder>61</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsstrm.h">
-				<BuildOrder>70</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsstrmstd.h">
-				<BuildOrder>71</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsconfig.h">
-				<BuildOrder>34</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irstable.h">
-				<BuildOrder>73</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irstest.h">
-				<BuildOrder>75</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsstring.h">
-				<BuildOrder>69</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irssysutils.h">
-				<BuildOrder>72</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irstree.h">
-				<BuildOrder>77</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\measdef.h">
-				<BuildOrder>79</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\irsconfig0.h">
-				<BuildOrder>35</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\mxdatastd.h">
-				<BuildOrder>83</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\mxifa.h">
-				<BuildOrder>86</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\mxnetd.h">
-				<BuildOrder>90</BuildOrder>
-			</None>
-			<None Include="..\mxsrclib\tstlan4abs.h">
-				<BuildOrder>95</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\correct_alg.cpp">
-				<DependentOn>..\mxsrclib\correct_alg.h</DependentOn>
-				<BuildOrder>54</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\csvwork.cpp">
-				<DependentOn>..\mxsrclib\csvwork.h</DependentOn>
-				<BuildOrder>55</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\dbgprn.cpp">
-				<DependentOn>..\mxsrclib\dbgprn.h</DependentOn>
-				<BuildOrder>56</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\hardflowg.cpp">
-				<DependentOn>..\mxsrclib\hardflowg.h</DependentOn>
-				<BuildOrder>57</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsadc.cpp">
-				<DependentOn>..\mxsrclib\irsadc.h</DependentOn>
-				<BuildOrder>58</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsalg.cpp">
-				<DependentOn>..\mxsrclib\irsalg.h</DependentOn>
-				<BuildOrder>59</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irscalc.cpp">
-				<DependentOn>..\mxsrclib\irscalc.h</DependentOn>
-				<BuildOrder>60</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irscpu.cpp">
-				<DependentOn>..\mxsrclib\irscpu.h</DependentOn>
-				<BuildOrder>61</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsdbgutil.cpp">
-				<DependentOn>..\mxsrclib\irsdbgutil.h</DependentOn>
-				<BuildOrder>62</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsdev.cpp">
-				<DependentOn>..\mxsrclib\irsdev.h</DependentOn>
-				<BuildOrder>63</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsdsp.cpp">
-				<DependentOn>..\mxsrclib\irsdsp.h</DependentOn>
-				<BuildOrder>64</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irserror.cpp">
-				<DependentOn>..\mxsrclib\irserror.h</DependentOn>
-				<BuildOrder>65</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsexcept.cpp">
-				<DependentOn>..\mxsrclib\irsexcept.h</DependentOn>
-				<BuildOrder>66</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsfilter.cpp">
-				<DependentOn>..\mxsrclib\irsfilter.h</DependentOn>
-				<BuildOrder>67</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsfunnel.cpp">
-				<DependentOn>..\mxsrclib\irsfunnel.h</DependentOn>
-				<BuildOrder>68</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsgpio.cpp">
-				<DependentOn>..\mxsrclib\irsgpio.h</DependentOn>
-				<BuildOrder>69</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsint.cpp">
-				<DependentOn>..\mxsrclib\irsint.h</DependentOn>
-				<BuildOrder>70</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irskbd.cpp">
-				<DependentOn>..\mxsrclib\irskbd.h</DependentOn>
-				<BuildOrder>71</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxextbase.cpp">
-				<DependentOn>..\mxsrclib\mxextbase.h</DependentOn>
-				<BuildOrder>87</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsmath.cpp">
-				<DependentOn>..\mxsrclib\irsmath.h</DependentOn>
-				<BuildOrder>73</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsmatrix.cpp">
-				<DependentOn>..\mxsrclib\irsmatrix.h</DependentOn>
-				<BuildOrder>74</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irstcpip.cpp">
-				<DependentOn>..\mxsrclib\irstcpip.h</DependentOn>
-				<BuildOrder>81</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsmcutil.cpp">
-				<DependentOn>..\mxsrclib\irsmcutil.h</DependentOn>
-				<BuildOrder>76</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsmem.cpp">
-				<DependentOn>..\mxsrclib\irsmem.h</DependentOn>
-				<BuildOrder>77</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irslocale.cpp">
-				<DependentOn>..\mxsrclib\irslocale.h</DependentOn>
-				<BuildOrder>72</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsprop.cpp">
-				<DependentOn>..\mxsrclib\irsprop.h</DependentOn>
-				<BuildOrder>79</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsstd.cpp">
-				<DependentOn>..\mxsrclib\irsstd.h</DependentOn>
-				<BuildOrder>80</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\hardflow.cpp">
-				<DependentOn>..\mxsrclib\arch\cbuilder\hardflow.h</DependentOn>
-				<BuildOrder>15</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irstime.cpp">
-				<DependentOn>..\mxsrclib\irstime.h</DependentOn>
-				<BuildOrder>82</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsvariant.cpp">
-				<DependentOn>..\mxsrclib\irsvariant.h</DependentOn>
-				<BuildOrder>83</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsmenu.cpp">
-				<DependentOn>..\mxsrclib\irsmenu.h</DependentOn>
-				<BuildOrder>78</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\meassup.cpp">
-				<DependentOn>..\mxsrclib\meassup.h</DependentOn>
-				<BuildOrder>85</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxdata.cpp">
-				<DependentOn>..\mxsrclib\mxdata.h</DependentOn>
-				<BuildOrder>86</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\niusbgpib.cpp">
-				<DependentOn>..\mxsrclib\niusbgpib.h</DependentOn>
-				<BuildOrder>93</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxextchart.cpp">
-				<DependentOn>..\mxsrclib\mxextchart.h</DependentOn>
-				<BuildOrder>88</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxifar.cpp">
-				<DependentOn>..\mxsrclib\mxifar.h</DependentOn>
-				<BuildOrder>89</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\measmul.cpp">
-				<DependentOn>..\mxsrclib\measmul.h</DependentOn>
-				<BuildOrder>84</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxnetc.cpp">
-				<DependentOn>..\mxsrclib\mxnetc.h</DependentOn>
-				<BuildOrder>91</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxnetr.cpp">
-				<DependentOn>..\mxsrclib\mxnetr.h</DependentOn>
-				<BuildOrder>92</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irsmbus.cpp">
-				<DependentOn>..\mxsrclib\irsmbus.h</DependentOn>
-				<BuildOrder>75</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\niusbgpib_hardflow.cpp">
-				<DependentOn>..\mxsrclib\niusbgpib_hardflow.h</DependentOn>
-				<BuildOrder>94</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\timer.cpp">
-				<DependentOn>..\mxsrclib\timer.h</DependentOn>
-				<BuildOrder>95</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\mxnet.cpp">
-				<DependentOn>..\mxsrclib\mxnet.h</DependentOn>
-				<BuildOrder>90</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\arch\cbuilder\tstlan5lib.cpp">
-				<BuildOrder>97</BuildOrder>
-			</CppCompile>
-			<None Include="..\mxsrclib\irsdevices.h">
-				<BuildOrder>98</BuildOrder>
-			</None>
-			<CppCompile Include="..\mxsrclib\irsdevices.cpp">
-				<BuildOrder>99</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="connectionlog.cpp">
-				<Form>ConnectionLogForm</Form>
-				<DependentOn>connectionlog.h</DependentOn>
-				<BuildOrder>100</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\mxsrclib\irs_chart_data.cpp">
-				<DependentOn>..\mxsrclib\irs_chart_data.h</DependentOn>
-				<BuildOrder>101</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\extern_libs\jsoncpp\src\lib_json\json_reader.cpp">
-				<BuildOrder>102</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\extern_libs\jsoncpp\src\lib_json\json_value.cpp">
-				<BuildOrder>103</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="..\extern_libs\jsoncpp\src\lib_json\json_writer.cpp">
-				<BuildOrder>104</BuildOrder>
-			</CppCompile>
-			<FormResources Include="main.dfm"/>
-			<FormResources Include="connectionlog.dfm"/>
-			<BuildConfiguration Include="Base">
-				<Key>Base</Key>
-			</BuildConfiguration>
-			<BuildConfiguration Include="Release">
-				<Key>Cfg_2</Key>
-				<CfgParent>Base</CfgParent>
-			</BuildConfiguration>
-			<BuildConfiguration Include="Debug">
-				<Key>Cfg_1</Key>
-				<CfgParent>Base</CfgParent>
-			</BuildConfiguration>
-		</ItemGroup>
-		<Import Project="$(BDS)\Bin\CodeGear.Cpp.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Cpp.Targets')"/>
-		<ProjectExtensions>
-			<Borland.Personality>CPlusPlusBuilder.Personality.12</Borland.Personality>
-			<Borland.ProjectType>CppVCLApplication</Borland.ProjectType>
-			<BorlandProject>
-				<CPlusPlusBuilder.Personality>
-					<VersionInfo>
-						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
-						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
-						<VersionInfo Name="MajorVer">5</VersionInfo>
-						<VersionInfo Name="MinorVer">0</VersionInfo>
-						<VersionInfo Name="Release">20</VersionInfo>
-						<VersionInfo Name="Build">247</VersionInfo>
-						<VersionInfo Name="Debug">False</VersionInfo>
-						<VersionInfo Name="PreRelease">False</VersionInfo>
-						<VersionInfo Name="Special">False</VersionInfo>
-						<VersionInfo Name="Private">False</VersionInfo>
-						<VersionInfo Name="DLL">False</VersionInfo>
-						<VersionInfo Name="Locale">1049</VersionInfo>
-						<VersionInfo Name="CodePage">1251</VersionInfo>
-					</VersionInfo>
-					<VersionInfoKeys>
-						<VersionInfoKeys Name="CompanyName"/>
-						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">5.0.20.247</VersionInfoKeys>
-						<VersionInfoKeys Name="InternalName"/>
-						<VersionInfoKeys Name="LegalCopyright"/>
-						<VersionInfoKeys Name="LegalTrademarks"/>
-						<VersionInfoKeys Name="OriginalFilename"/>
-						<VersionInfoKeys Name="ProductName"/>
-						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
-						<VersionInfoKeys Name="Comments"/>
-					</VersionInfoKeys>
-					<Debugging>
-						<Debugging Name="DebugSourceDirs"/>
-					</Debugging>
-					<Parameters>
-						<Parameters Name="RunParams"/>
-						<Parameters Name="Launcher"/>
-						<Parameters Name="UseLauncher">False</Parameters>
-						<Parameters Name="DebugCWD"/>
-						<Parameters Name="HostApplication"/>
-						<Parameters Name="RemoteHost"/>
-						<Parameters Name="RemotePath"/>
-						<Parameters Name="RemoteParams"/>
-						<Parameters Name="RemoteLauncher"/>
-						<Parameters Name="UseRemoteLauncher">False</Parameters>
-						<Parameters Name="RemoteCWD"/>
-						<Parameters Name="RemoteDebug">False</Parameters>
-						<Parameters Name="Debug Symbols Search Path"/>
-						<Parameters Name="LoadAllSymbols">True</Parameters>
-						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
-					</Parameters>
-					<ProjectProperties>
-						<ProjectProperties Name="AutoShowDeps">False</ProjectProperties>
-						<ProjectProperties Name="ManagePaths">True</ProjectProperties>
-						<ProjectProperties Name="VerifyPackages">True</ProjectProperties>
-					</ProjectProperties>
-					<Excluded_Packages>
-						<Excluded_Packages Name="$(BDS)\bin\bcboffice2k140.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
-						<Excluded_Packages Name="$(BDS)\bin\bcbofficexp140.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
-						<Excluded_Packages Name="$(BDS)\bin\dcloffice2k140.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDS)\bin\dclofficexp140.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-					</Excluded_Packages>
-					<Source>
-						<Source Name="MainSource">tstlan.cpp</Source>
-					</Source>
-				</CPlusPlusBuilder.Personality>
-				<ModelSupport>False</ModelSupport>
-			</BorlandProject>
-			<ProjectFileVersion>12</ProjectFileVersion>
-		</ProjectExtensions>
-	</Project>
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{9AAE2587-5CC5-4867-B8E3-D6372D9CD23F}</ProjectGuid>
+        <ProjectType>CppVCLApplication</ProjectType>
+        <MainSource>tstlan.cpp</MainSource>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <ProjectVersion>18.7</ProjectVersion>
+        <FrameworkType>VCL</FrameworkType>
+        <Base>True</Base>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <TargetedPlatforms>1</TargetedPlatforms>
+        <AppType>Application</AppType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+        <Cfg_1_Win32>true</Cfg_1_Win32>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
+        <Cfg_1_Win64>true</Cfg_1_Win64>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win64)'!=''">
+        <Cfg_2_Win64>true</Cfg_2_Win64>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <BCC_MonitorInlinePtrAccess>true</BCC_MonitorInlinePtrAccess>
+        <BCC_MonitorGlobalAndStackData>true</BCC_MonitorGlobalAndStackData>
+        <BCC_MonitorThis>true</BCC_MonitorThis>
+        <FinalOutputDir>final</FinalOutputDir>
+        <BCC_wnod>true</BCC_wnod>
+        <BCC_wdef>true</BCC_wdef>
+        <BCC_wcln>true</BCC_wcln>
+        <BCC_wpin>true</BCC_wpin>
+        <BCC_wrch>false</BCC_wrch>
+        <BCC_wsig>true</BCC_wsig>
+        <BCC_wpar>false</BCC_wpar>
+        <BCC_wbbf>true</BCC_wbbf>
+        <ILINK_LibraryPath>..\extern_libs\jsoncpp\src\lib_json\;..\mxsrclib\;..\mxsrclib\arch\cbuilder\;C:\Program Files (x86)\DevExpress\VCL\Library\RS17;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <LinkPackageStatics>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;vclimg.lib;vcldb.lib;xmlrtl.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib;vclactnband.lib</LinkPackageStatics>
+        <IncludePath>..\mxsrclib\;..\mxsrclib\arch\cbuilder\;..\extern_libs\jsoncpp\include;..\extern_libs\jsoncpp\src\lib_json\;$(IncludePath)</IncludePath>
+        <BCC_wamb>true</BCC_wamb>
+        <BCC_waus>false</BCC_waus>
+        <BCC_wasm>true</BCC_wasm>
+        <BCC_wamp>true</BCC_wamp>
+        <BCC_wstu>true</BCC_wstu>
+        <BCC_wimp>true</BCC_wimp>
+        <BCC_wexc>true</BCC_wexc>
+        <BCC_wntn>true</BCC_wntn>
+        <BCC_wmls>false</BCC_wmls>
+        <BCC_wpad>true</BCC_wpad>
+        <BCC_wucp>true</BCC_wucp>
+        <BCC_wstv>true</BCC_wstv>
+        <BCC_wstl>true</BCC_wstl>
+        <BCC_wprc>true</BCC_wprc>
+        <ILINK_AppType>Windows</ILINK_AppType>
+        <DCC_UnitSearchPath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;D:\Docs\Borland Studio Projects;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_ResourcePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;$(DCC_ResourcePath)</DCC_ResourcePath>
+        <PackageImports>vcl.bpi;vclx.bpi;dbrtl.bpi;Rave65VCL.bpi;bdertl.bpi;rtl.bpi;vcldb.bpi;adortl.bpi;dbxcds.bpi;dbexpress.bpi;vclib.bpi;ibxpress.bpi;xmlrtl.bpi;vclactnband.bpi;inet.bpi;IntrawebDB_90_100.bpi;Intraweb_90_100.bpi;vclie.bpi;inetdbbde.bpi;inetdbxpress.bpi;IndyCore.bpi;IndySystem.bpi;bcbofficexp.bpi;bcbsmp.bpi;soaprtl.bpi;dsnap.bpi;IndyProtocols.bpi;bcbie.bpi;teeui.bpi;teedb.bpi;tee.bpi;vcldbx.bpi;dsnapcon.bpi;websnap.bpi;webdsnap.bpi;$(PackageImports)</PackageImports>
+        <BCC_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;$(BDS)\include;..\extern_libs\winapi\hid;$(BCC_IncludePath)</BCC_IncludePath>
+        <BRCC_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;$(BDS)\include;$(BDS)\include\vcl;$(BRCC_IncludePath)</BRCC_IncludePath>
+        <DCC_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;D:\Docs\Borland Studio Projects;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_IncludePath)</DCC_IncludePath>
+        <BCC_PCHCache>true</BCC_PCHCache>
+        <TASM_IncludePath>..\mxsrclib\arch\cbuilder;..\mxsrclib;$(BDS)\include;$(BDS)\include\vcl;$(TASM_IncludePath)</TASM_IncludePath>
+        <BCC_GenerateWindowsApp>true</BCC_GenerateWindowsApp>
+        <BCC_GenerateMultithreaded>true</BCC_GenerateMultithreaded>
+        <ILINK_ObjectSearchPath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;$(ILINK_ObjectSearchPath)</ILINK_ObjectSearchPath>
+        <AllPackageLibs>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;vclimg.lib;vcldb.lib;xmlrtl.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib;vclactnband.lib;cxLibraryRS26.lib;dxGDIPlusRS26.lib;dxCoreRS26.lib;dbexpress.lib;DbxCommonDriver.lib;vclie.lib;cxGridRS26.lib;cxExportRS26.lib;dxSpreadSheetCoreDialogsRS26.lib;dxSpreadSheetCoreRS26.lib;dxComnRS26.lib;dxSpreadSheetRS26.lib;dxServerModeRS26.lib;cxTreeListRS26.lib;dxSkinsCoreRS26.lib;cxTreeListdxBarPopupMenuRS26.lib;dxBarRS26.lib</AllPackageLibs>
+        <Multithreaded>true</Multithreaded>
+        <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
+        <DCC_ObjPath>..\mxsrclib\arch\cbuilder;..\mxsrclib;S:\Files\ASUTP\General\prjs\cbuilder2006\tstlan4;D:\Documents and Settings\Максим\Мои документы\mxsrclib\arch\cur;D:\Documents and Settings\Максим\Мои документы\mxsrclib;D:\Documents and Settings\Максим\ASUTP\ITN\prjs\cbuilder2006\mxnetl;$(DCC_ObjPath)</DCC_ObjPath>
+        <SanitizedProjectName>tstlan</SanitizedProjectName>
+        <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
+        <VerInfo_MajorVer>5</VerInfo_MajorVer>
+        <VerInfo_Release>20</VerInfo_Release>
+        <VerInfo_Build>247</VerInfo_Build>
+        <VerInfo_Locale>1049</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=5.0.20.247;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <IncludePath>$(BDSINCLUDE)\windows\vcl;$(IncludePath)</IncludePath>
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+        <BT_BuildType>Debug</BT_BuildType>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <Icon_MainIcon>tstlan_Icon10.ico</Icon_MainIcon>
+        <Defines>IRS_USE_JSON_CPP=1;$(Defines)</Defines>
+        <BCC_Defines>IRS_USE_DEV_EXPRESS=1;IRS_USE_HID_WIN_API=1;$(BCC_Defines)</BCC_Defines>
+        <OutputExt>exe</OutputExt>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod</BCC_UserSuppliedOptions>
+        <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
+        <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <IncludePath>$(BDSINCLUDE)\windows\vcl;$(IncludePath)</IncludePath>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <Icon_MainIcon>tstlan_Icon10.ico</Icon_MainIcon>
+        <Defines>IRS_USE_JSON_CPP=1;$(Defines)</Defines>
+        <BCC_Defines>IRS_USE_DEV_EXPRESS=1;IRS_USE_HID_WIN_API=1;$(BCC_Defines)</BCC_Defines>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
+        <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+        <BT_BuildType>Debug</BT_BuildType>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <ILINK_LibraryPath>$(BDS)\lib\debug;$(ILINK_LibraryPath);$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <DCC_Define>DEBUG;$(DCC_Define);$(DCC_Define)</DCC_Define>
+        <BCC_SourceDebuggingOn>true</BCC_SourceDebuggingOn>
+        <IntermediateOutputDir>build\debug\</IntermediateOutputDir>
+        <ILINK_FullDebugInfo>true</ILINK_FullDebugInfo>
+        <TASM_DisplaySourceLines>true</TASM_DisplaySourceLines>
+        <ILINK_DisableIncrementalLinking>true</ILINK_DisableIncrementalLinking>
+        <BCC_DisableOptimizations>true</BCC_DisableOptimizations>
+        <TASM_Debugging>Full</TASM_Debugging>
+        <DCC_AdditionalSwitches> -V</DCC_AdditionalSwitches>
+        <BCC_DebugLineNumbers>true</BCC_DebugLineNumbers>
+        <DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+        <BCC_InlineFunctionExpansion>false</BCC_InlineFunctionExpansion>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <BCC_Defines>_DEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
+        <BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod -k</BCC_UserSuppliedOptions>
+        <LinkPackageStatics>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;vclimg.lib;vcldb.lib;xmlrtl.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib;vclactnband.lib;cxLibraryRS26.lib;dxGDIPlusRS26.lib;dxCoreRS26.lib;dbexpress.lib;DbxCommonDriver.lib;vclie.lib;cxGridRS26.lib;cxExportRS26.lib;dxSpreadSheetCoreDialogsRS26.lib;dxSpreadSheetCoreRS26.lib;dxComnRS26.lib;dxSpreadSheetRS26.lib;dxServerModeRS26.lib;cxTreeListRS26.lib;dxSkinsCoreRS26.lib;cxTreeListdxBarPopupMenuRS26.lib;dxBarRS26.lib</LinkPackageStatics>
+        <BCC_IncludePath>C:\Program Files (x86)\DevExpress\VCL\Library\RS17;C:\Program Files (x86)\DevExpress\VCL\Library\RS26;C:\Users\503\Downloads\DevExpress_VCL_19.1.2_Full_Source_with_DxAutoInstaller_2.2.2\DevExpress VCL 19.1.2 Full Source with DxAutoInstaller 2.2.2\Win_DX_N_BDE_IBX.groupproj Full Source 19.1.2\Source;$(BCC_IncludePath)</BCC_IncludePath>
+        <VerInfo_MajorVer>1</VerInfo_MajorVer>
+        <VerInfo_Release>0</VerInfo_Release>
+        <VerInfo_Build>0</VerInfo_Build>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <IncludePath>C:\Program Files (x86)\DevExpress\VCL\Library\RS17;C:\Program Files (x86)\DevExpress\VCL\Library\RS26;$(IncludePath)</IncludePath>
+        <ILINK_LibraryPath>C:\Program Files (x86)\DevExpress\VCL\Library\RS26;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+        <BCC_Defines>_DEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <LinkPackageStatics>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;vclimg.lib;vcldb.lib;xmlrtl.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib;vclactnband.lib;cxLibraryRS26.lib;dxGDIPlusRS26.lib;dxCoreRS26.lib;dbexpress.lib;DbxCommonDriver.lib;vclie.lib;cxGridRS26.lib;cxExportRS26.lib;dxSpreadSheetCoreDialogsRS26.lib;dxSpreadSheetCoreRS26.lib;dxComnRS26.lib;dxSpreadSheetRS26.lib;dxServerModeRS26.lib;cxTreeListRS26.lib;dxSkinsCoreRS26.lib;cxTreeListdxBarPopupMenuRS26.lib;dxBarRS26.lib</LinkPackageStatics>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <IntermediateOutputDir>build\release\</IntermediateOutputDir>
+        <BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
+        <TASM_Debugging>None</TASM_Debugging>
+        <DCC_AdditionalSwitches> -$O+</DCC_AdditionalSwitches>
+        <ILINK_LibraryPath>$(BDS)\lib\release;$(ILINK_LibraryPath);$(ILINK_LibraryPath)</ILINK_LibraryPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <BCC_Defines>NDEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
+        <BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod -r</BCC_UserSuppliedOptions>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
+        <BCC_Defines>NDEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+    </PropertyGroup>
+    <ItemGroup>
+        <CppCompile Include="..\extern_libs\jsoncpp\src\lib_json\json_reader.cpp">
+            <BuildOrder>102</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\extern_libs\jsoncpp\src\lib_json\json_value.cpp">
+            <BuildOrder>103</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\extern_libs\jsoncpp\src\lib_json\json_writer.cpp">
+            <BuildOrder>104</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\cbcomp.cpp">
+            <DependentOn>..\mxsrclib\arch\cbuilder\cbcomp.h</DependentOn>
+            <BuildOrder>11</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\cbsysutils.cpp">
+            <DependentOn>..\mxsrclib\arch\cbuilder\cbsysutils.h</DependentOn>
+            <BuildOrder>12</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\counter.cpp">
+            <DependentOn>..\mxsrclib\arch\cbuilder\counter.h</DependentOn>
+            <BuildOrder>13</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\arch\cbuilder\Decl-32.h">
+            <BuildOrder>14</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\hardflow.cpp">
+            <DependentOn>..\mxsrclib\arch\cbuilder\hardflow.h</DependentOn>
+            <BuildOrder>15</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\irscberror.cpp">
+            <DependentOn>..\mxsrclib\arch\cbuilder\irscberror.h</DependentOn>
+            <BuildOrder>16</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\irsparam.cpp">
+            <DependentOn>..\mxsrclib\arch\cbuilder\irsparam.h</DependentOn>
+            <BuildOrder>17</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\MxBase.cpp">
+            <DependentOn>..\mxsrclib\arch\cbuilder\MxBase.h</DependentOn>
+            <BuildOrder>18</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\MxChart.cpp">
+            <DependentOn>..\mxsrclib\arch\cbuilder\MxChart.h</DependentOn>
+            <BuildOrder>19</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\mxifa.cpp">
+            <BuildOrder>18</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\arch\cbuilder\mxifal.h">
+            <BuildOrder>20</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\mxini.cpp">
+            <DependentOn>..\mxsrclib\arch\cbuilder\mxini.h</DependentOn>
+            <BuildOrder>21</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\arch\cbuilder\mxnetda.h">
+            <BuildOrder>22</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\arch\cbuilder\ni488.h">
+            <BuildOrder>23</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\tstlan4lib.cpp">
+            <DependentOn>..\mxsrclib\arch\cbuilder\tstlan4lib.h</DependentOn>
+            <BuildOrder>24</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\arch\cbuilder\tstlan5lib.cpp">
+            <BuildOrder>97</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\correct_alg.cpp">
+            <DependentOn>..\mxsrclib\correct_alg.h</DependentOn>
+            <BuildOrder>54</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\csvwork.cpp">
+            <DependentOn>..\mxsrclib\csvwork.h</DependentOn>
+            <BuildOrder>55</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\dbgprn.cpp">
+            <DependentOn>..\mxsrclib\dbgprn.h</DependentOn>
+            <BuildOrder>56</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\hardflowg.cpp">
+            <DependentOn>..\mxsrclib\hardflowg.h</DependentOn>
+            <BuildOrder>57</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsadc.cpp">
+            <DependentOn>..\mxsrclib\irsadc.h</DependentOn>
+            <BuildOrder>58</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irsadcabs.h">
+            <BuildOrder>30</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irsalg.cpp">
+            <DependentOn>..\mxsrclib\irsalg.h</DependentOn>
+            <BuildOrder>59</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irscalc.cpp">
+            <DependentOn>..\mxsrclib\irscalc.h</DependentOn>
+            <BuildOrder>60</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irschartwin.h">
+            <BuildOrder>33</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irsconfig.h">
+            <BuildOrder>34</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irsconfig0.h">
+            <BuildOrder>35</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irsconsole.h">
+            <BuildOrder>36</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irsconsolestd.h">
+            <BuildOrder>37</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irscpp.h">
+            <BuildOrder>38</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irscpu.cpp">
+            <DependentOn>..\mxsrclib\irscpu.h</DependentOn>
+            <BuildOrder>61</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsdbgutil.cpp">
+            <DependentOn>..\mxsrclib\irsdbgutil.h</DependentOn>
+            <BuildOrder>62</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irsdefs.h">
+            <BuildOrder>41</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irsdev.cpp">
+            <DependentOn>..\mxsrclib\irsdev.h</DependentOn>
+            <BuildOrder>63</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsdevices.cpp">
+            <BuildOrder>99</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irsdevices.h">
+            <BuildOrder>98</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irsdsp.cpp">
+            <DependentOn>..\mxsrclib\irsdsp.h</DependentOn>
+            <BuildOrder>64</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irserror.cpp">
+            <DependentOn>..\mxsrclib\irserror.h</DependentOn>
+            <BuildOrder>65</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsexcept.cpp">
+            <DependentOn>..\mxsrclib\irsexcept.h</DependentOn>
+            <BuildOrder>66</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsfilter.cpp">
+            <DependentOn>..\mxsrclib\irsfilter.h</DependentOn>
+            <BuildOrder>67</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irsfinal.h">
+            <BuildOrder>47</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irsfunnel.cpp">
+            <DependentOn>..\mxsrclib\irsfunnel.h</DependentOn>
+            <BuildOrder>68</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsgpio.cpp">
+            <DependentOn>..\mxsrclib\irsgpio.h</DependentOn>
+            <BuildOrder>69</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsinit.cpp">
+            <BuildOrder>96</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsint.cpp">
+            <DependentOn>..\mxsrclib\irsint.h</DependentOn>
+            <BuildOrder>70</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irskbd.cpp">
+            <DependentOn>..\mxsrclib\irskbd.h</DependentOn>
+            <BuildOrder>71</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irslimits.h">
+            <BuildOrder>52</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irslocale.cpp">
+            <DependentOn>..\mxsrclib\irslocale.h</DependentOn>
+            <BuildOrder>72</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsmath.cpp">
+            <DependentOn>..\mxsrclib\irsmath.h</DependentOn>
+            <BuildOrder>73</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsmatrix.cpp">
+            <DependentOn>..\mxsrclib\irsmatrix.h</DependentOn>
+            <BuildOrder>74</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsmbus.cpp">
+            <DependentOn>..\mxsrclib\irsmbus.h</DependentOn>
+            <BuildOrder>75</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsmcutil.cpp">
+            <DependentOn>..\mxsrclib\irsmcutil.h</DependentOn>
+            <BuildOrder>76</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsmem.cpp">
+            <DependentOn>..\mxsrclib\irsmem.h</DependentOn>
+            <BuildOrder>77</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irsmenu.cpp">
+            <DependentOn>..\mxsrclib\irsmenu.h</DependentOn>
+            <BuildOrder>78</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irsnetdefs.h">
+            <BuildOrder>60</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irsparamabs.h">
+            <BuildOrder>61</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irspch.h">
+            <BuildOrder>62</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irsprop.cpp">
+            <DependentOn>..\mxsrclib\irsprop.h</DependentOn>
+            <BuildOrder>79</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irsrect.h">
+            <BuildOrder>64</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irsspi.h">
+            <BuildOrder>65</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irsstd.cpp">
+            <DependentOn>..\mxsrclib\irsstd.h</DependentOn>
+            <BuildOrder>80</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irsstrconv.h">
+            <BuildOrder>67</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irsstrdefs.h">
+            <BuildOrder>68</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irsstring.cpp">
+            <DependentOn>..\mxsrclib\irsstring.h</DependentOn>
+            <BuildOrder>97</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irsstring.h">
+            <BuildOrder>69</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irsstrm.h">
+            <BuildOrder>70</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irsstrmstd.h">
+            <BuildOrder>71</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irssysutils.cpp">
+            <DependentOn>..\mxsrclib\irssysutils.h</DependentOn>
+            <BuildOrder>100</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irssysutils.h">
+            <BuildOrder>72</BuildOrder>
+        </None>
+        <None Include="..\mxsrclib\irstable.h">
+            <BuildOrder>73</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irstcpip.cpp">
+            <DependentOn>..\mxsrclib\irstcpip.h</DependentOn>
+            <BuildOrder>81</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irstest.h">
+            <BuildOrder>75</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irstime.cpp">
+            <DependentOn>..\mxsrclib\irstime.h</DependentOn>
+            <BuildOrder>82</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\irstree.h">
+            <BuildOrder>77</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\irsvariant.cpp">
+            <DependentOn>..\mxsrclib\irsvariant.h</DependentOn>
+            <BuildOrder>83</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\irs_chart_data.cpp">
+            <DependentOn>..\mxsrclib\irs_chart_data.h</DependentOn>
+            <BuildOrder>101</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\measdef.h">
+            <BuildOrder>79</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\measmul.cpp">
+            <DependentOn>..\mxsrclib\measmul.h</DependentOn>
+            <BuildOrder>84</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\meassup.cpp">
+            <DependentOn>..\mxsrclib\meassup.h</DependentOn>
+            <BuildOrder>85</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\mxdata.cpp">
+            <DependentOn>..\mxsrclib\mxdata.h</DependentOn>
+            <BuildOrder>86</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\mxdatastd.h">
+            <BuildOrder>83</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\mxextbase.cpp">
+            <DependentOn>..\mxsrclib\mxextbase.h</DependentOn>
+            <BuildOrder>87</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\mxextchart.cpp">
+            <DependentOn>..\mxsrclib\mxextchart.h</DependentOn>
+            <BuildOrder>88</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\mxifa.h">
+            <BuildOrder>86</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\mxifar.cpp">
+            <DependentOn>..\mxsrclib\mxifar.h</DependentOn>
+            <BuildOrder>89</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\mxnet.cpp">
+            <DependentOn>..\mxsrclib\mxnet.h</DependentOn>
+            <BuildOrder>90</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\mxnetc.cpp">
+            <DependentOn>..\mxsrclib\mxnetc.h</DependentOn>
+            <BuildOrder>91</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\mxnetd.h">
+            <BuildOrder>90</BuildOrder>
+        </None>
+        <CppCompile Include="..\mxsrclib\mxnetr.cpp">
+            <DependentOn>..\mxsrclib\mxnetr.h</DependentOn>
+            <BuildOrder>92</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\niusbgpib.cpp">
+            <DependentOn>..\mxsrclib\niusbgpib.h</DependentOn>
+            <BuildOrder>93</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\niusbgpib_hardflow.cpp">
+            <DependentOn>..\mxsrclib\niusbgpib_hardflow.h</DependentOn>
+            <BuildOrder>94</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\mxsrclib\timer.cpp">
+            <DependentOn>..\mxsrclib\timer.h</DependentOn>
+            <BuildOrder>95</BuildOrder>
+        </CppCompile>
+        <None Include="..\mxsrclib\tstlan4abs.h">
+            <BuildOrder>95</BuildOrder>
+        </None>
+        <CppCompile Include="connectionlog.cpp">
+            <Form>ConnectionLogForm</Form>
+            <DependentOn>connectionlog.h</DependentOn>
+            <BuildOrder>100</BuildOrder>
+        </CppCompile>
+        <None Include="error.h">
+            <BuildOrder>56</BuildOrder>
+        </None>
+        <CppCompile Include="locktick.cpp">
+            <DependentOn>locktick.h</DependentOn>
+            <BuildOrder>57</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="main.cpp">
+            <BuildOrder>31</BuildOrder>
+            <Form>MainForm</Form>
+            <DependentOn>main.h</DependentOn>
+            <BuildOrder>2</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="trash.cpp">
+            <DependentOn>trash.h</DependentOn>
+            <BuildOrder>54</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="tstlan.cpp">
+            <BuildOrder>-1</BuildOrder>
+            <BuildOrder>0</BuildOrder>
+        </CppCompile>
+        <None Include="tstlan.otares"/>
+        <ResFiles Include="tstlan.res">
+            <BuildOrder>-1</BuildOrder>
+            <BuildOrder>1</BuildOrder>
+        </ResFiles>
+        <CppCompile Include="tstlanapp.cpp">
+            <BuildOrder>43</BuildOrder>
+            <DependentOn>tstlanapp.h</DependentOn>
+            <BuildOrder>14</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="tstlancfg.cpp">
+            <BuildOrder>44</BuildOrder>
+            <DependentOn>tstlancfg.h</DependentOn>
+            <BuildOrder>16</BuildOrder>
+        </CppCompile>
+        <FormResources Include="connectionlog.dfm"/>
+        <FormResources Include="main.dfm"/>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <Import Project="$(BDS)\Bin\CodeGear.Cpp.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Cpp.Targets')"/>
+    <ProjectExtensions>
+        <Borland.Personality>CPlusPlusBuilder.Personality.12</Borland.Personality>
+        <Borland.ProjectType>CppVCLApplication</Borland.ProjectType>
+        <BorlandProject>
+            <CPlusPlusBuilder.Personality>
+                <VersionInfo>
+                    <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+                    <VersionInfo Name="AutoIncBuild">True</VersionInfo>
+                    <VersionInfo Name="MajorVer">5</VersionInfo>
+                    <VersionInfo Name="MinorVer">0</VersionInfo>
+                    <VersionInfo Name="Release">20</VersionInfo>
+                    <VersionInfo Name="Build">247</VersionInfo>
+                    <VersionInfo Name="Debug">False</VersionInfo>
+                    <VersionInfo Name="PreRelease">False</VersionInfo>
+                    <VersionInfo Name="Special">False</VersionInfo>
+                    <VersionInfo Name="Private">False</VersionInfo>
+                    <VersionInfo Name="DLL">False</VersionInfo>
+                    <VersionInfo Name="Locale">1049</VersionInfo>
+                    <VersionInfo Name="CodePage">1251</VersionInfo>
+                </VersionInfo>
+                <VersionInfoKeys>
+                    <VersionInfoKeys Name="CompanyName"/>
+                    <VersionInfoKeys Name="FileDescription"/>
+                    <VersionInfoKeys Name="FileVersion">5.0.20.247</VersionInfoKeys>
+                    <VersionInfoKeys Name="InternalName"/>
+                    <VersionInfoKeys Name="LegalCopyright"/>
+                    <VersionInfoKeys Name="LegalTrademarks"/>
+                    <VersionInfoKeys Name="OriginalFilename"/>
+                    <VersionInfoKeys Name="ProductName"/>
+                    <VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+                    <VersionInfoKeys Name="Comments"/>
+                </VersionInfoKeys>
+                <Debugging>
+                    <Debugging Name="DebugSourceDirs"/>
+                </Debugging>
+                <Parameters>
+                    <Parameters Name="RunParams"/>
+                    <Parameters Name="Launcher"/>
+                    <Parameters Name="UseLauncher">False</Parameters>
+                    <Parameters Name="DebugCWD"/>
+                    <Parameters Name="HostApplication"/>
+                    <Parameters Name="RemoteHost"/>
+                    <Parameters Name="RemotePath"/>
+                    <Parameters Name="RemoteParams"/>
+                    <Parameters Name="RemoteLauncher"/>
+                    <Parameters Name="UseRemoteLauncher">False</Parameters>
+                    <Parameters Name="RemoteCWD"/>
+                    <Parameters Name="RemoteDebug">False</Parameters>
+                    <Parameters Name="Debug Symbols Search Path"/>
+                    <Parameters Name="LoadAllSymbols">True</Parameters>
+                    <Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+                </Parameters>
+                <ProjectProperties>
+                    <ProjectProperties Name="AutoShowDeps">False</ProjectProperties>
+                    <ProjectProperties Name="ManagePaths">True</ProjectProperties>
+                    <ProjectProperties Name="VerifyPackages">True</ProjectProperties>
+                    <ProjectProperties Name="IndexFiles">False</ProjectProperties>
+                </ProjectProperties>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k260.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp260.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\20.0\BPL\dcldxIconLibraryRS26.bpl">Express Cross Platform Library Icon Library by Developer Express Inc.</Excluded_Packages>
+                </Excluded_Packages>
+                <Source>
+                    <Source Name="MainSource">tstlan.cpp</Source>
+                </Source>
+            </CPlusPlusBuilder.Personality>
+            <ModelSupport>False</ModelSupport>
+            <Platforms>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">False</Platform>
+            </Platforms>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+</Project>

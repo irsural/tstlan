@@ -10,8 +10,8 @@
 
 #include <irsfinal.h>
 //---------------------------------------------------------------------------
-USEFORM("main.cpp", MainForm);
 USEFORM("connectionlog.cpp", ConnectionLogForm);
+USEFORM("main.cpp", MainForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -24,8 +24,8 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     Application->Initialize();
     Application->Title = "Тест сети 4";
     Application->CreateForm(__classid(TMainForm), &MainForm);
-     Application->CreateForm(__classid(TConnectionLogForm), &ConnectionLogForm);
-     Application->Run();
+		Application->CreateForm(__classid(TConnectionLogForm), &ConnectionLogForm);
+		Application->Run();
   }
   catch (Exception &exception)
   {

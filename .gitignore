@@ -8,6 +8,9 @@ Out
 *.dsk
 tstlan4.cgl
 tstlan.skincfg
+/__astcache
+*.ico
+*.otares
 
 # irs global ignore
 *.*~

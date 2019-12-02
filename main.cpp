@@ -37,7 +37,6 @@
 #pragma link "cxLookAndFeels"
 #pragma link "cxStyles"
 #pragma link "dxSkinBlack"
-#pragma link "dxSkinBlue"
 #pragma link "dxSkinBlueprint"
 #pragma link "dxSkinCaramel"
 #pragma link "dxSkinCoffee"
@@ -93,6 +92,8 @@
 #pragma link "cxCurrencyEdit"
 #pragma link "dxColorEdit"
 #pragma link "cxColorComboBox"
+#pragma link "cxNavigator"
+#pragma link "dxDateRanges"
 #pragma resource "*.dfm"
 
 TMainForm *MainForm;

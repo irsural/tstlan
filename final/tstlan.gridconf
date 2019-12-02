@@ -3,17 +3,23 @@ Version=2
 
 [MainForm.DevicesCXGridTableView1: TcxGridTableView]
 =
+SourceDPI=96
 Footer="False"
 GroupByBox="True"
 GroupFooters=0
 NewItemRow="False"
+EditFormUseDefaultLayout="True"
+ColumnsQuickCustomizationSorted="False"
 FilterActive="False"
 Filter="Hex:FEFFFFFF0000000000"
 Version=1
 
 [MainForm.DevicesCXGridTableView1/NameColumn: TcxGridColumn]
 =
+SourceDPI=96
+FilterRowOperator=0
 GroupIndex=-1
+IsChildInMergedGroup="false"
 Width=301
 AlignmentHorz=0
 Index=0
@@ -24,7 +30,10 @@ WasVisibleBeforeGrouping="False"
 
 [MainForm.DevicesCXGridTableView1/FileNameColumn: TcxGridColumn]
 =
+SourceDPI=96
+FilterRowOperator=0
 GroupIndex=-1
+IsChildInMergedGroup="false"
 Width=69
 AlignmentHorz=0
 Index=1
@@ -35,7 +44,10 @@ WasVisibleBeforeGrouping="False"
 
 [MainForm.DevicesCXGridTableView1/EnabledColumn: TcxGridColumn]
 =
+SourceDPI=96
+FilterRowOperator=0
 GroupIndex=-1
+IsChildInMergedGroup="false"
 Width=61
 AlignmentHorz=0
 Index=2
@@ -46,7 +58,10 @@ WasVisibleBeforeGrouping="False"
 
 [MainForm.DevicesCXGridTableView1/StatusColumn: TcxGridColumn]
 =
+SourceDPI=96
+FilterRowOperator=0
 GroupIndex=-1
+IsChildInMergedGroup="false"
 Width=46
 AlignmentHorz=0
 Index=3
@@ -57,7 +72,10 @@ WasVisibleBeforeGrouping="False"
 
 [MainForm.DevicesCXGridTableView1/ConnectionLogColumn: TcxGridColumn]
 =
+SourceDPI=96
+FilterRowOperator=0
 GroupIndex=-1
+IsChildInMergedGroup="false"
 Width=37
 AlignmentHorz=0
 Index=4
@@ -68,7 +86,10 @@ WasVisibleBeforeGrouping="False"
 
 [MainForm.DevicesCXGridTableView1/TypeColumn: TcxGridColumn]
 =
+SourceDPI=96
+FilterRowOperator=0
 GroupIndex=-1
+IsChildInMergedGroup="false"
 Width=149
 AlignmentHorz=0
 Index=5
@@ -79,7 +100,10 @@ WasVisibleBeforeGrouping="False"
 
 [MainForm.DevicesCXGridTableView1/OptionsColumn: TcxGridColumn]
 =
+SourceDPI=96
+FilterRowOperator=0
 GroupIndex=-1
+IsChildInMergedGroup="false"
 Width=64
 AlignmentHorz=0
 Index=6
@@ -90,7 +114,10 @@ WasVisibleBeforeGrouping="False"
 
 [MainForm.DevicesCXGridTableView1/ShowTstlanColumn: TcxGridColumn]
 =
+SourceDPI=96
+FilterRowOperator=0
 GroupIndex=-1
+IsChildInMergedGroup="false"
 Width=64
 AlignmentHorz=0
 Index=7
@@ -98,4 +125,8 @@ Visible="true"
 SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
+
+[MainForm.DevicesCXGridTableView1/ConditionalFormattingProvider: TcxGridConditionalFormattingProvider]
+=
+Count=0
 
