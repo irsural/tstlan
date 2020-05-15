@@ -291,7 +291,9 @@ void tstlan4::app_t::tick()
   std::map<string_type, device_t>::iterator it = m_devices_map.begin();
   while (it != m_devices_map.end()) {
 	it->second.tstlan4lib->tick();
-	it->second.mxdata_assembly->tick();
+	for (int i = 0; i < 20; i++) {
+	  it->second.mxdata_assembly->tick();
+    }
     ++it;
   }
 

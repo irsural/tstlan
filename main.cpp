@@ -326,9 +326,7 @@ void __fastcall TMainForm::TickTimerTimer(TObject *Sender)
 {
   try {
 	if (!tstlan4::tick_lock()->check()) {
-	  for (int i = 0; i < 20; i++) {
-	    m_app.tick();
-	  }
+	  m_app.tick();
       if (m_update_status_timer.check()) {
         update_device_status_color();
       }
