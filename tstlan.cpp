@@ -13,6 +13,8 @@
 USEFORM("connectionlog.cpp", ConnectionLogForm);
 USEFORM("main.cpp", MainForm);
 //---------------------------------------------------------------------------
+// 15.05.2020 5.0.20.249 rev. 80 mxsrclib rev. 1399 extern_libs rev. 37
+
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
   //irs::exception_error_handler_t exception_error_handler;
