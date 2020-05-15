@@ -14,6 +14,8 @@
 
 #include "tstlanapp.h"
 
+#include "hidapi_hardflow.h"
+
 #include <irsfinal.h>
 
 namespace tstlan4 {
@@ -26,13 +28,20 @@ irs::handle_t<irs::mxdata_assembly_t> make_assembly(
 
 } //namespace tstlan4
 
+irs::hardflow_t* create_usb_hid(uint16_t a_pid, uint16_t a_vid)
+{
+  return new hidapi_hardflow_t(a_pid, a_vid);
+}
+
+
+
 irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
   const irs::string_t& a_device_name,
   const irs::string_t& a_device_type,
   irs::tstlan4_base_t* ap_tstlan4lib
 ) {
   return irs::mxdata_assembly_types()->
-    make_assembly(a_device_type, ap_tstlan4lib, a_device_name);
+	make_assembly(a_device_type, ap_tstlan4lib, a_device_name, &create_usb_hid);
 }
 
 tstlan4::app_t::app_t(cfg_t* ap_cfg):
@@ -279,29 +288,27 @@ void tstlan4::app_t::tick()
 {
   m_test.tick();
 
-  std::map<string_type, device_t>::iterator it =
-    m_devices_map.begin();
+  std::map<string_type, device_t>::iterator it = m_devices_map.begin();
   while (it != m_devices_map.end()) {
-    it->second.tstlan4lib->tick();
-    it->second.mxdata_assembly->tick();
+	it->second.tstlan4lib->tick();
+	it->second.mxdata_assembly->tick();
     ++it;
   }
 
-  it =
-    m_devices_map.begin();
+  it = m_devices_map.begin();
   while (it != m_devices_map.end()) {
     it->second.connection_log->add_errors(
       it->second.mxdata_assembly->get_last_error_string_list());
-    ++it;
+	++it;
   }
 
   for (int i = 0; i < 5; i++) {
-    m_mxnet_server.tick();
+	m_mxnet_server.tick();
   }
 
   if (m_mxnet_server.connected()) {
-    if (m_is_mxnet_server_first_connected) {
-      m_is_mxnet_server_first_connected = false;
+	if (m_is_mxnet_server_first_connected) {
+	  m_is_mxnet_server_first_connected = false;
       m_mxnet_server_data.year = 2011;
       m_mxnet_server_data.month = 4;
     } else {
