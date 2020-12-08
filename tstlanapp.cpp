@@ -290,9 +290,9 @@ void tstlan4::app_t::tick()
 
   std::map<string_type, device_t>::iterator it = m_devices_map.begin();
   while (it != m_devices_map.end()) {
-	it->second.tstlan4lib->tick();
-	for (int i = 0; i < 20; i++) {
-	  it->second.mxdata_assembly->tick();
+    it->second.tstlan4lib->tick();
+    for (int i = 0; i < 20; i++) {
+      it->second.mxdata_assembly->tick();
     }
     ++it;
   }
@@ -301,16 +301,16 @@ void tstlan4::app_t::tick()
   while (it != m_devices_map.end()) {
     it->second.connection_log->add_errors(
       it->second.mxdata_assembly->get_last_error_string_list());
-	++it;
+	  ++it;
   }
 
   for (int i = 0; i < 5; i++) {
-	m_mxnet_server.tick();
+	  m_mxnet_server.tick();
   }
 
   if (m_mxnet_server.connected()) {
-	if (m_is_mxnet_server_first_connected) {
-	  m_is_mxnet_server_first_connected = false;
+    if (m_is_mxnet_server_first_connected) {
+      m_is_mxnet_server_first_connected = false;
       m_mxnet_server_data.year = 2011;
       m_mxnet_server_data.month = 4;
     } else {
