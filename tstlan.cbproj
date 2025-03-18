@@ -549,6 +549,7 @@
         <None Include="..\mxsrclib\tstlan4abs.h">
             <BuildOrder>95</BuildOrder>
         </None>
+        <None Include=".gitignore"/>
         <CppCompile Include="connectionlog.cpp">
             <Form>ConnectionLogForm</Form>
             <DependentOn>connectionlog.h</DependentOn>
@@ -684,6 +685,12 @@
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <Deployment Version="3">
+                <DeployFile LocalName=".gitignore" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin\cc32c260.dll" Class="DependencyModule">
                     <Platform Name="Win32">
                         <Overwrite>true</Overwrite>
