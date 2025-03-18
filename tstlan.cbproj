@@ -169,8 +169,8 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=5.0.20.252;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <VerInfo_AutoGenVersion>false</VerInfo_AutoGenVersion>
-        <IncludePath>E:\DevExpress VCL 19.1.2 Full Source with DxAutoInstaller 2.2.2\DevExpressVCL19.1.2\Library\RS26;$(IncludePath)</IncludePath>
-        <ILINK_LibraryPath>E:\Downloads\DevExpress VCL 19.1.2 Full Source with DxAutoInstaller 2.2.2\DevExpressVCL19.1.2\Library\RS26;E:\DevExpress VCL 19.1.2 Full Source with DxAutoInstaller 2.2.2\DevExpressVCL19.1.2\Library\RS26;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <IncludePath>C:\Users\Public\Documents\Embarcadero\Studio\DevExpressVCL19.1.2\Library\RS26;$(IncludePath)</IncludePath>
+        <ILINK_LibraryPath>C:\Users\Public\Documents\Embarcadero\Studio\DevExpressVCL19.1.2\Library\RS26;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <BCC_IncludePath>..\extern_libs\hidapi-hidapi-0.9.0\hidapi;$(BCC_IncludePath)</BCC_IncludePath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
