@@ -10,6 +10,8 @@ tstlan4.cgl
 tstlan.skincfg
 /__astcache
 *.otares
+tstlan.res
+tstlan.stat
 
 # irs global ignore
 *.*~
