@@ -20,12 +20,12 @@ SourceDPI=96
 FilterRowOperator=0
 GroupIndex=-1
 IsChildInMergedGroup="false"
-Width=301
+Width=164
 AlignmentHorz=0
 Index=0
 Visible="true"
-SortOrder="soAscending"
-SortIndex=0
+SortOrder="soNone"
+SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
 [MainForm.DevicesCXGridTableView1/FileNameColumn: TcxGridColumn]

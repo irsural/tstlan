@@ -99,7 +99,7 @@
 TMainForm *MainForm;
 
 // ---------------------------------------------------------------------------
-// 18.04.2013 tstlan4 1.0.0.185 rev. 53 mxsrclib rev. 1123
+// 18.04.2013 tstlan4 1.0.0.185 rev. 53 mxsrclib rev. 1406
 // 09.05.2011
 // CodeGuard выявил баги:
 // - При записи в поток с широкими символами (а может и не только с широкими)
@@ -325,8 +325,8 @@ __fastcall TMainForm::~TMainForm()
 void __fastcall TMainForm::TickTimerTimer(TObject *Sender)
 {
   try {
-    if (!tstlan4::tick_lock()->check()) {
-      m_app.tick();
+	if (!tstlan4::tick_lock()->check()) {
+	  m_app.tick();
       if (m_update_status_timer.check()) {
         update_device_status_color();
       }
