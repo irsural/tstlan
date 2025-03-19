@@ -113,6 +113,11 @@
         <VerInfo_Build>247</VerInfo_Build>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=5.0.20.247;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <BCC_wdup>false</BCC_wdup>
+        <BCC_wiip>false</BCC_wiip>
+        <BCC_wpnf>false</BCC_wpnf>
+        <BCC_wdpr>false</BCC_wdpr>
+        <BCC_wpro>false</BCC_wpro>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <IncludePath>$(BDSINCLUDE)\windows\vcl;$(IncludePath)</IncludePath>
@@ -202,9 +207,15 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!='' And '$(FileToCompile)'=='..\extern_libs\hidapi-hidapi-0.9.0\windows\hid.c'">
+        <BCC_weff>false</BCC_weff>
+        <BCC_wpch>false</BCC_wpch>
+        <BCC_wcsu>false</BCC_wcsu>
+    </PropertyGroup>
     <ItemGroup>
         <CppCompile Include="..\extern_libs\hidapi-hidapi-0.9.0\windows\hid.c">
             <BuildOrder>108</BuildOrder>
+            <OptionOverrides>true</OptionOverrides>
         </CppCompile>
         <CppCompile Include="..\extern_libs\jsoncpp\src\lib_json\json_reader.cpp">
             <BuildOrder>102</BuildOrder>
