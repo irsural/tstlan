@@ -62,8 +62,8 @@ hidapi_hardflow_t::size_type hidapi_hardflow_t::read(size_type a_channel_ident, 
   return read_size;
 }
 
-hidapi_hardflow_t::size_type hidapi_hardflow_t::write(size_type a_channel_ident, const irs_u8 *ap_buf,
-  size_type a_size)
+hidapi_hardflow_t::size_type hidapi_hardflow_t::write(size_type a_channel_ident,
+  const irs_u8 *ap_buf, size_type a_size)
 {
   packet_t packet(0x00, 0x00, static_cast<uint16_t>(a_size), ap_buf);
   int res = hid_write(m_device_handle, reinterpret_cast<uint8_t*>(&packet), m_report_size);

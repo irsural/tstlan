@@ -11,8 +11,8 @@ public:
   typedef irs::hardflow_t::size_type size_t;
   typedef irs::hardflow_t::string_type string_type;
 
-  hidapi_hardflow_t(uint16_t a_pid, uint16_t a_vid, size_type a_channel_start_index = invalid_channel + 1,
-    size_type a_channel_count = 1);
+  hidapi_hardflow_t(uint16_t a_pid, uint16_t a_vid,
+    size_type a_channel_start_index = invalid_channel + 1, size_type a_channel_count = 1);
   virtual ~hidapi_hardflow_t();
   virtual string_type param(const string_type &a_name);
   virtual void set_param(const string_type &a_name, const string_type &a_value);
