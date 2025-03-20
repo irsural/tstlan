@@ -150,12 +150,10 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
   m_ini_file.set_section("MainForm");
   m_ini_file.add("", this);
   m_ini_file.set_section("ChartForm");
-  m_ini_file.add(String("left"),
-    reinterpret_cast<irs_u32*>(&m_chart_position.left));
+  m_ini_file.add("left", reinterpret_cast<irs_u32*>(&m_chart_position.left));
   m_ini_file.add("top", reinterpret_cast<irs_u32*>(&m_chart_position.top));
   m_ini_file.add("right", reinterpret_cast<irs_u32*>(&m_chart_position.right));
-  m_ini_file.add("bottom",
-    reinterpret_cast<irs_u32*>(&m_chart_position.bottom));
+  m_ini_file.add("bottom", reinterpret_cast<irs_u32*>(&m_chart_position.bottom));
   m_ini_file.load();
 
   load_grid_options();
