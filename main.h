@@ -137,6 +137,7 @@ __published:	// IDE-managed Components
   TSpeedButton *SpeedButton6;
   TcxGridColumn *StatusColumn;
   TcxGridColumn *ConnectionLogColumn;
+  TSplitter *LogSplitter;
   void __fastcall TickTimerTimer(TObject *Sender);
   void __fastcall OptionsColumnPropertiesButtonClick(TObject *Sender, int AButtonIndex);
   void __fastcall ShowTstlanColumnPropertiesButtonClick(TObject *Sender, int AButtonIndex);

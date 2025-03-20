@@ -406,9 +406,12 @@ void TMainForm::update_options()
 {
   if (m_app.options()->get_param(irst("Отображать лог")) ==
       irst("true")) {
+    LogSplitter->Visible = true;
     LogMemo->Visible = true;
+    LogSplitter->Top = LogMemo->Top;
     irs::mlog().rdbuf(mp_memo_buf.get());
   } else {
+    LogSplitter->Visible = false;
     LogMemo->Visible = false;
     irs::mlog().rdbuf(NULL);
   }
