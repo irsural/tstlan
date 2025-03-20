@@ -262,7 +262,8 @@ void TMainForm::save_grid_options()
     recreate, AOptions);
 }
 
-void TMainForm::add_device(const String& a_file_name) {
+void TMainForm::add_device(const String& a_file_name)
+{
   create_devices_dir();
   irs::ini_file_t ini_file;
   ini_file.set_ini_name(a_file_name);
@@ -297,7 +298,8 @@ void TMainForm::add_device(const String& a_file_name) {
 }
 
 void TMainForm::show_bad_devices_if_exists(
-  const std::vector<string_type>& a_bad_devices) {
+  const std::vector<string_type>& a_bad_devices)
+{
   if (!a_bad_devices.empty()) {
     string_type msg = irst("Следующие устройства включить не удалось: ");
     for (size_type i = 0; i < a_bad_devices.size(); i++) {

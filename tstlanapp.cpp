@@ -33,15 +33,13 @@ irs::hardflow_t* create_usb_hid(uint16_t a_pid, uint16_t a_vid)
   return new hidapi_hardflow_t(a_pid, a_vid);
 }
 
-
-
 irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
   const irs::string_t& a_device_name,
   const irs::string_t& a_device_type,
   irs::tstlan4_base_t* ap_tstlan4lib
 ) {
   return irs::mxdata_assembly_types()->
-	make_assembly(a_device_type, ap_tstlan4lib, a_device_name, &create_usb_hid);
+  make_assembly(a_device_type, ap_tstlan4lib, a_device_name, &create_usb_hid);
 }
 
 tstlan4::app_t::app_t(cfg_t* ap_cfg):
@@ -79,7 +77,7 @@ std::vector<tstlan4::app_t::string_type> tstlan4::app_t::set_devices(
   std::vector<string_type> bad_devices;
   while (dev_opt_it != a_devices.end()) {
     std::map<string_type, device_t>::iterator it =
-	    m_devices_map.find(dev_opt_it->first);
+      m_devices_map.find(dev_opt_it->first);
     bool need_reset = false;
     if (it != m_devices_map.end()) {
       if (it->second.type != dev_opt_it->second.type) {
