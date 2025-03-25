@@ -20,12 +20,12 @@ SourceDPI=96
 FilterRowOperator=0
 GroupIndex=-1
 IsChildInMergedGroup="false"
-Width=164
+Width=138
 AlignmentHorz=0
 Index=0
 Visible="true"
-SortOrder="soNone"
-SortIndex=-1
+SortOrder="soAscending"
+SortIndex=0
 WasVisibleBeforeGrouping="False"
 
 [MainForm.DevicesCXGridTableView1/FileNameColumn: TcxGridColumn]
@@ -42,13 +42,13 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[MainForm.DevicesCXGridTableView1/EnabledColumn: TcxGridColumn]
+[MainForm.DevicesCXGridTableView1/StatusColumn: TcxGridColumn]
 =
 SourceDPI=96
 FilterRowOperator=0
 GroupIndex=-1
 IsChildInMergedGroup="false"
-Width=61
+Width=49
 AlignmentHorz=0
 Index=2
 Visible="true"
@@ -56,19 +56,19 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[MainForm.DevicesCXGridTableView1/StatusColumn: TcxGridColumn]
+[MainForm.DevicesCXGridTableView1/EnabledColumn: TcxGridColumn]
 =
 SourceDPI=96
 FilterRowOperator=0
 GroupIndex=-1
 IsChildInMergedGroup="false"
-Width=46
+Width=43
 AlignmentHorz=0
 Index=3
 Visible="true"
 SortOrder="soNone"
 SortIndex=-1
-WasVisibleBeforeGrouping="False"
+WasVisibleBeforeGrouping="True"
 
 [MainForm.DevicesCXGridTableView1/ConnectionLogColumn: TcxGridColumn]
 =
@@ -104,7 +104,7 @@ SourceDPI=96
 FilterRowOperator=0
 GroupIndex=-1
 IsChildInMergedGroup="false"
-Width=64
+Width=79
 AlignmentHorz=0
 Index=6
 Visible="true"
@@ -118,7 +118,7 @@ SourceDPI=96
 FilterRowOperator=0
 GroupIndex=-1
 IsChildInMergedGroup="false"
-Width=64
+Width=83
 AlignmentHorz=0
 Index=7
 Visible="true"
