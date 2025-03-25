@@ -33,7 +33,8 @@ private:
     uint16_t data_size;
     uint8_t data[61];
     packet_t(uint8_t a_report_id = 0, uint8_t a_channel_id = 0, uint16_t a_data_size = 0,
-             const uint8_t *a_src_data = NULL):
+      const uint8_t *a_src_data = NULL
+    ):
       report_id(a_report_id),
       channel_id(a_channel_id),
       data_size(a_data_size)
