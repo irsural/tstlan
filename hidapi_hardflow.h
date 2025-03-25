@@ -5,7 +5,7 @@
 #include <cassert>
 #include "hidapi.h"
 
-class hidapi_hardflow_t : public irs::hardflow_t
+class hidapi_hardflow_t: public irs::hardflow_t
 {
 public:
   typedef irs::hardflow_t::size_type size_t;
@@ -39,6 +39,7 @@ private:
       channel_id(a_channel_id),
       data_size(a_data_size)
     {
+      memset(data, 0, sizeof(data));
       if (a_src_data) {
         memcpy(data, a_src_data, a_data_size);
       }
