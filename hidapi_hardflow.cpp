@@ -1,7 +1,8 @@
 #include "hidapi_hardflow.h"
 
-hidapi_hardflow_t::hidapi_hardflow_t(uint16_t a_pid, uint16_t a_vid, size_type a_channel_start_index,
-  size_type a_channel_count):
+hidapi_hardflow_t::hidapi_hardflow_t(uint16_t a_pid, uint16_t a_vid,
+  size_type a_channel_start_index, size_type a_channel_count
+):
   m_channel(invalid_channel + 1),
   m_channel_start_index(a_channel_start_index),
   m_channel_end_index(m_channel_start_index + a_channel_count - 1),
@@ -45,6 +46,10 @@ hidapi_hardflow_t::size_type hidapi_hardflow_t::read(size_type a_channel_ident, 
     int res = hid_read(m_device_handle, a_packet_raw, m_report_size);
     if (res > 0) {
       size_type packet_size = packet.data_size;
+
+//      irs::mlog() << "packet.channel_id = " << (int)packet.channel_id << endl;
+//      irs::mlog() << "packet.data_size = " << packet_size << endl;
+
       read_size = ((a_size <= packet_size) ? a_size : packet_size);
       memcpy(ap_buf, packet.data, read_size);
 
