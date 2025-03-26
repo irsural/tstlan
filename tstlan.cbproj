@@ -170,9 +170,9 @@
         <BCC_Defines>_DEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
         <BCC_UserSuppliedOptions> -wpin -w-dig -wdef -wstl -wamp -wbbf -wcln -wucp -wstv -a1 -wnod -wamb -wstu -wasm -wprc -wsig -wpia -w-cod -k</BCC_UserSuppliedOptions>
         <LinkPackageStatics>rtl.lib;vcl.lib;VclSmp.lib;vclx.lib;dbrtl.lib;vclimg.lib;vcldb.lib;xmlrtl.lib;IndyProtocols.lib;IndyCore.lib;IndySystem.lib;vclactnband.lib;cxLibraryRS26.lib;dxGDIPlusRS26.lib;dxCoreRS26.lib;dbexpress.lib;DbxCommonDriver.lib;vclie.lib;cxGridRS26.lib;cxExportRS26.lib;dxSpreadSheetCoreDialogsRS26.lib;dxSpreadSheetCoreRS26.lib;dxComnRS26.lib;dxSpreadSheetRS26.lib;dxServerModeRS26.lib;cxTreeListRS26.lib;dxSkinsCoreRS26.lib;cxTreeListdxBarPopupMenuRS26.lib;dxBarRS26.lib;bcbsmp.lib</LinkPackageStatics>
-        <VerInfo_Build>91</VerInfo_Build>
+        <VerInfo_Build>92</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=5.0.21.91;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=5.0.21.92;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <VerInfo_AutoGenVersion>false</VerInfo_AutoGenVersion>
         <IncludePath>C:\Users\Public\Documents\Embarcadero\Studio\DevExpressVCL19.1.2\Library\RS26;$(IncludePath)</IncludePath>
         <ILINK_LibraryPath>C:\Users\Public\Documents\Embarcadero\Studio\DevExpressVCL19.1.2\Library\RS26;$(ILINK_LibraryPath)</ILINK_LibraryPath>

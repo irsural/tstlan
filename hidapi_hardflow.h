@@ -8,7 +8,7 @@
 class hidapi_hardflow_t: public irs::hardflow_t
 {
 public:
-  typedef irs::hardflow_t::size_type size_t;
+  typedef irs::hardflow_t::size_type size_type;
   typedef irs::hardflow_t::string_type string_type;
 
   hidapi_hardflow_t(uint16_t a_pid, uint16_t a_vid,
@@ -24,6 +24,8 @@ public:
 
 private:
   enum { hid_interface_class = 0x03 };
+
+  typedef irs_u8 channel_field_type;
 
   #pragma pack(push, 1)
   struct packet_t
@@ -55,6 +57,27 @@ private:
   hid_device *m_device_handle;
   const size_t m_report_size;
   std::vector<uint8_t> m_read_over_bytes;
+
+  inline size_type channel_id_to_buf_index(size_type a_channel_id)
+  {
+    return a_channel_id - 1;
+  }
+  inline size_type buf_index_to_channel_id(size_type a_buf_index)
+  {
+    return a_buf_index + 1;
+  }
+  inline size_type packet_channel_id_to_buf_index(
+    channel_field_type a_channel_id)
+  {
+    return a_channel_id - (m_channel_start_index - 1);
+  }
+  inline channel_field_type buf_index_to_packet_channel_id(
+    size_type a_buf_index)
+  {
+    return static_cast<channel_field_type>(
+      a_buf_index + (m_channel_start_index - 1));
+  }
 };
 
 #endif // LIBUSB_HID_T_H
+
