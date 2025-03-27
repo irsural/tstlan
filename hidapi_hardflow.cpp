@@ -12,8 +12,6 @@ hidapi_hardflow_t::hidapi_hardflow_t(uint16_t a_pid, uint16_t a_vid,
   m_report_size(65),
   m_read_over_bytes()
 {
-  assert(m_channel_start_index == 1);
-  assert(m_channel_count == 1);
   hid_init();
   m_device_handle = hid_open(a_vid, a_pid, NULL);
   hid_set_nonblocking(m_device_handle, 1);
