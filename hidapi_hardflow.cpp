@@ -7,6 +7,7 @@ hidapi_hardflow_t::hidapi_hardflow_t(uint16_t a_pid, uint16_t a_vid,
   m_channel_start_index(a_channel_start_index),
   m_channel_end_index(m_channel_start_index + a_channel_count - 1),
   m_channel_count(a_channel_count),
+  m_channel_list(m_channel_count),
   m_device_handle(NULL),
   m_report_size(65),
   m_read_over_bytes()

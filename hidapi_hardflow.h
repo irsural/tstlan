@@ -49,10 +49,28 @@ private:
   };
   #pragma pack(pop)
 
+  enum { packet_count_on_channel = 2 };
+  struct channel_t
+  {
+    vector<packet_t> packet(packet_count_on_channel);
+  };
+  struct channel_list_t
+  {
+    channel_list_t(size_type a_channel_count):
+      channel(a_channel_count)
+    {
+    }
+
+    vector<channel_t> channel;
+  };
+
+  //packet_t& packet = channel_list.channel[0].packet[0];
+
   size_type m_channel;
   const size_type m_channel_start_index;
   const size_type m_channel_end_index;
   const size_type m_channel_count;
+  channel_list_t m_channel_list;
 
   hid_device *m_device_handle;
   const size_t m_report_size;
