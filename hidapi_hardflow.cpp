@@ -89,7 +89,7 @@ hidapi_hardflow_t::size_type hidapi_hardflow_t::channel_next()
 bool hidapi_hardflow_t::is_channel_exists(size_type a_channel_ident)
 {
   if ((a_channel_ident >= m_channel_start_index) &&
-    (a_channel_ident <= m_channel_start_index)) {
+    (a_channel_ident <= m_channel_end_index)) {
     return true;
   }
   return false;
