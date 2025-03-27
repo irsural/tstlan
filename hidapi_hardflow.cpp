@@ -78,7 +78,6 @@ hidapi_hardflow_t::size_type hidapi_hardflow_t::write(size_type a_channel_ident,
 
 hidapi_hardflow_t::size_type hidapi_hardflow_t::channel_next()
 {
-  assert(true);
   size_type channel = m_channel;
   m_channel++;
   if (m_channel > m_channel_end_index) {
