@@ -37,39 +37,55 @@ void hidapi_hardflow_t::set_param(const string_type &a_name, const string_type &
 hidapi_hardflow_t::size_type hidapi_hardflow_t::read(size_type a_channel_ident, irs_u8 *ap_buf,
   size_type a_size)
 {
-  packet_t packet;
   size_type read_size = 0;
+  size_type channel_buf_index = channel_id_to_buf_index(a_channel_ident);
+  channel_t& channel_cur = m_channel_list.channel[channel_buf_index];
 
-  if (m_read_over_bytes.empty()) {
+  if (channel_cur.packet.empty()) {
+    packet_t packet;
     uint8_t *a_packet_raw = reinterpret_cast<uint8_t*>(&packet) + 1;
     int res = hid_read(m_device_handle, a_packet_raw, m_report_size);
     if (res > 0) {
-      size_type packet_size = packet.data_size;
+      const size_type packet_buf_index = packet_channel_id_to_buf_index(packet.channel_id);
+      if (packet_buf_index == channel_buf_index) {
+        size_type packet_size = packet.data_size;
 
-//      irs::mlog() << "packet.channel_id = " << (int)packet.channel_id << endl;
-//      irs::mlog() << "packet.data_size = " << packet_size << endl;
+//        irs::mlog() << "packet.channel_id = " << (int)packet.channel_id << endl;
+//        irs::mlog() << "packet.data_size = " << packet_size << endl;
 
-      read_size = ((a_size <= packet_size) ? a_size : packet_size);
-      memcpy(ap_buf, packet.data, read_size);
+        read_size = min(a_size, packet_size);
+        memcpy(ap_buf, packet.data, read_size);
 
-      if (packet_size > a_size) {
-        size_type oversize = packet_size - read_size;
-        m_read_over_bytes.resize(oversize);
-        memcpy(&m_read_over_bytes[0], packet.data + read_size, oversize);
+        if (packet_size > a_size) {
+          channel_cur.packet_add(packet);
+          channel_cur.packet_read_pos = read_size;
+        }
+      } else {
+        channel_t& channel_in_recived_packet = m_channel_list.channel[packet_buf_index];
+        channel_in_recived_packet.packet_add(packet);
+        channel_in_recived_packet.packet_read_pos = 0;
       }
     }
   } else {
-    read_size = a_size <= m_read_over_bytes.size() ? a_size : m_read_over_bytes.size();
-    memcpy(ap_buf, &m_read_over_bytes[0], read_size);
-    m_read_over_bytes.erase(m_read_over_bytes.begin(), m_read_over_bytes.begin() + read_size);
+    size_type data_size = channel_cur.packet.front().data_size;
+    read_size = min(a_size, data_size - channel_cur.packet_read_pos);
+    memcpy(ap_buf, channel_cur.packet.front().data + channel_cur.packet_read_pos, read_size);
+    channel_cur.packet_read_pos += read_size;
+    if (channel_cur.packet_read_pos >= data_size) {
+      channel_cur.packet.pop_front();
+      channel_cur.packet_read_pos = 0;
+    }
   }
+
   return read_size;
 }
 
 hidapi_hardflow_t::size_type hidapi_hardflow_t::write(size_type a_channel_ident,
   const irs_u8 *ap_buf, size_type a_size)
 {
-  packet_t packet(0x00, 0x00, static_cast<uint16_t>(a_size), ap_buf);
+  size_type buf_index = channel_id_to_buf_index(a_channel_ident);
+  channel_field_type packet_channel_id = buf_index_to_packet_channel_id(buf_index);
+  packet_t packet(0x00, packet_channel_id, static_cast<uint16_t>(a_size), ap_buf);
   int res = hid_write(m_device_handle, reinterpret_cast<uint8_t*>(&packet), m_report_size);
   return res > 0 ? res : 0;
 }
@@ -96,3 +112,4 @@ bool hidapi_hardflow_t::is_channel_exists(size_type a_channel_ident)
 void hidapi_hardflow_t::tick()
 {
 }
+

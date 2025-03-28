@@ -25,7 +25,7 @@ public:
 private:
   enum { hid_interface_class = 0x03 };
 
-  typedef irs_u8 channel_field_type;
+  typedef uint8_t channel_field_type;
 
   #pragma pack(push, 1)
   struct packet_t
@@ -52,19 +52,41 @@ private:
   enum { packet_count_on_channel = 2 };
   struct channel_t
   {
-    vector<packet_t> packet(packet_count_on_channel);
+    channel_t():
+      packet(),
+      packet_read_pos(0)
+    {
+    }
+
+    deque<packet_t> packet;
+    // Позиция чтения внутри packet_t::data текщего буфера пакета
+    size_type packet_read_pos;
+    size_type channel_id;
+
+    bool packet_add(packet_t& a_packet)
+    {
+      if (packet.size() < packet_count_on_channel) {
+        packet.push_back(a_packet);
+        return true;
+      } else {
+        irs::mlog() << "hidapi_hardflow_t Принято пакетов больше чем доступно буферов ";
+        irs::mlog() << "на канале " << channel_id;
+        return false;
+      }
+    }
   };
   struct channel_list_t
   {
     channel_list_t(size_type a_channel_count):
       channel(a_channel_count)
     {
+      for (size_type i = 0; i < a_channel_count; i++) {
+        channel[i].channel_id = buf_index_to_channel_id(i);
+      }
     }
 
     vector<channel_t> channel;
   };
-
-  //packet_t& packet = channel_list.channel[0].packet[0];
 
   size_type m_channel;
   const size_type m_channel_start_index;
@@ -76,11 +98,11 @@ private:
   const size_t m_report_size;
   std::vector<uint8_t> m_read_over_bytes;
 
-  inline size_type channel_id_to_buf_index(size_type a_channel_id)
+  static inline size_type channel_id_to_buf_index(size_type a_channel_id)
   {
     return a_channel_id - 1;
   }
-  inline size_type buf_index_to_channel_id(size_type a_buf_index)
+  static inline size_type buf_index_to_channel_id(size_type a_buf_index)
   {
     return a_buf_index + 1;
   }
@@ -89,11 +111,10 @@ private:
   {
     return a_channel_id - (m_channel_start_index - 1);
   }
-  inline channel_field_type buf_index_to_packet_channel_id(
+  inline uint8_t buf_index_to_packet_channel_id(
     size_type a_buf_index)
   {
-    return static_cast<channel_field_type>(
-      a_buf_index + (m_channel_start_index - 1));
+    return static_cast<uint8_t>(a_buf_index + (m_channel_start_index - 1));
   }
 };
 
