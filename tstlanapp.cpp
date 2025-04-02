@@ -30,7 +30,10 @@ irs::handle_t<irs::mxdata_assembly_t> make_assembly(
 
 irs::hardflow_t* create_usb_hid(uint16_t a_pid, uint16_t a_vid)
 {
-  return new hidapi_hardflow_t(a_pid, a_vid);
+  irs::hardflow_t::size_type modbus_channel = 1;
+  irs::hardflow_t::size_type modbus_channel_count = 1;
+  return new irs::hardflow::diapason_channels_t(new hidapi_hardflow_t(a_pid, a_vid),
+    modbus_channel, modbus_channel_count, irs::hardflow::diapason_channels_t::hardflow_ext_own);
 }
 
 irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
@@ -39,7 +42,7 @@ irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
   irs::tstlan4_base_t* ap_tstlan4lib
 ) {
   return irs::mxdata_assembly_types()->
-  make_assembly(a_device_type, ap_tstlan4lib, a_device_name, &create_usb_hid);
+    make_assembly(a_device_type, ap_tstlan4lib, a_device_name, &create_usb_hid);
 }
 
 tstlan4::app_t::app_t(cfg_t* ap_cfg):
