@@ -70,7 +70,7 @@ private:
         return true;
       } else {
         irs::mlog() << "hidapi_hardflow_t Принято пакетов больше чем доступно буферов ";
-        irs::mlog() << "на канале " << channel_id;
+        irs::mlog() << "на канале " << channel_id << endl;
         return false;
       }
     }
