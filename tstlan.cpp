@@ -13,7 +13,7 @@
 USEFORM("connectionlog.cpp", ConnectionLogForm);
 USEFORM("main.cpp", MainForm);
 //---------------------------------------------------------------------------
-// tstlan rev. 99 mxsrclib rev. 1578 extern_libs rev. 37
+// tstlan rev. 100 mxsrclib rev. 1579 extern_libs rev. 37
 
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
