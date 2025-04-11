@@ -49,7 +49,7 @@ private:
   };
   #pragma pack(pop)
 
-  enum { packet_count_on_channel = 2 };
+  enum { packet_count_on_channel = 5 };
   struct channel_t
   {
     channel_t():
