@@ -7,7 +7,7 @@
 
 #include <irsfinal.h>
 
-#define TL4_DEBUG
+//#define TL4_DEBUG
 
 #ifdef TL4_DEBUG
 

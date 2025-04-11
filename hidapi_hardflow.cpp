@@ -1,4 +1,5 @@
 #include "hidapi_hardflow.h"
+#include "error.h"
 
 hidapi_hardflow_t::hidapi_hardflow_t(uint16_t a_pid, uint16_t a_vid,
   size_type a_channel_start_index, size_type a_channel_count
@@ -46,16 +47,22 @@ hidapi_hardflow_t::size_type hidapi_hardflow_t::read(size_type a_channel_ident, 
     uint8_t *a_packet_raw = reinterpret_cast<uint8_t*>(&packet) + 1;
     int res = hid_read(m_device_handle, a_packet_raw, m_report_size);
     if (res > 0) {
+      // Предполагается, что читается минимум 1 пакет за раз (64 байта без report_id)
+
+      size_type packet_size = packet.data_size;
+
+      #ifdef TL4_DEBUG
+      if (packet.channel_id == 1) {
+        irs::mlog() << "packet.channel_id = " << (int)packet.channel_id << endl;
+        irs::mlog() << "packet.data_size = " << packet_size << endl;
+        irs::mlog() << "Байт прочитано hid_read: " << res << endl;
+      }
+      #endif //TL4_DEBUG
+
       const size_type packet_buf_index = packet_channel_id_to_buf_index(packet.channel_id);
       if (packet_buf_index == channel_buf_index) {
-        size_type packet_size = packet.data_size;
-
-//        irs::mlog() << "packet.channel_id = " << (int)packet.channel_id << endl;
-//        irs::mlog() << "packet.data_size = " << packet_size << endl;
-
         read_size = min(a_size, packet_size);
         memcpy(ap_buf, packet.data, read_size);
-
         if (packet_size > a_size) {
           channel_cur.packet_add(packet);
           channel_cur.packet_read_pos = read_size;
