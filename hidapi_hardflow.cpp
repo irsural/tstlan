@@ -65,6 +65,8 @@ hidapi_hardflow_t::size_type hidapi_hardflow_t::read(size_type a_channel_ident, 
         read_size = min(a_size, packet_size);
         memcpy(ap_buf, packet.data, read_size);
         if (packet_size > a_size) {
+          // јлгоритм построен так, что только в первом добавленном пакете, текуща€ позици€
+          // при добавлении пакета может быть ненулевой. Ёто происходит только в этом месте.
           channel_cur.packet_add(packet);
           channel_cur.packet_read_pos = read_size;
         }
@@ -72,8 +74,10 @@ hidapi_hardflow_t::size_type hidapi_hardflow_t::read(size_type a_channel_ident, 
         channel_t& channel_in_recived_packet = m_channel_list.channel[packet_buf_index];
         if (channel_in_recived_packet.packet_add(packet)) {
           if (channel_in_recived_packet.packet.size() == 1) {
+            // “олько если в этом месте добавл€етс€ первый пакет, то следует сбросить позицию
             channel_in_recived_packet.packet_read_pos = 0;
           } else {
+            // »наче позицию сбрасывать не следует
             TL4_DBG_MSG("hidapi_hardflow_t  оличество пакетов в буфере на канале " <<
               buf_index_to_channel_id(packet_buf_index) << " больше 1");
           }
@@ -86,6 +90,7 @@ hidapi_hardflow_t::size_type hidapi_hardflow_t::read(size_type a_channel_ident, 
     memcpy(ap_buf, channel_cur.packet.front().data + channel_cur.packet_read_pos, read_size);
     channel_cur.packet_read_pos += read_size;
     if (channel_cur.packet_read_pos >= data_size) {
+      // «десь сохраненные в буфере пакеты постепенно считываютс€ клиентом и очищаютс€
       channel_cur.packet.pop_front();
       channel_cur.packet_read_pos = 0;
     }
