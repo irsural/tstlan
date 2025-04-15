@@ -69,8 +69,10 @@ private:
         packet.push_back(a_packet);
         return true;
       } else {
+        #ifdef TL4_DEBUG
         irs::mlog() << "hidapi_hardflow_t Принято пакетов больше чем доступно буферов ";
         irs::mlog() << "на канале " << channel_id << endl;
+        #endif //TL4_DEBUG
         return false;
       }
     }

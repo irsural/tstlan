@@ -53,6 +53,7 @@ hidapi_hardflow_t::size_type hidapi_hardflow_t::read(size_type a_channel_ident, 
 
       #ifdef TL4_DEBUG
       if (packet.channel_id == 1) {
+        irs::mlog() << "hidapi_hardflow_t" << endl;
         irs::mlog() << "packet.channel_id = " << (int)packet.channel_id << endl;
         irs::mlog() << "packet.data_size = " << packet_size << endl;
         irs::mlog() << "Байт прочитано hid_read: " << res << endl;
@@ -69,8 +70,14 @@ hidapi_hardflow_t::size_type hidapi_hardflow_t::read(size_type a_channel_ident, 
         }
       } else {
         channel_t& channel_in_recived_packet = m_channel_list.channel[packet_buf_index];
-        channel_in_recived_packet.packet_add(packet);
-        channel_in_recived_packet.packet_read_pos = 0;
+        if (channel_in_recived_packet.packet_add(packet)) {
+          if (channel_in_recived_packet.packet.size() == 1) {
+            channel_in_recived_packet.packet_read_pos = 0;
+          } else {
+            TL4_DBG_MSG("hidapi_hardflow_t Количество пакетов в буфере на канале " <<
+              buf_index_to_channel_id(packet_buf_index) << " больше 1");
+          }
+        } 
       }
     }
   } else {
