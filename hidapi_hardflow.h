@@ -30,20 +30,22 @@ private:
   #pragma pack(push, 1)
   struct packet_t
   {
+    enum { data_max_size = 61 };
+
     uint8_t report_id;
     uint8_t channel_id;
     uint16_t data_size;
-    uint8_t data[61];
-    packet_t(uint8_t a_report_id = 0, uint8_t a_channel_id = 0, uint16_t a_data_size = 0,
+    uint8_t data[data_max_size];
+    packet_t(uint8_t a_report_id = 0, uint8_t a_channel_id = 0, size_type a_data_size = 0,
       const uint8_t *a_src_data = NULL
     ):
       report_id(a_report_id),
       channel_id(a_channel_id),
-      data_size(a_data_size)
+      data_size(static_cast<uint16_t>(min<size_type>(a_data_size, data_max_size)))
     {
       memset(data, 0, sizeof(data));
       if (a_src_data) {
-        memcpy(data, a_src_data, a_data_size);
+        memcpy(data, a_src_data, data_size);
       }
     }
   };
