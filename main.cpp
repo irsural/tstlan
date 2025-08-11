@@ -13,9 +13,6 @@
 #include "error.h"
 
 #include <irsfinal.h>
-/*#include "tstlan5lib.h"
-#include "MxChart.h"
-#include "MxBase.h"*/
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "cxClasses"

@@ -8,6 +8,275 @@
 #include <irsfinal.h>
 
 #ifdef NOP
+// Конвертация UTF-8 в UTF-16
+std::u16string utf8_to_utf16(const std::string& utf8) {
+  std::u16string utf16;
+
+  try {
+    std::mbstate_t state = std::mbstate_t();
+    std::codecvt<char16_t, char, std::mbstate_t> const& facet =
+      std::use_facet<std::codecvt<char16_t, char, std::mbstate_t> >(std::locale());
+
+    const char* from_next = 0;
+    char16_t* to_next = 0;
+
+    // Выделяем буфер достаточного размера
+    std::vector<char16_t> buf(utf8.size());
+
+    auto result = facet.in(
+      state,
+      &utf8[0], &utf8[0] + utf8.size(), from_next,
+      &buf[0], &buf[0] + buf.size(), to_next
+    );
+
+    if (result != std::codecvt_base::ok) {
+      throw std::runtime_error("Conversion failed");
+    }
+
+    utf16.assign(&buf[0], to_next);
+  }
+  catch (const std::exception& e) {
+    throw std::runtime_error(std::string("UTF-8 to UTF-16 conversion error: ") + e.what());
+  }
+
+  return utf16;
+}
+
+// Конвертация UTF-16 в UTF-8
+std::string utf16_to_utf8(const std::u16string& utf16) {
+  std::string utf8;
+
+  try {
+    std::mbstate_t state = std::mbstate_t();
+    std::codecvt<char16_t, char, std::mbstate_t> const& facet =
+      std::use_facet<std::codecvt<char16_t, char, std::mbstate_t> >(std::locale());
+
+    const char16_t* from_next = 0;
+    char* to_next = 0;
+
+    // Выделяем буфер достаточного размера
+    std::vector<char> buf(utf16.size() * 4);
+
+    auto result = facet.out(
+      state,
+      &utf16[0], &utf16[0] + utf16.size(), from_next,
+      &buf[0], &buf[0] + buf.size(), to_next
+    );
+
+    if (result != std::codecvt_base::ok) {
+      throw std::runtime_error("Conversion failed");
+    }
+
+    utf8.assign(&buf[0], to_next);
+  }
+  catch (const std::exception& e) {
+    throw std::runtime_error(std::string("UTF-16 to UTF-8 conversion error: ") + e.what());
+  }
+
+  return utf8;
+}
+
+
+
+
+
+// Преобразование u16string в wstring (Windows)
+std::wstring u16string_to_wstring(const std::u16string& u16str)
+{
+  // В Windows wchar_t и char16_t имеют одинаковый размер (2 байта)
+  static_assert(sizeof(wchar_t) == sizeof(char16_t),
+                "This implementation is Windows-specific");
+
+  std::wstring wstr;
+  wstr.reserve(u16str.size());
+
+  // Простое побайтовое копирование с приведением типа
+  for (std::u16string::const_iterator it = u16str.begin(); it != u16str.end(); ++it) {
+    wstr.push_back(static_cast<wchar_t>(*it));
+  }
+
+  return wstr;
+}
+
+// Преобразование wstring в u16string (Windows)
+std::u16string wstring_to_u16string(const std::wstring& wstr)
+{
+  static_assert(sizeof(wchar_t) == sizeof(char16_t),
+                "This implementation is Windows-specific");
+
+  std::u16string u16str;
+  u16str.reserve(wstr.size());
+
+  // Простое побайтовое копирование с приведением типа
+  for (std::wstring::const_iterator it = wstr.begin(); it != wstr.end(); ++it) {
+    u16str.push_back(static_cast<char16_t>(*it));
+  }
+
+  return u16str;
+}
+
+
+
+//// Конвертация UTF-8 в wchar_t
+//std::wstring utf8_to_wchar(const std::string& utf8)
+//{
+//  return u16string_to_wstring(utf8_to_utf16(utf8));
+//}
+//
+//// Конвертация wchar_t в UTF-8
+//std::string wchar_to_utf8(const std::wstring& wstr)
+//{
+//  return utf16_to_utf8(wstring_to_u16string(wstr));
+//}
+
+
+
+
+// Конвертация UTF-8 в std::wstring (Windows)
+std::wstring utf8_to_wchar(const std::string& utf8)
+{
+  if (utf8.empty()) return L"";
+
+  // Получаем необходимый размер буфера
+  int wchars_count = MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, NULL, 0);
+  if (wchars_count == 0) {
+    throw std::runtime_error("Failed to convert UTF-8 to wchar_t (size calculation)");
+  }
+
+  // Выделяем буфер
+  std::vector<wchar_t> buffer(wchars_count);
+
+  // Выполняем преобразование
+  if (MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, &buffer[0], wchars_count) == 0) {
+    throw std::runtime_error("Failed to convert UTF-8 to wchar_t");
+  }
+
+  return std::wstring(&buffer[0]);
+}
+
+// Конвертация std::wstring в UTF-8 (Windows) с WC_NO_BEST_FIT_CHARS
+std::string wchar_to_utf8(const std::wstring& wstr)
+{
+  if (wstr.empty()) return "";
+
+  // Получаем необходимый размер буфера
+  int utf8_count = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, NULL, 0, NULL, NULL);
+  if (utf8_count == 0) {
+    throw std::runtime_error("Failed to convert wchar_t to UTF-8 (size calculation)");
+  }
+
+  // Выделяем буфер
+  std::vector<char> buffer(utf8_count);
+
+  // Выполняем преобразование
+  if (WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, &buffer[0], utf8_count, NULL, NULL) == 0) {
+    throw std::runtime_error("Failed to convert wchar_t to UTF-8");
+  }
+
+  return std::string(&buffer[0]);
+}
+
+
+
+
+// Чтение UTF-8 файла
+std::string read_utf8_file(const char* filename)
+{
+  std::ifstream file(filename, std::ios::binary | std::ios::ate);
+  if (!file) throw std::runtime_error("Cannot open file");
+
+  std::streamsize size = file.tellg();
+  file.seekg(0);
+
+  std::string content(static_cast<size_t>(size), '\0');
+  if (!file.read(&content[0], size)) {
+    throw std::runtime_error("Read failed");
+  }
+
+  return content;
+}
+
+// Запись wchar_t в файл
+void write_wchar_file(const char* filename, const std::wstring& wstr)
+{
+  std::ofstream file(filename, std::ios::binary);
+  if (!file) throw std::runtime_error("Cannot create file");
+
+  if (!file.write(reinterpret_cast<const char*>(&wstr[0]),
+         static_cast<std::streamsize>(wstr.size() * sizeof(wchar_t)))) {
+    throw std::runtime_error("Write failed");
+  }
+}
+
+// Чтение wchar_t из файла
+std::wstring read_wchar_file(const char* filename)
+{
+  std::ifstream file(filename, std::ios::binary | std::ios::ate);
+  if (!file) throw std::runtime_error("Cannot open file");
+
+  std::streamsize size = file.tellg();
+  file.seekg(0);
+
+  if (size % sizeof(wchar_t) != 0) {
+    throw std::runtime_error("Invalid file size for wchar_t");
+  }
+
+  std::wstring wstr(static_cast<size_t>(size / sizeof(wchar_t)), L'\0');
+  if (!file.read(reinterpret_cast<char*>(&wstr[0]), size)) {
+    throw std::runtime_error("Read failed");
+  }
+
+  return wstr;
+}
+
+// Запись UTF-8 в файл
+void write_utf8_file(const char* filename, const std::string& utf8)
+{
+  std::ofstream file(filename, std::ios::binary);
+  if (!file) throw std::runtime_error("Cannot create file");
+
+  if (!file.write(&utf8[0], static_cast<std::streamsize>(utf8.size()))) {
+    throw std::runtime_error("Write failed");
+  }
+}
+
+
+int test_utf8() {
+  try {
+    // 1. Чтение исходного UTF-8 файла
+    std::string utf8_content = read_utf8_file(
+      "C:\\Users\\501\\Data\\Documents\\Временное\\input_utf8.txt");
+
+    // 2. Конвертация в wchar_t и запись
+    std::wstring wchar_content = utf8_to_wchar(utf8_content);
+    write_wchar_file("C:\\Users\\501\\Data\\Documents\\Временное\\output_wchar.txt",
+      wchar_content);
+
+    // 3. Чтение wchar_t файла
+    std::wstring read_wchar = read_wchar_file(
+      "C:\\Users\\501\\Data\\Documents\\Временное\\output_wchar.txt");
+
+    // 4. Конвертация обратно в UTF-8 и запись
+    std::string utf8_output = wchar_to_utf8(read_wchar);
+    write_utf8_file("C:\\Users\\501\\Data\\Documents\\Временное\\output_utf8.txt", utf8_output);
+
+    // 5. Проверка целостности
+    if (utf8_content != utf8_output) {
+      throw std::runtime_error("Data integrity check failed");
+    }
+
+    std::cout << "All operations completed successfully\n";
+  }
+  catch (const std::exception& e) {
+    std::cerr << "Error: " << e.what() << '\n';
+    return 1;
+  }
+
+  return 0;
+}
+#endif //NOP
+
+#ifdef NOP
 class vle_reference
 {
 private:
