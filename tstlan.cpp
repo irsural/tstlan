@@ -13,7 +13,7 @@
 USEFORM("connectionlog.cpp", ConnectionLogForm);
 USEFORM("main.cpp", MainForm);
 //---------------------------------------------------------------------------
-// tstlan rev. 109 mxsrclib rev. 1594 extern_libs rev. 37
+// tstlan rev. 110 mxsrclib rev. 1595 extern_libs rev. 37
 
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -26,8 +26,8 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     Application->Initialize();
     Application->Title = "Тест сети 4";
     Application->CreateForm(__classid(TMainForm), &MainForm);
-    Application->CreateForm(__classid(TConnectionLogForm), &ConnectionLogForm);
-    Application->Run();
+     Application->CreateForm(__classid(TConnectionLogForm), &ConnectionLogForm);
+     Application->Run();
   }
   catch (Exception &exception)
   {
