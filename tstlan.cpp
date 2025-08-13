@@ -1,4 +1,6 @@
 //---------------------------------------------------------------------------
+// tstlan rev. 111 mxsrclib rev. 1596 extern_libs rev. 37
+//---------------------------------------------------------------------------
 #include <vcl.h>
 #pragma hdrstop
 
@@ -13,8 +15,6 @@
 USEFORM("connectionlog.cpp", ConnectionLogForm);
 USEFORM("main.cpp", MainForm);
 //---------------------------------------------------------------------------
-// tstlan rev. 110 mxsrclib rev. 1595 extern_libs rev. 37
-
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
   //irs::exception_error_handler_t exception_error_handler;
