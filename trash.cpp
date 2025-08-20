@@ -7,6 +7,24 @@
 
 #include <irsfinal.h>
 
+#include <string>
+#include <fstream>
+
+#ifdef NOP
+bool file_exists(const std::string& path)
+{
+  std::string clean_path = remove_quotes(path);
+  std::ifstream file(clean_path.c_str());
+  return file.good();
+}
+
+bool create_file(const std::string& path)
+{
+  std::string clean_path = remove_quotes(path);
+  std::ofstream file(clean_path.c_str());
+  return file.is_open();
+}
+#endif //NOP
 
 #ifdef NOP
     fs_t::file_t* file = fs_cppbuilder()->open(
