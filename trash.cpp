@@ -7,6 +7,31 @@
 
 #include <irsfinal.h>
 
+
+#ifdef NOP
+    fs_t::file_t* file = fs_cppbuilder()->open(
+      wstring_to_utf8(L"C:\\Users\\501\\Data\\Documents\\Временное\\Путь.txt"), fm_write);
+    if (file) {
+      string data = "1234";
+      fs_cppbuilder()->write(file, reinterpret_cast<const uint8_t*>(data.c_str()), data.size());
+      fs_cppbuilder()->close(file);
+    } else {
+      irs::mlog() << "Ошибка открытия файла" << endl;
+    }
+#endif //NOP
+
+#ifdef NOP
+    fstream fstrm("C:\\Users\\501\\Data\\Documents\\Временное\\Путь.txt", ios::out | ios::binary);
+    if (!fstrm.is_open()) {
+      mlog() << "Ошибка открытия файла!" << endl;
+    }
+    string path = param_to_utf8(irst("Путь к локальному файлу"));
+    fstrm.write(path.c_str(), path.size());
+    if (!fstrm.is_open()) {
+      mlog() << "Ошибка записи файла!" << endl;
+    }
+#endif //NOP
+
 #ifdef NOP
 // Конвертация UTF-8 в UTF-16
 std::u16string utf8_to_utf16(const std::string& utf8) {
