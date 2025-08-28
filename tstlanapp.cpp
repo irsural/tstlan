@@ -226,7 +226,7 @@ void tstlan4::app_t::show_chart()
 void tstlan4::app_t::show_modal_options()
 {
   if (mp_options_param_box->show()) {
-	  apply_options();
+    apply_options();
   }
   mp_options_param_box->save();
 }
@@ -238,11 +238,12 @@ void tstlan4::app_t::apply_options()
     irst("Период обновления графика, мс"));
   mp_chart->set_refresh_time(refresh_time);
   const irs_u32 chart_size =
-	irs::param_box_read_number<irs_u32>(mp_options_param_box.get(),
-	irst("Количество точек в графике"));
+  irs::param_box_read_number<irs_u32>(mp_options_param_box.get(),
+  irst("Количество точек в графике"));
   mp_chart->resize(chart_size);
   if (mp_options_param_box->get_param(irst("Сбросить время")) ==
-	    irst("true")) {
+    irst("true"))
+  {
     mp_options_param_box->set_param(irst("Сбросить время"), irst("false"));
     std::map<string_type, device_t>::iterator it = m_devices_map.begin();
     while (it != m_devices_map.end()) {
@@ -302,11 +303,11 @@ void tstlan4::app_t::tick()
   while (it != m_devices_map.end()) {
     it->second.connection_log->add_errors(
       it->second.mxdata_assembly->get_last_error_string_list());
-	  ++it;
+    ++it;
   }
 
   for (int i = 0; i < 5; i++) {
-	  m_mxnet_server.tick();
+    m_mxnet_server.tick();
   }
 
   if (m_mxnet_server.connected()) {
