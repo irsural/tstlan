@@ -7,8 +7,42 @@
 
 #include <irsfinal.h>
 
+#ifdef NOP
+  dir_iterator_simple_ftp_t(fs_t* ap_fs, const std::string& a_dir_info_file_name);
+
+dir_iterator_simple_ftp_t::dir_iterator_simple_ftp_t(fs_t* ap_fs,
+  const std::string& a_dir_info_file_name
+):
+  mp_data(IRS_NULL),
+  m_size(0),
+  mp_fs(ap_fs),
+  m_dir_info_file_name(a_dir_info_file_name),
+  m_dir_info_buf(),
+  m_dir_info_pos(0),
+  m_result(fsr_success)
+{
+  fs_t::file_t* file = mp_fs->open(m_dir_info_file_name, fm_read);
+  m_result = file ? fsr_success : fsr_error;
+  size_t file_size = 0;
+  if (m_result == fsr_success) {
+    file_size = mp_fs->get_file_size(file, &m_result);
+  }
+  if (m_result == fsr_success) {
+    m_dir_info_buf.resize(file_size);
+    mp_fs->read(file, &m_dir_info_buf[0], file_size, &m_result);
+  }
+  if (m_result == fsr_success) {
+    m_result = mp_fs->close(file);
+  }
+  if (m_result == fsr_success) {
+    mp_data = &m_dir_info_buf[0];
+    m_size = m_dir_info_buf.size();
+  }
+}
+
 #include <string>
 #include <fstream>
+#endif //NOP
 
 #ifdef NOP
 bool file_exists(const std::string& path)
