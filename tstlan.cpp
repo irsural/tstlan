@@ -1,4 +1,6 @@
 //---------------------------------------------------------------------------
+// tstlan rev. 142 mxsrclib rev. 1634 extern_libs rev. 37
+//---------------------------------------------------------------------------
 #include <vcl.h>
 #pragma hdrstop
 
@@ -13,8 +15,6 @@
 USEFORM("connectionlog.cpp", ConnectionLogForm);
 USEFORM("main.cpp", MainForm);
 //---------------------------------------------------------------------------
-// 19.03.2025 5.0.21.88 rev. 88 mxsrclib rev. 1575 extern_libs rev. 37
-
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
   //irs::exception_error_handler_t exception_error_handler;
@@ -26,8 +26,8 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     Application->Initialize();
     Application->Title = "Тест сети 4";
     Application->CreateForm(__classid(TMainForm), &MainForm);
-		Application->CreateForm(__classid(TConnectionLogForm), &ConnectionLogForm);
-		Application->Run();
+     Application->CreateForm(__classid(TConnectionLogForm), &ConnectionLogForm);
+     Application->Run();
   }
   catch (Exception &exception)
   {
@@ -50,4 +50,5 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
   }
   return 0;
 }
-//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------1
+

@@ -14,13 +14,24 @@ object MainForm: TMainForm
   OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
+  object LogSplitter: TSplitter
+    Left = 0
+    Top = 460
+    Width = 800
+    Height = 3
+    Cursor = crVSplit
+    Align = alBottom
+    ExplicitTop = 29
+    ExplicitWidth = 434
+  end
   object DevicesCXGrid: TcxGrid
     Left = 0
     Top = 29
     Width = 800
-    Height = 434
+    Height = 431
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 434
     object DevicesCXGridTableView1: TcxGridTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.Filter.Options = [fcoCaseInsensitive]

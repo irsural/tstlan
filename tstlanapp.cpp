@@ -30,10 +30,11 @@ irs::handle_t<irs::mxdata_assembly_t> make_assembly(
 
 irs::hardflow_t* create_usb_hid(uint16_t a_pid, uint16_t a_vid)
 {
-  return new hidapi_hardflow_t(a_pid, a_vid);
+  irs::hardflow_t::size_type modbus_channel = 1;
+  irs::hardflow_t::size_type modbus_channel_count = 1;
+  return new irs::hardflow::diapason_channels_t(new hidapi_hardflow_t(a_pid, a_vid),
+    modbus_channel, modbus_channel_count, irs::hardflow::diapason_channels_t::hardflow_ext_own);
 }
-
-
 
 irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
   const irs::string_t& a_device_name,
@@ -41,7 +42,7 @@ irs::handle_t<irs::mxdata_assembly_t> tstlan4::make_assembly(
   irs::tstlan4_base_t* ap_tstlan4lib
 ) {
   return irs::mxdata_assembly_types()->
-	make_assembly(a_device_type, ap_tstlan4lib, a_device_name, &create_usb_hid);
+    make_assembly(a_device_type, ap_tstlan4lib, a_device_name, &create_usb_hid);
 }
 
 tstlan4::app_t::app_t(cfg_t* ap_cfg):
@@ -79,7 +80,7 @@ std::vector<tstlan4::app_t::string_type> tstlan4::app_t::set_devices(
   std::vector<string_type> bad_devices;
   while (dev_opt_it != a_devices.end()) {
     std::map<string_type, device_t>::iterator it =
-	    m_devices_map.find(dev_opt_it->first);
+      m_devices_map.find(dev_opt_it->first);
     bool need_reset = false;
     if (it != m_devices_map.end()) {
       if (it->second.type != dev_opt_it->second.type) {
@@ -225,7 +226,7 @@ void tstlan4::app_t::show_chart()
 void tstlan4::app_t::show_modal_options()
 {
   if (mp_options_param_box->show()) {
-	  apply_options();
+    apply_options();
   }
   mp_options_param_box->save();
 }
@@ -237,11 +238,12 @@ void tstlan4::app_t::apply_options()
     irst("Период обновления графика, мс"));
   mp_chart->set_refresh_time(refresh_time);
   const irs_u32 chart_size =
-	irs::param_box_read_number<irs_u32>(mp_options_param_box.get(),
-	irst("Количество точек в графике"));
+  irs::param_box_read_number<irs_u32>(mp_options_param_box.get(),
+  irst("Количество точек в графике"));
   mp_chart->resize(chart_size);
   if (mp_options_param_box->get_param(irst("Сбросить время")) ==
-	    irst("true")) {
+    irst("true"))
+  {
     mp_options_param_box->set_param(irst("Сбросить время"), irst("false"));
     std::map<string_type, device_t>::iterator it = m_devices_map.begin();
     while (it != m_devices_map.end()) {
@@ -301,11 +303,11 @@ void tstlan4::app_t::tick()
   while (it != m_devices_map.end()) {
     it->second.connection_log->add_errors(
       it->second.mxdata_assembly->get_last_error_string_list());
-	  ++it;
+    ++it;
   }
 
   for (int i = 0; i < 5; i++) {
-	  m_mxnet_server.tick();
+    m_mxnet_server.tick();
   }
 
   if (m_mxnet_server.connected()) {

@@ -13,9 +13,6 @@
 #include "error.h"
 
 #include <irsfinal.h>
-/*#include "tstlan5lib.h"
-#include "MxChart.h"
-#include "MxBase.h"*/
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "cxClasses"
@@ -150,12 +147,10 @@ __fastcall TMainForm::TMainForm(TComponent* Owner) :
   m_ini_file.set_section("MainForm");
   m_ini_file.add("", this);
   m_ini_file.set_section("ChartForm");
-  m_ini_file.add(String("left"),
-    reinterpret_cast<irs_u32*>(&m_chart_position.left));
+  m_ini_file.add("left", reinterpret_cast<irs_u32*>(&m_chart_position.left));
   m_ini_file.add("top", reinterpret_cast<irs_u32*>(&m_chart_position.top));
   m_ini_file.add("right", reinterpret_cast<irs_u32*>(&m_chart_position.right));
-  m_ini_file.add("bottom",
-    reinterpret_cast<irs_u32*>(&m_chart_position.bottom));
+  m_ini_file.add("bottom", reinterpret_cast<irs_u32*>(&m_chart_position.bottom));
   m_ini_file.load();
 
   load_grid_options();
@@ -264,7 +259,8 @@ void TMainForm::save_grid_options()
     recreate, AOptions);
 }
 
-void TMainForm::add_device(const String& a_file_name) {
+void TMainForm::add_device(const String& a_file_name)
+{
   create_devices_dir();
   irs::ini_file_t ini_file;
   ini_file.set_ini_name(a_file_name);
@@ -299,7 +295,8 @@ void TMainForm::add_device(const String& a_file_name) {
 }
 
 void TMainForm::show_bad_devices_if_exists(
-  const std::vector<string_type>& a_bad_devices) {
+  const std::vector<string_type>& a_bad_devices)
+{
   if (!a_bad_devices.empty()) {
     string_type msg = irst("Следующие устройства включить не удалось: ");
     for (size_type i = 0; i < a_bad_devices.size(); i++) {
@@ -406,9 +403,12 @@ void TMainForm::update_options()
 {
   if (m_app.options()->get_param(irst("Отображать лог")) ==
       irst("true")) {
+    LogSplitter->Visible = true;
     LogMemo->Visible = true;
+    LogSplitter->Top = LogMemo->Top;
     irs::mlog().rdbuf(mp_memo_buf.get());
   } else {
+    LogSplitter->Visible = false;
     LogMemo->Visible = false;
     irs::mlog().rdbuf(NULL);
   }
