@@ -100,6 +100,7 @@ private:
 
   hid_device *m_device_handle;
   const size_t m_report_size;
+  bool m_error_state;
   std::vector<uint8_t> m_read_over_bytes;
 
   static inline size_type channel_id_to_buf_index(size_type a_channel_id)
