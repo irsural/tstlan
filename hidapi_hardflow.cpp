@@ -11,11 +11,15 @@ hidapi_hardflow_t::hidapi_hardflow_t(uint16_t a_pid, uint16_t a_vid,
   m_channel_list(m_channel_count),
   m_device_handle(NULL),
   m_report_size(65),
+  m_error_state(false),
   m_read_over_bytes()
 {
   hid_init();
   m_device_handle = hid_open(a_vid, a_pid, NULL);
-  hid_set_nonblocking(m_device_handle, 1);
+  m_error_state = (m_device_handle == NULL);
+  if (!m_error_state) {
+    hid_set_nonblocking(m_device_handle, 1);
+  }
 }
 
 hidapi_hardflow_t::~hidapi_hardflow_t()
@@ -27,6 +31,9 @@ hidapi_hardflow_t::~hidapi_hardflow_t()
 hidapi_hardflow_t::string_type hidapi_hardflow_t::param(const string_type &a_name)
 {
   string_type s;
+  if (a_name == irst("error_state")) {
+    s = m_error_state ? irst("true") : irst("false");
+  }
   return s;
 }
 

@@ -1,5 +1,6 @@
 # tstlan ignore
 __history
+__recovery
 build
 tstlan4grp.dsk
 tstlan4_1.ini
